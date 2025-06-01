@@ -1427,134 +1427,134 @@ module unet_fsm(
 									
 									if (inlayercount == 0) begin
 										case (layercount)
-											32'd0:   LOAD_WEIGHTS(stage4_layer1_1, 32, 0)	   // filter 0
-											32'd1:   LOAD_WEIGHTS(stage4_layer2_1, 32, 0)	   // filter 1
-											32'd2:   LOAD_WEIGHTS(stage4_layer3_1, 32, 0)	   // filter 2
-											32'd3:   LOAD_WEIGHTS(stage4_layer4_1, 32, 0)	   // filter 3
-											32'd4:   LOAD_WEIGHTS(stage4_layer5_1, 32, 0)	   // filter 4
-											32'd5:   LOAD_WEIGHTS(stage4_layer6_1, 32, 0)	   // filter 5
-											32'd6:   LOAD_WEIGHTS(stage4_layer7_1, 32, 0)	   // filter 6
-											32'd7:   LOAD_WEIGHTS(stage4_layer8_1, 32, 0)	   // filter 7
-											32'd8:   LOAD_WEIGHTS(stage4_layer9_1, 32, 0)	   // filter 8
-											32'd9:   LOAD_WEIGHTS(stage4_layer10_1, 32, 0)	   // filter 9
-											32'd10:  LOAD_WEIGHTS(stage4_layer11_1, 32, 0)	   // filter 10
-											32'd11:  LOAD_WEIGHTS(stage4_layer12_1, 32, 0)	   // filter 11
-											32'd12:  LOAD_WEIGHTS(stage4_layer13_1, 32, 0)	   // filter 12
-											32'd13:  LOAD_WEIGHTS(stage4_layer14_1, 32, 0)	   // filter 13
-											32'd14:  LOAD_WEIGHTS(stage4_layer15_1, 32, 0)	   // filter 14
-											32'd15:  LOAD_WEIGHTS(stage4_layer16_1, 32, 0)	   // filter 15
-											32'd16:  LOAD_WEIGHTS(stage4_layer17_1, 32, 0)	   // filter 16
-											32'd17:  LOAD_WEIGHTS(stage4_layer18_1, 32, 0)	   // filter 17
-											32'd18:  LOAD_WEIGHTS(stage4_layer19_1, 32, 0)	   // filter 18
-											32'd19:  LOAD_WEIGHTS(stage4_layer20_1, 32, 0)	   // filter 19
-											32'd20:  LOAD_WEIGHTS(stage4_layer21_1, 32, 0)	   // filter 20
-											32'd21:  LOAD_WEIGHTS(stage4_layer22_1, 32, 0)	   // filter 21
-											32'd22:  LOAD_WEIGHTS(stage4_layer23_1, 32, 0)	   // filter 22
-											32'd23:  LOAD_WEIGHTS(stage4_layer24_1, 32, 0)	   // filter 23
-											32'd24:  LOAD_WEIGHTS(stage4_layer25_1, 32, 0)	   // filter 24
-											32'd25:  LOAD_WEIGHTS(stage4_layer26_1, 32, 0)	   // filter 25
-											32'd26:  LOAD_WEIGHTS(stage4_layer27_1, 32, 0)	   // filter 26
-											32'd27:  LOAD_WEIGHTS(stage4_layer28_1, 32, 0)	   // filter 27
-											32'd28:  LOAD_WEIGHTS(stage4_layer29_1, 32, 0)	   // filter 28
-											32'd29:  LOAD_WEIGHTS(stage4_layer30_1, 32, 0)	   // filter 29
-											32'd30:  LOAD_WEIGHTS(stage4_layer31_1, 32, 0)	   // filter 30
-											32'd31:  LOAD_WEIGHTS(stage4_layer32_1, 32, 0)	   // filter 31
-											32'd32:  LOAD_WEIGHTS(stage4_layer33_1, 32, 0)	   // filter 32
-											32'd33:  LOAD_WEIGHTS(stage4_layer34_1, 32, 0)	   // filter 33
-											32'd34:  LOAD_WEIGHTS(stage4_layer35_1, 32, 0)	   // filter 34
-											32'd35:  LOAD_WEIGHTS(stage4_layer36_1, 32, 0)	   // filter 35
-											32'd36:  LOAD_WEIGHTS(stage4_layer37_1, 32, 0)	   // filter 36
-											32'd37:  LOAD_WEIGHTS(stage4_layer38_1, 32, 0)	   // filter 37
-											32'd38:  LOAD_WEIGHTS(stage4_layer39_1, 32, 0)	   // filter 38
-											32'd39:  LOAD_WEIGHTS(stage4_layer40_1, 32, 0)	   // filter 39
-											32'd40:  LOAD_WEIGHTS(stage4_layer41_1, 32, 0)	   // filter 40
-											32'd41:  LOAD_WEIGHTS(stage4_layer42_1, 32, 0)	   // filter 41
-											32'd42:  LOAD_WEIGHTS(stage4_layer43_1, 32, 0)	   // filter 42
-											32'd43:  LOAD_WEIGHTS(stage4_layer44_1, 32, 0)	   // filter 43
-											32'd44:  LOAD_WEIGHTS(stage4_layer45_1, 32, 0)	   // filter 44
-											32'd45:  LOAD_WEIGHTS(stage4_layer46_1, 32, 0)	   // filter 45
-											32'd46:  LOAD_WEIGHTS(stage4_layer47_1, 32, 0)	   // filter 46
-											32'd47:  LOAD_WEIGHTS(stage4_layer48_1, 32, 0)	   // filter 47
-											32'd48:  LOAD_WEIGHTS(stage4_layer49_1, 32, 0)	   // filter 48
-											32'd49:  LOAD_WEIGHTS(stage4_layer50_1, 32, 0)	   // filter 49
-											32'd50:  LOAD_WEIGHTS(stage4_layer51_1, 32, 0)	   // filter 50
-											32'd51:  LOAD_WEIGHTS(stage4_layer52_1, 32, 0)	   // filter 51
-											32'd52:  LOAD_WEIGHTS(stage4_layer53_1, 32, 0)	   // filter 52
-											32'd53:  LOAD_WEIGHTS(stage4_layer54_1, 32, 0)	   // filter 53
-											32'd54:  LOAD_WEIGHTS(stage4_layer55_1, 32, 0)	   // filter 54
-											32'd55:  LOAD_WEIGHTS(stage4_layer56_1, 32, 0)	   // filter 55
-											32'd56:  LOAD_WEIGHTS(stage4_layer57_1, 32, 0)	   // filter 56
-											32'd57:  LOAD_WEIGHTS(stage4_layer58_1, 32, 0)	   // filter 57
-											32'd58:  LOAD_WEIGHTS(stage4_layer59_1, 32, 0)	   // filter 58
-											32'd59:  LOAD_WEIGHTS(stage4_layer60_1, 32, 0)	   // filter 59
-											32'd60:  LOAD_WEIGHTS(stage4_layer61_1, 32, 0)	   // filter 60
-											32'd61:  LOAD_WEIGHTS(stage4_layer62_1, 32, 0)	   // filter 61
-											32'd62:  LOAD_WEIGHTS(stage4_layer63_1, 32, 0)	   // filter 62
-											32'd63:  LOAD_WEIGHTS(stage4_layer64_1, 32, 0)	   // filter 63
-											32'd64:  LOAD_WEIGHTS(stage4_layer65_1, 32, 0)	   // filter 64
-											32'd65:  LOAD_WEIGHTS(stage4_layer66_1, 32, 0)	   // filter 65
-											32'd66:  LOAD_WEIGHTS(stage4_layer67_1, 32, 0)	   // filter 66
-											32'd67:  LOAD_WEIGHTS(stage4_layer68_1, 32, 0)	   // filter 67
-											32'd68:  LOAD_WEIGHTS(stage4_layer69_1, 32, 0)	   // filter 68
-											32'd69:  LOAD_WEIGHTS(stage4_layer70_1, 32, 0)	   // filter 69
-											32'd70:  LOAD_WEIGHTS(stage4_layer71_1, 32, 0)	   // filter 70
-											32'd71:  LOAD_WEIGHTS(stage4_layer72_1, 32, 0)	   // filter 71
-											32'd72:  LOAD_WEIGHTS(stage4_layer73_1, 32, 0)	   // filter 72
-											32'd73:  LOAD_WEIGHTS(stage4_layer74_1, 32, 0)	   // filter 73
-											32'd74:  LOAD_WEIGHTS(stage4_layer75_1, 32, 0)	   // filter 74
-											32'd75:  LOAD_WEIGHTS(stage4_layer76_1, 32, 0)	   // filter 75
-											32'd76:  LOAD_WEIGHTS(stage4_layer77_1, 32, 0)	   // filter 76
-											32'd77:  LOAD_WEIGHTS(stage4_layer78_1, 32, 0)	   // filter 77
-											32'd78:  LOAD_WEIGHTS(stage4_layer79_1, 32, 0)	   // filter 78
-											32'd79:  LOAD_WEIGHTS(stage4_layer80_1, 32, 0)	   // filter 79
-											32'd80:  LOAD_WEIGHTS(stage4_layer81_1, 32, 0)	   // filter 80
-											32'd81:  LOAD_WEIGHTS(stage4_layer82_1, 32, 0)	   // filter 81
-											32'd82:  LOAD_WEIGHTS(stage4_layer83_1, 32, 0)	   // filter 82
-											32'd83:  LOAD_WEIGHTS(stage4_layer84_1, 32, 0)	   // filter 83
-											32'd84:  LOAD_WEIGHTS(stage4_layer85_1, 32, 0)	   // filter 84
-											32'd85:  LOAD_WEIGHTS(stage4_layer86_1, 32, 0)	   // filter 85
-											32'd86:  LOAD_WEIGHTS(stage4_layer87_1, 32, 0)	   // filter 86
-											32'd87:  LOAD_WEIGHTS(stage4_layer88_1, 32, 0)	   // filter 87
-											32'd88:  LOAD_WEIGHTS(stage4_layer89_1, 32, 0)	   // filter 88
-											32'd89:  LOAD_WEIGHTS(stage4_layer90_1, 32, 0)	   // filter 89
-											32'd90:  LOAD_WEIGHTS(stage4_layer91_1, 32, 0)	   // filter 90
-											32'd91:  LOAD_WEIGHTS(stage4_layer92_1, 32, 0)	   // filter 91
-											32'd92:  LOAD_WEIGHTS(stage4_layer93_1, 32, 0)	   // filter 92
-											32'd93:  LOAD_WEIGHTS(stage4_layer94_1, 32, 0)	   // filter 93
-											32'd94:  LOAD_WEIGHTS(stage4_layer95_1, 32, 0)	   // filter 94
-											32'd95:  LOAD_WEIGHTS(stage4_layer96_1, 32, 0)	   // filter 95
-											32'd96:  LOAD_WEIGHTS(stage4_layer97_1, 32, 0)	   // filter 96
-											32'd97:  LOAD_WEIGHTS(stage4_layer98_1, 32, 0)	   // filter 97
-											32'd98:  LOAD_WEIGHTS(stage4_layer99_1, 32, 0)	   // filter 98
-											32'd99:  LOAD_WEIGHTS(stage4_layer100_1, 32, 0)	   // filter 99
-											32'd100: LOAD_WEIGHTS(stage4_layer101_1, 32, 0)	   // filter 100
-											32'd101: LOAD_WEIGHTS(stage4_layer102_1, 32, 0)	   // filter 101
-											32'd102: LOAD_WEIGHTS(stage4_layer103_1, 32, 0)	   // filter 102
-											32'd103: LOAD_WEIGHTS(stage4_layer104_1, 32, 0)	   // filter 103
-											32'd104: LOAD_WEIGHTS(stage4_layer105_1, 32, 0)	   // filter 104
-											32'd105: LOAD_WEIGHTS(stage4_layer106_1, 32, 0)	   // filter 105
-											32'd106: LOAD_WEIGHTS(stage4_layer107_1, 32, 0)	   // filter 106
-											32'd107: LOAD_WEIGHTS(stage4_layer108_1, 32, 0)	   // filter 107
-											32'd108: LOAD_WEIGHTS(stage4_layer109_1, 32, 0)	   // filter 108
-											32'd109: LOAD_WEIGHTS(stage4_layer110_1, 32, 0)	   // filter 109
-											32'd110: LOAD_WEIGHTS(stage4_layer111_1, 32, 0)	   // filter 110
-											32'd111: LOAD_WEIGHTS(stage4_layer112_1, 32, 0)	   // filter 111
-											32'd112: LOAD_WEIGHTS(stage4_layer113_1, 32, 0)	   // filter 112
-											32'd113: LOAD_WEIGHTS(stage4_layer114_1, 32, 0)	   // filter 113
-											32'd114: LOAD_WEIGHTS(stage4_layer115_1, 32, 0)	   // filter 114
-											32'd115: LOAD_WEIGHTS(stage4_layer116_1, 32, 0)	   // filter 115
-											32'd116: LOAD_WEIGHTS(stage4_layer117_1, 32, 0)	   // filter 116
-											32'd117: LOAD_WEIGHTS(stage4_layer118_1, 32, 0)	   // filter 117
-											32'd118: LOAD_WEIGHTS(stage4_layer119_1, 32, 0)	   // filter 118
-											32'd119: LOAD_WEIGHTS(stage4_layer120_1, 32, 0)	   // filter 119
-											32'd120: LOAD_WEIGHTS(stage4_layer121_1, 32, 0)	   // filter 120
-											32'd121: LOAD_WEIGHTS(stage4_layer122_1, 32, 0)	   // filter 121
-											32'd122: LOAD_WEIGHTS(stage4_layer123_1, 32, 0)	   // filter 122
-											32'd123: LOAD_WEIGHTS(stage4_layer124_1, 32, 0)	   // filter 123
-											32'd124: LOAD_WEIGHTS(stage4_layer125_1, 32, 0)	   // filter 124
-											32'd125: LOAD_WEIGHTS(stage4_layer126_1, 32, 0)	   // filter 125
-											32'd126: LOAD_WEIGHTS(stage4_layer127_1, 32, 0)	   // filter 126
-											32'd127: LOAD_WEIGHTS(stage4_layer128_1, 32, 0)	   // filter 127
+											32'd0:   LOAD_WEIGHTS(stage5_layer1_1, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage5_layer2_1, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage5_layer3_1, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage5_layer4_1, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage5_layer5_1, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage5_layer6_1, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage5_layer7_1, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage5_layer8_1, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage5_layer9_1, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage5_layer10_1, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage5_layer11_1, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage5_layer12_1, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage5_layer13_1, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage5_layer14_1, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage5_layer15_1, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage5_layer16_1, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage5_layer17_1, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage5_layer18_1, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage5_layer19_1, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage5_layer20_1, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage5_layer21_1, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage5_layer22_1, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage5_layer23_1, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage5_layer24_1, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage5_layer25_1, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage5_layer26_1, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage5_layer27_1, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage5_layer28_1, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage5_layer29_1, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage5_layer30_1, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage5_layer31_1, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage5_layer32_1, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage5_layer33_1, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage5_layer34_1, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage5_layer35_1, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage5_layer36_1, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage5_layer37_1, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage5_layer38_1, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage5_layer39_1, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage5_layer40_1, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage5_layer41_1, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage5_layer42_1, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage5_layer43_1, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage5_layer44_1, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage5_layer45_1, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage5_layer46_1, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage5_layer47_1, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage5_layer48_1, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage5_layer49_1, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage5_layer50_1, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage5_layer51_1, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage5_layer52_1, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage5_layer53_1, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage5_layer54_1, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage5_layer55_1, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage5_layer56_1, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage5_layer57_1, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage5_layer58_1, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage5_layer59_1, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage5_layer60_1, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage5_layer61_1, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage5_layer62_1, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage5_layer63_1, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage5_layer64_1, 32, 0)	   // filter 63
+											32'd64:  LOAD_WEIGHTS(stage5_layer65_1, 32, 0)	   // filter 64
+											32'd65:  LOAD_WEIGHTS(stage5_layer66_1, 32, 0)	   // filter 65
+											32'd66:  LOAD_WEIGHTS(stage5_layer67_1, 32, 0)	   // filter 66
+											32'd67:  LOAD_WEIGHTS(stage5_layer68_1, 32, 0)	   // filter 67
+											32'd68:  LOAD_WEIGHTS(stage5_layer69_1, 32, 0)	   // filter 68
+											32'd69:  LOAD_WEIGHTS(stage5_layer70_1, 32, 0)	   // filter 69
+											32'd70:  LOAD_WEIGHTS(stage5_layer71_1, 32, 0)	   // filter 70
+											32'd71:  LOAD_WEIGHTS(stage5_layer72_1, 32, 0)	   // filter 71
+											32'd72:  LOAD_WEIGHTS(stage5_layer73_1, 32, 0)	   // filter 72
+											32'd73:  LOAD_WEIGHTS(stage5_layer74_1, 32, 0)	   // filter 73
+											32'd74:  LOAD_WEIGHTS(stage5_layer75_1, 32, 0)	   // filter 74
+											32'd75:  LOAD_WEIGHTS(stage5_layer76_1, 32, 0)	   // filter 75
+											32'd76:  LOAD_WEIGHTS(stage5_layer77_1, 32, 0)	   // filter 76
+											32'd77:  LOAD_WEIGHTS(stage5_layer78_1, 32, 0)	   // filter 77
+											32'd78:  LOAD_WEIGHTS(stage5_layer79_1, 32, 0)	   // filter 78
+											32'd79:  LOAD_WEIGHTS(stage5_layer80_1, 32, 0)	   // filter 79
+											32'd80:  LOAD_WEIGHTS(stage5_layer81_1, 32, 0)	   // filter 80
+											32'd81:  LOAD_WEIGHTS(stage5_layer82_1, 32, 0)	   // filter 81
+											32'd82:  LOAD_WEIGHTS(stage5_layer83_1, 32, 0)	   // filter 82
+											32'd83:  LOAD_WEIGHTS(stage5_layer84_1, 32, 0)	   // filter 83
+											32'd84:  LOAD_WEIGHTS(stage5_layer85_1, 32, 0)	   // filter 84
+											32'd85:  LOAD_WEIGHTS(stage5_layer86_1, 32, 0)	   // filter 85
+											32'd86:  LOAD_WEIGHTS(stage5_layer87_1, 32, 0)	   // filter 86
+											32'd87:  LOAD_WEIGHTS(stage5_layer88_1, 32, 0)	   // filter 87
+											32'd88:  LOAD_WEIGHTS(stage5_layer89_1, 32, 0)	   // filter 88
+											32'd89:  LOAD_WEIGHTS(stage5_layer90_1, 32, 0)	   // filter 89
+											32'd90:  LOAD_WEIGHTS(stage5_layer91_1, 32, 0)	   // filter 90
+											32'd91:  LOAD_WEIGHTS(stage5_layer92_1, 32, 0)	   // filter 91
+											32'd92:  LOAD_WEIGHTS(stage5_layer93_1, 32, 0)	   // filter 92
+											32'd93:  LOAD_WEIGHTS(stage5_layer94_1, 32, 0)	   // filter 93
+											32'd94:  LOAD_WEIGHTS(stage5_layer95_1, 32, 0)	   // filter 94
+											32'd95:  LOAD_WEIGHTS(stage5_layer96_1, 32, 0)	   // filter 95
+											32'd96:  LOAD_WEIGHTS(stage5_layer97_1, 32, 0)	   // filter 96
+											32'd97:  LOAD_WEIGHTS(stage5_layer98_1, 32, 0)	   // filter 97
+											32'd98:  LOAD_WEIGHTS(stage5_layer99_1, 32, 0)	   // filter 98
+											32'd99:  LOAD_WEIGHTS(stage5_layer100_1, 32, 0)	   // filter 99
+											32'd100: LOAD_WEIGHTS(stage5_layer101_1, 32, 0)	   // filter 100
+											32'd101: LOAD_WEIGHTS(stage5_layer102_1, 32, 0)	   // filter 101
+											32'd102: LOAD_WEIGHTS(stage5_layer103_1, 32, 0)	   // filter 102
+											32'd103: LOAD_WEIGHTS(stage5_layer104_1, 32, 0)	   // filter 103
+											32'd104: LOAD_WEIGHTS(stage5_layer105_1, 32, 0)	   // filter 104
+											32'd105: LOAD_WEIGHTS(stage5_layer106_1, 32, 0)	   // filter 105
+											32'd106: LOAD_WEIGHTS(stage5_layer107_1, 32, 0)	   // filter 106
+											32'd107: LOAD_WEIGHTS(stage5_layer108_1, 32, 0)	   // filter 107
+											32'd108: LOAD_WEIGHTS(stage5_layer109_1, 32, 0)	   // filter 108
+											32'd109: LOAD_WEIGHTS(stage5_layer110_1, 32, 0)	   // filter 109
+											32'd110: LOAD_WEIGHTS(stage5_layer111_1, 32, 0)	   // filter 110
+											32'd111: LOAD_WEIGHTS(stage5_layer112_1, 32, 0)	   // filter 111
+											32'd112: LOAD_WEIGHTS(stage5_layer113_1, 32, 0)	   // filter 112
+											32'd113: LOAD_WEIGHTS(stage5_layer114_1, 32, 0)	   // filter 113
+											32'd114: LOAD_WEIGHTS(stage5_layer115_1, 32, 0)	   // filter 114
+											32'd115: LOAD_WEIGHTS(stage5_layer116_1, 32, 0)	   // filter 115
+											32'd116: LOAD_WEIGHTS(stage5_layer117_1, 32, 0)	   // filter 116
+											32'd117: LOAD_WEIGHTS(stage5_layer118_1, 32, 0)	   // filter 117
+											32'd118: LOAD_WEIGHTS(stage5_layer119_1, 32, 0)	   // filter 118
+											32'd119: LOAD_WEIGHTS(stage5_layer120_1, 32, 0)	   // filter 119
+											32'd120: LOAD_WEIGHTS(stage5_layer121_1, 32, 0)	   // filter 120
+											32'd121: LOAD_WEIGHTS(stage5_layer122_1, 32, 0)	   // filter 121
+											32'd122: LOAD_WEIGHTS(stage5_layer123_1, 32, 0)	   // filter 122
+											32'd123: LOAD_WEIGHTS(stage5_layer124_1, 32, 0)	   // filter 123
+											32'd124: LOAD_WEIGHTS(stage5_layer125_1, 32, 0)	   // filter 124
+											32'd125: LOAD_WEIGHTS(stage5_layer126_1, 32, 0)	   // filter 125
+											32'd126: LOAD_WEIGHTS(stage5_layer127_1, 32, 0)	   // filter 126
+											32'd127: LOAD_WEIGHTS(stage5_layer128_1, 32, 0)	   // filter 127
 												
 											default:
 												begin
@@ -1567,134 +1567,134 @@ module unet_fsm(
 										endcase
 									end else begin
 										case (layercount)
-											32'd0:   LOAD_WEIGHTS(stage4_layer1_2, 32, 0)	   // filter 0
-											32'd1:   LOAD_WEIGHTS(stage4_layer2_2, 32, 0)	   // filter 1
-											32'd2:   LOAD_WEIGHTS(stage4_layer3_2, 32, 0)	   // filter 2
-											32'd3:   LOAD_WEIGHTS(stage4_layer4_2, 32, 0)	   // filter 3
-											32'd4:   LOAD_WEIGHTS(stage4_layer5_2, 32, 0)	   // filter 4
-											32'd5:   LOAD_WEIGHTS(stage4_layer6_2, 32, 0)	   // filter 5
-											32'd6:   LOAD_WEIGHTS(stage4_layer7_2, 32, 0)	   // filter 6
-											32'd7:   LOAD_WEIGHTS(stage4_layer8_2, 32, 0)	   // filter 7
-											32'd8:   LOAD_WEIGHTS(stage4_layer9_2, 32, 0)	   // filter 8
-											32'd9:   LOAD_WEIGHTS(stage4_layer10_2, 32, 0)	   // filter 9
-											32'd10:  LOAD_WEIGHTS(stage4_layer11_2, 32, 0)	   // filter 10
-											32'd11:  LOAD_WEIGHTS(stage4_layer12_2, 32, 0)	   // filter 11
-											32'd12:  LOAD_WEIGHTS(stage4_layer13_2, 32, 0)	   // filter 12
-											32'd13:  LOAD_WEIGHTS(stage4_layer14_2, 32, 0)	   // filter 13
-											32'd14:  LOAD_WEIGHTS(stage4_layer15_2, 32, 0)	   // filter 14
-											32'd15:  LOAD_WEIGHTS(stage4_layer16_2, 32, 0)	   // filter 15
-											32'd16:  LOAD_WEIGHTS(stage4_layer17_2, 32, 0)	   // filter 16
-											32'd17:  LOAD_WEIGHTS(stage4_layer18_2, 32, 0)	   // filter 17
-											32'd18:  LOAD_WEIGHTS(stage4_layer19_2, 32, 0)	   // filter 18
-											32'd19:  LOAD_WEIGHTS(stage4_layer20_2, 32, 0)	   // filter 19
-											32'd20:  LOAD_WEIGHTS(stage4_layer21_2, 32, 0)	   // filter 20
-											32'd21:  LOAD_WEIGHTS(stage4_layer22_2, 32, 0)	   // filter 21
-											32'd22:  LOAD_WEIGHTS(stage4_layer23_2, 32, 0)	   // filter 22
-											32'd23:  LOAD_WEIGHTS(stage4_layer24_2, 32, 0)	   // filter 23
-											32'd24:  LOAD_WEIGHTS(stage4_layer25_2, 32, 0)	   // filter 24
-											32'd25:  LOAD_WEIGHTS(stage4_layer26_2, 32, 0)	   // filter 25
-											32'd26:  LOAD_WEIGHTS(stage4_layer27_2, 32, 0)	   // filter 26
-											32'd27:  LOAD_WEIGHTS(stage4_layer28_2, 32, 0)	   // filter 27
-											32'd28:  LOAD_WEIGHTS(stage4_layer29_2, 32, 0)	   // filter 28
-											32'd29:  LOAD_WEIGHTS(stage4_layer30_2, 32, 0)	   // filter 29
-											32'd30:  LOAD_WEIGHTS(stage4_layer31_2, 32, 0)	   // filter 30
-											32'd31:  LOAD_WEIGHTS(stage4_layer32_2, 32, 0)	   // filter 31
-											32'd32:  LOAD_WEIGHTS(stage4_layer33_2, 32, 0)	   // filter 32
-											32'd33:  LOAD_WEIGHTS(stage4_layer34_2, 32, 0)	   // filter 33
-											32'd34:  LOAD_WEIGHTS(stage4_layer35_2, 32, 0)	   // filter 34
-											32'd35:  LOAD_WEIGHTS(stage4_layer36_2, 32, 0)	   // filter 35
-											32'd36:  LOAD_WEIGHTS(stage4_layer37_2, 32, 0)	   // filter 36
-											32'd37:  LOAD_WEIGHTS(stage4_layer38_2, 32, 0)	   // filter 37
-											32'd38:  LOAD_WEIGHTS(stage4_layer39_2, 32, 0)	   // filter 38
-											32'd39:  LOAD_WEIGHTS(stage4_layer40_2, 32, 0)	   // filter 39
-											32'd40:  LOAD_WEIGHTS(stage4_layer41_2, 32, 0)	   // filter 40
-											32'd41:  LOAD_WEIGHTS(stage4_layer42_2, 32, 0)	   // filter 41
-											32'd42:  LOAD_WEIGHTS(stage4_layer43_2, 32, 0)	   // filter 42
-											32'd43:  LOAD_WEIGHTS(stage4_layer44_2, 32, 0)	   // filter 43
-											32'd44:  LOAD_WEIGHTS(stage4_layer45_2, 32, 0)	   // filter 44
-											32'd45:  LOAD_WEIGHTS(stage4_layer46_2, 32, 0)	   // filter 45
-											32'd46:  LOAD_WEIGHTS(stage4_layer47_2, 32, 0)	   // filter 46
-											32'd47:  LOAD_WEIGHTS(stage4_layer48_2, 32, 0)	   // filter 47
-											32'd48:  LOAD_WEIGHTS(stage4_layer49_2, 32, 0)	   // filter 48
-											32'd49:  LOAD_WEIGHTS(stage4_layer50_2, 32, 0)	   // filter 49
-											32'd50:  LOAD_WEIGHTS(stage4_layer51_2, 32, 0)	   // filter 50
-											32'd51:  LOAD_WEIGHTS(stage4_layer52_2, 32, 0)	   // filter 51
-											32'd52:  LOAD_WEIGHTS(stage4_layer53_2, 32, 0)	   // filter 52
-											32'd53:  LOAD_WEIGHTS(stage4_layer54_2, 32, 0)	   // filter 53
-											32'd54:  LOAD_WEIGHTS(stage4_layer55_2, 32, 0)	   // filter 54
-											32'd55:  LOAD_WEIGHTS(stage4_layer56_2, 32, 0)	   // filter 55
-											32'd56:  LOAD_WEIGHTS(stage4_layer57_2, 32, 0)	   // filter 56
-											32'd57:  LOAD_WEIGHTS(stage4_layer58_2, 32, 0)	   // filter 57
-											32'd58:  LOAD_WEIGHTS(stage4_layer59_2, 32, 0)	   // filter 58
-											32'd59:  LOAD_WEIGHTS(stage4_layer60_2, 32, 0)	   // filter 59
-											32'd60:  LOAD_WEIGHTS(stage4_layer61_2, 32, 0)	   // filter 60
-											32'd61:  LOAD_WEIGHTS(stage4_layer62_2, 32, 0)	   // filter 61
-											32'd62:  LOAD_WEIGHTS(stage4_layer63_2, 32, 0)	   // filter 62
-											32'd63:  LOAD_WEIGHTS(stage4_layer64_2, 32, 0)	   // filter 63
-											32'd64:  LOAD_WEIGHTS(stage4_layer65_2, 32, 0)	   // filter 64
-											32'd65:  LOAD_WEIGHTS(stage4_layer66_2, 32, 0)	   // filter 65
-											32'd66:  LOAD_WEIGHTS(stage4_layer67_2, 32, 0)	   // filter 66
-											32'd67:  LOAD_WEIGHTS(stage4_layer68_2, 32, 0)	   // filter 67
-											32'd68:  LOAD_WEIGHTS(stage4_layer69_2, 32, 0)	   // filter 68
-											32'd69:  LOAD_WEIGHTS(stage4_layer70_2, 32, 0)	   // filter 69
-											32'd70:  LOAD_WEIGHTS(stage4_layer71_2, 32, 0)	   // filter 70
-											32'd71:  LOAD_WEIGHTS(stage4_layer72_2, 32, 0)	   // filter 71
-											32'd72:  LOAD_WEIGHTS(stage4_layer73_2, 32, 0)	   // filter 72
-											32'd73:  LOAD_WEIGHTS(stage4_layer74_2, 32, 0)	   // filter 73
-											32'd74:  LOAD_WEIGHTS(stage4_layer75_2, 32, 0)	   // filter 74
-											32'd75:  LOAD_WEIGHTS(stage4_layer76_2, 32, 0)	   // filter 75
-											32'd76:  LOAD_WEIGHTS(stage4_layer77_2, 32, 0)	   // filter 76
-											32'd77:  LOAD_WEIGHTS(stage4_layer78_2, 32, 0)	   // filter 77
-											32'd78:  LOAD_WEIGHTS(stage4_layer79_2, 32, 0)	   // filter 78
-											32'd79:  LOAD_WEIGHTS(stage4_layer80_2, 32, 0)	   // filter 79
-											32'd80:  LOAD_WEIGHTS(stage4_layer81_2, 32, 0)	   // filter 80
-											32'd81:  LOAD_WEIGHTS(stage4_layer82_2, 32, 0)	   // filter 81
-											32'd82:  LOAD_WEIGHTS(stage4_layer83_2, 32, 0)	   // filter 82
-											32'd83:  LOAD_WEIGHTS(stage4_layer84_2, 32, 0)	   // filter 83
-											32'd84:  LOAD_WEIGHTS(stage4_layer85_2, 32, 0)	   // filter 84
-											32'd85:  LOAD_WEIGHTS(stage4_layer86_2, 32, 0)	   // filter 85
-											32'd86:  LOAD_WEIGHTS(stage4_layer87_2, 32, 0)	   // filter 86
-											32'd87:  LOAD_WEIGHTS(stage4_layer88_2, 32, 0)	   // filter 87
-											32'd88:  LOAD_WEIGHTS(stage4_layer89_2, 32, 0)	   // filter 88
-											32'd89:  LOAD_WEIGHTS(stage4_layer90_2, 32, 0)	   // filter 89
-											32'd90:  LOAD_WEIGHTS(stage4_layer91_2, 32, 0)	   // filter 90
-											32'd91:  LOAD_WEIGHTS(stage4_layer92_2, 32, 0)	   // filter 91
-											32'd92:  LOAD_WEIGHTS(stage4_layer93_2, 32, 0)	   // filter 92
-											32'd93:  LOAD_WEIGHTS(stage4_layer94_2, 32, 0)	   // filter 93
-											32'd94:  LOAD_WEIGHTS(stage4_layer95_2, 32, 0)	   // filter 94
-											32'd95:  LOAD_WEIGHTS(stage4_layer96_2, 32, 0)	   // filter 95
-											32'd96:  LOAD_WEIGHTS(stage4_layer97_2, 32, 0)	   // filter 96
-											32'd97:  LOAD_WEIGHTS(stage4_layer98_2, 32, 0)	   // filter 97
-											32'd98:  LOAD_WEIGHTS(stage4_layer99_2, 32, 0)	   // filter 98
-											32'd99:  LOAD_WEIGHTS(stage4_layer100_2, 32, 0)	   // filter 99
-											32'd100: LOAD_WEIGHTS(stage4_layer101_2, 32, 0)	   // filter 100
-											32'd101: LOAD_WEIGHTS(stage4_layer102_2, 32, 0)	   // filter 101
-											32'd102: LOAD_WEIGHTS(stage4_layer103_2, 32, 0)	   // filter 102
-											32'd103: LOAD_WEIGHTS(stage4_layer104_2, 32, 0)	   // filter 103
-											32'd104: LOAD_WEIGHTS(stage4_layer105_2, 32, 0)	   // filter 104
-											32'd105: LOAD_WEIGHTS(stage4_layer106_2, 32, 0)	   // filter 105
-											32'd106: LOAD_WEIGHTS(stage4_layer107_2, 32, 0)	   // filter 106
-											32'd107: LOAD_WEIGHTS(stage4_layer108_2, 32, 0)	   // filter 107
-											32'd108: LOAD_WEIGHTS(stage4_layer109_2, 32, 0)	   // filter 108
-											32'd109: LOAD_WEIGHTS(stage4_layer110_2, 32, 0)	   // filter 109
-											32'd110: LOAD_WEIGHTS(stage4_layer111_2, 32, 0)	   // filter 110
-											32'd111: LOAD_WEIGHTS(stage4_layer112_2, 32, 0)	   // filter 111
-											32'd112: LOAD_WEIGHTS(stage4_layer113_2, 32, 0)	   // filter 112
-											32'd113: LOAD_WEIGHTS(stage4_layer114_2, 32, 0)	   // filter 113
-											32'd114: LOAD_WEIGHTS(stage4_layer115_2, 32, 0)	   // filter 114
-											32'd115: LOAD_WEIGHTS(stage4_layer116_2, 32, 0)	   // filter 115
-											32'd116: LOAD_WEIGHTS(stage4_layer117_2, 32, 0)	   // filter 116
-											32'd117: LOAD_WEIGHTS(stage4_layer118_2, 32, 0)	   // filter 117
-											32'd118: LOAD_WEIGHTS(stage4_layer119_2, 32, 0)	   // filter 118
-											32'd119: LOAD_WEIGHTS(stage4_layer120_2, 32, 0)	   // filter 119
-											32'd120: LOAD_WEIGHTS(stage4_layer121_2, 32, 0)	   // filter 120
-											32'd121: LOAD_WEIGHTS(stage4_layer122_2, 32, 0)	   // filter 121
-											32'd122: LOAD_WEIGHTS(stage4_layer123_2, 32, 0)	   // filter 122
-											32'd123: LOAD_WEIGHTS(stage4_layer124_2, 32, 0)	   // filter 123
-											32'd124: LOAD_WEIGHTS(stage4_layer125_2, 32, 0)	   // filter 124
-											32'd125: LOAD_WEIGHTS(stage4_layer126_2, 32, 0)	   // filter 125
-											32'd126: LOAD_WEIGHTS(stage4_layer127_2, 32, 0)	   // filter 126
-											32'd127: LOAD_WEIGHTS(stage4_layer128_2, 32, 0)	   // filter 127
+											32'd0:   LOAD_WEIGHTS(stage5_layer1_2, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage5_layer2_2, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage5_layer3_2, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage5_layer4_2, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage5_layer5_2, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage5_layer6_2, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage5_layer7_2, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage5_layer8_2, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage5_layer9_2, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage5_layer10_2, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage5_layer11_2, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage5_layer12_2, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage5_layer13_2, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage5_layer14_2, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage5_layer15_2, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage5_layer16_2, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage5_layer17_2, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage5_layer18_2, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage5_layer19_2, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage5_layer20_2, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage5_layer21_2, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage5_layer22_2, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage5_layer23_2, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage5_layer24_2, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage5_layer25_2, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage5_layer26_2, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage5_layer27_2, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage5_layer28_2, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage5_layer29_2, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage5_layer30_2, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage5_layer31_2, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage5_layer32_2, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage5_layer33_2, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage5_layer34_2, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage5_layer35_2, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage5_layer36_2, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage5_layer37_2, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage5_layer38_2, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage5_layer39_2, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage5_layer40_2, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage5_layer41_2, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage5_layer42_2, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage5_layer43_2, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage5_layer44_2, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage5_layer45_2, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage5_layer46_2, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage5_layer47_2, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage5_layer48_2, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage5_layer49_2, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage5_layer50_2, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage5_layer51_2, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage5_layer52_2, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage5_layer53_2, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage5_layer54_2, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage5_layer55_2, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage5_layer56_2, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage5_layer57_2, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage5_layer58_2, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage5_layer59_2, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage5_layer60_2, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage5_layer61_2, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage5_layer62_2, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage5_layer63_2, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage5_layer64_2, 32, 0)	   // filter 63
+											32'd64:  LOAD_WEIGHTS(stage5_layer65_2, 32, 0)	   // filter 64
+											32'd65:  LOAD_WEIGHTS(stage5_layer66_2, 32, 0)	   // filter 65
+											32'd66:  LOAD_WEIGHTS(stage5_layer67_2, 32, 0)	   // filter 66
+											32'd67:  LOAD_WEIGHTS(stage5_layer68_2, 32, 0)	   // filter 67
+											32'd68:  LOAD_WEIGHTS(stage5_layer69_2, 32, 0)	   // filter 68
+											32'd69:  LOAD_WEIGHTS(stage5_layer70_2, 32, 0)	   // filter 69
+											32'd70:  LOAD_WEIGHTS(stage5_layer71_2, 32, 0)	   // filter 70
+											32'd71:  LOAD_WEIGHTS(stage5_layer72_2, 32, 0)	   // filter 71
+											32'd72:  LOAD_WEIGHTS(stage5_layer73_2, 32, 0)	   // filter 72
+											32'd73:  LOAD_WEIGHTS(stage5_layer74_2, 32, 0)	   // filter 73
+											32'd74:  LOAD_WEIGHTS(stage5_layer75_2, 32, 0)	   // filter 74
+											32'd75:  LOAD_WEIGHTS(stage5_layer76_2, 32, 0)	   // filter 75
+											32'd76:  LOAD_WEIGHTS(stage5_layer77_2, 32, 0)	   // filter 76
+											32'd77:  LOAD_WEIGHTS(stage5_layer78_2, 32, 0)	   // filter 77
+											32'd78:  LOAD_WEIGHTS(stage5_layer79_2, 32, 0)	   // filter 78
+											32'd79:  LOAD_WEIGHTS(stage5_layer80_2, 32, 0)	   // filter 79
+											32'd80:  LOAD_WEIGHTS(stage5_layer81_2, 32, 0)	   // filter 80
+											32'd81:  LOAD_WEIGHTS(stage5_layer82_2, 32, 0)	   // filter 81
+											32'd82:  LOAD_WEIGHTS(stage5_layer83_2, 32, 0)	   // filter 82
+											32'd83:  LOAD_WEIGHTS(stage5_layer84_2, 32, 0)	   // filter 83
+											32'd84:  LOAD_WEIGHTS(stage5_layer85_2, 32, 0)	   // filter 84
+											32'd85:  LOAD_WEIGHTS(stage5_layer86_2, 32, 0)	   // filter 85
+											32'd86:  LOAD_WEIGHTS(stage5_layer87_2, 32, 0)	   // filter 86
+											32'd87:  LOAD_WEIGHTS(stage5_layer88_2, 32, 0)	   // filter 87
+											32'd88:  LOAD_WEIGHTS(stage5_layer89_2, 32, 0)	   // filter 88
+											32'd89:  LOAD_WEIGHTS(stage5_layer90_2, 32, 0)	   // filter 89
+											32'd90:  LOAD_WEIGHTS(stage5_layer91_2, 32, 0)	   // filter 90
+											32'd91:  LOAD_WEIGHTS(stage5_layer92_2, 32, 0)	   // filter 91
+											32'd92:  LOAD_WEIGHTS(stage5_layer93_2, 32, 0)	   // filter 92
+											32'd93:  LOAD_WEIGHTS(stage5_layer94_2, 32, 0)	   // filter 93
+											32'd94:  LOAD_WEIGHTS(stage5_layer95_2, 32, 0)	   // filter 94
+											32'd95:  LOAD_WEIGHTS(stage5_layer96_2, 32, 0)	   // filter 95
+											32'd96:  LOAD_WEIGHTS(stage5_layer97_2, 32, 0)	   // filter 96
+											32'd97:  LOAD_WEIGHTS(stage5_layer98_2, 32, 0)	   // filter 97
+											32'd98:  LOAD_WEIGHTS(stage5_layer99_2, 32, 0)	   // filter 98
+											32'd99:  LOAD_WEIGHTS(stage5_layer100_2, 32, 0)	   // filter 99
+											32'd100: LOAD_WEIGHTS(stage5_layer101_2, 32, 0)	   // filter 100
+											32'd101: LOAD_WEIGHTS(stage5_layer102_2, 32, 0)	   // filter 101
+											32'd102: LOAD_WEIGHTS(stage5_layer103_2, 32, 0)	   // filter 102
+											32'd103: LOAD_WEIGHTS(stage5_layer104_2, 32, 0)	   // filter 103
+											32'd104: LOAD_WEIGHTS(stage5_layer105_2, 32, 0)	   // filter 104
+											32'd105: LOAD_WEIGHTS(stage5_layer106_2, 32, 0)	   // filter 105
+											32'd106: LOAD_WEIGHTS(stage5_layer107_2, 32, 0)	   // filter 106
+											32'd107: LOAD_WEIGHTS(stage5_layer108_2, 32, 0)	   // filter 107
+											32'd108: LOAD_WEIGHTS(stage5_layer109_2, 32, 0)	   // filter 108
+											32'd109: LOAD_WEIGHTS(stage5_layer110_2, 32, 0)	   // filter 109
+											32'd110: LOAD_WEIGHTS(stage5_layer111_2, 32, 0)	   // filter 110
+											32'd111: LOAD_WEIGHTS(stage5_layer112_2, 32, 0)	   // filter 111
+											32'd112: LOAD_WEIGHTS(stage5_layer113_2, 32, 0)	   // filter 112
+											32'd113: LOAD_WEIGHTS(stage5_layer114_2, 32, 0)	   // filter 113
+											32'd114: LOAD_WEIGHTS(stage5_layer115_2, 32, 0)	   // filter 114
+											32'd115: LOAD_WEIGHTS(stage5_layer116_2, 32, 0)	   // filter 115
+											32'd116: LOAD_WEIGHTS(stage5_layer117_2, 32, 0)	   // filter 116
+											32'd117: LOAD_WEIGHTS(stage5_layer118_2, 32, 0)	   // filter 117
+											32'd118: LOAD_WEIGHTS(stage5_layer119_2, 32, 0)	   // filter 118
+											32'd119: LOAD_WEIGHTS(stage5_layer120_2, 32, 0)	   // filter 119
+											32'd120: LOAD_WEIGHTS(stage5_layer121_2, 32, 0)	   // filter 120
+											32'd121: LOAD_WEIGHTS(stage5_layer122_2, 32, 0)	   // filter 121
+											32'd122: LOAD_WEIGHTS(stage5_layer123_2, 32, 0)	   // filter 122
+											32'd123: LOAD_WEIGHTS(stage5_layer124_2, 32, 0)	   // filter 123
+											32'd124: LOAD_WEIGHTS(stage5_layer125_2, 32, 0)	   // filter 124
+											32'd125: LOAD_WEIGHTS(stage5_layer126_2, 32, 0)	   // filter 125
+											32'd126: LOAD_WEIGHTS(stage5_layer127_2, 32, 0)	   // filter 126
+											32'd127: LOAD_WEIGHTS(stage5_layer128_2, 32, 0)	   // filter 127
 												
 											default:
 												begin
@@ -1767,134 +1767,134 @@ module unet_fsm(
 										
 										if (pixelcount >9) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd16: layerint_buf4_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd17: layerint_buf4_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd18: layerint_buf4_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd19: layerint_buf4_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd20: layerint_buf5_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd21: layerint_buf5_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd22: layerint_buf5_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd23: layerint_buf5_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd24: layerint_buf6_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd25: layerint_buf6_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd26: layerint_buf6_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd27: layerint_buf6_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd28: layerint_buf7_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd29: layerint_buf7_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd30: layerint_buf7_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd31: layerint_buf7_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd32: layerint_buf8_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd33: layerint_buf8_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd34: layerint_buf8_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd35: layerint_buf8_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd36: layerint_buf9_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd37: layerint_buf9_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd38: layerint_buf9_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd39: layerint_buf9_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd40: layerint_buf10_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd41: layerint_buf10_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd42: layerint_buf10_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd43: layerint_buf10_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd44: layerint_buf11_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd45: layerint_buf11_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd46: layerint_buf11_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd47: layerint_buf11_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd48: layerint_buf12_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd49: layerint_buf12_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd50: layerint_buf12_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd51: layerint_buf12_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd52: layerint_buf13_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd53: layerint_buf13_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd54: layerint_buf13_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd55: layerint_buf13_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd56: layerint_buf14_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd57: layerint_buf14_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd58: layerint_buf14_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd59: layerint_buf14_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd60: layerint_buf15_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd61: layerint_buf15_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd62: layerint_buf15_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd63: layerint_buf15_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd64: layerint_buf16_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd65: layerint_buf16_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd66: layerint_buf16_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd67: layerint_buf16_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd68: layerint_buf17_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd69: layerint_buf17_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd70: layerint_buf17_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd71: layerint_buf17_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd72: layerint_buf18_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd73: layerint_buf18_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd74: layerint_buf18_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd75: layerint_buf18_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd76: layerint_buf19_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd77: layerint_buf19_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd78: layerint_buf19_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd79: layerint_buf19_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd80: layerint_buf20_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd81: layerint_buf20_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd82: layerint_buf20_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd83: layerint_buf20_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd84: layerint_buf21_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd85: layerint_buf21_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd86: layerint_buf21_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd87: layerint_buf21_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd88: layerint_buf22_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd89: layerint_buf22_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd90: layerint_buf22_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd91: layerint_buf22_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd92: layerint_buf23_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd93: layerint_buf23_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd94: layerint_buf23_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd95: layerint_buf23_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd96: layerint_buf24_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd97: layerint_buf24_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd98: layerint_buf24_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd99: layerint_buf24_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd100: layerint_buf25_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd101: layerint_buf25_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd102: layerint_buf25_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd103: layerint_buf25_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd104: layerint_buf26_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd105: layerint_buf26_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd106: layerint_buf26_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd107: layerint_buf26_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd108: layerint_buf27_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd109: layerint_buf27_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd110: layerint_buf27_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd111: layerint_buf27_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd112: layerint_buf28_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd113: layerint_buf28_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd114: layerint_buf28_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd115: layerint_buf28_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd116: layerint_buf29_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd117: layerint_buf29_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd118: layerint_buf29_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd119: layerint_buf29_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd120: layerint_buf30_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd121: layerint_buf30_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd122: layerint_buf30_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd123: layerint_buf30_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd124: layerint_buf31_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd125: layerint_buf31_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd126: layerint_buf31_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd127: layerint_buf31_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd0:  layerint_buf0_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd16: layerint_buf4_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd17: layerint_buf4_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd18: layerint_buf4_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd19: layerint_buf4_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd20: layerint_buf5_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd21: layerint_buf5_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd22: layerint_buf5_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd23: layerint_buf5_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd24: layerint_buf6_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd25: layerint_buf6_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd26: layerint_buf6_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd27: layerint_buf6_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd28: layerint_buf7_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd29: layerint_buf7_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd30: layerint_buf7_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd31: layerint_buf7_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd32: layerint_buf8_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd33: layerint_buf8_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd34: layerint_buf8_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd35: layerint_buf8_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd36: layerint_buf9_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd37: layerint_buf9_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd38: layerint_buf9_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd39: layerint_buf9_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd40: layerint_buf10_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd41: layerint_buf10_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd42: layerint_buf10_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd43: layerint_buf10_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd44: layerint_buf11_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd45: layerint_buf11_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd46: layerint_buf11_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd47: layerint_buf11_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd48: layerint_buf12_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd49: layerint_buf12_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd50: layerint_buf12_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd51: layerint_buf12_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd52: layerint_buf13_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd53: layerint_buf13_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd54: layerint_buf13_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd55: layerint_buf13_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd56: layerint_buf14_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd57: layerint_buf14_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd58: layerint_buf14_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd59: layerint_buf14_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd60: layerint_buf15_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd61: layerint_buf15_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd62: layerint_buf15_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd63: layerint_buf15_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd64: layerint_buf16_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd65: layerint_buf16_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd66: layerint_buf16_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd67: layerint_buf16_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd68: layerint_buf17_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd69: layerint_buf17_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd70: layerint_buf17_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd71: layerint_buf17_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd72: layerint_buf18_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd73: layerint_buf18_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd74: layerint_buf18_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd75: layerint_buf18_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd76: layerint_buf19_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd77: layerint_buf19_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd78: layerint_buf19_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd79: layerint_buf19_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd80: layerint_buf20_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd81: layerint_buf20_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd82: layerint_buf20_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd83: layerint_buf20_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd84: layerint_buf21_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd85: layerint_buf21_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd86: layerint_buf21_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd87: layerint_buf21_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd88: layerint_buf22_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd89: layerint_buf22_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd90: layerint_buf22_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd91: layerint_buf22_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd92: layerint_buf23_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd93: layerint_buf23_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd94: layerint_buf23_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd95: layerint_buf23_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd96: layerint_buf24_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd97: layerint_buf24_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd98: layerint_buf24_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd99: layerint_buf24_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd100: layerint_buf25_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd101: layerint_buf25_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd102: layerint_buf25_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd103: layerint_buf25_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd104: layerint_buf26_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd105: layerint_buf26_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd106: layerint_buf26_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd107: layerint_buf26_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd108: layerint_buf27_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd109: layerint_buf27_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd110: layerint_buf27_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd111: layerint_buf27_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd112: layerint_buf28_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd113: layerint_buf28_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd114: layerint_buf28_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd115: layerint_buf28_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd116: layerint_buf29_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd117: layerint_buf29_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd118: layerint_buf29_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd119: layerint_buf29_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd120: layerint_buf30_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd121: layerint_buf30_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd122: layerint_buf30_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd123: layerint_buf30_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd124: layerint_buf31_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd125: layerint_buf31_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd126: layerint_buf31_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd127: layerint_buf31_st5[((pixelcount-10)*4)+3] <= {qt0_res};
 											endcase
 										end
 									end else begin
@@ -1921,8 +1921,501 @@ module unet_fsm(
 					
 				STAGE6_TRANSCONV:
 					// 128 (8x8) Layers ---> 64 (16x16) Layers
+					//
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 64 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 64 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 64 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1 
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 64
+					// pixel2...
+					// ...
+					// pixel100...
+					
 					begin
-						
+						if (pixelcount >= 32'd73) begin  // (height*width + (width+1) for padding)
+							if (inlayercount >= 32'd128) begin
+								state <= STAGE7_TRANSCONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+								
+							end else begin
+								pixelcount <= 32'b0;
+								inlayercount <= inlayercount + 32'd32;
+							end
+							
+						end else begin
+							if (pixelcount < 9) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
+								
+							end else begin 
+								if (layercount >= 32'd64) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd1;
+									
+									if (inlayercount == 0) begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage6_translayer1_1, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage6_translayer2_1, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage6_translayer3_1, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage6_translayer4_1, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage6_translayer5_1, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage6_translayer6_1, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage6_translayer7_1, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage6_translayer8_1, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage6_translayer9_1, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage6_translayer10_1, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage6_translayer11_1, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage6_translayer12_1, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage6_translayer13_1, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage6_translayer14_1, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage6_translayer15_1, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage6_translayer16_1, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage6_translayer17_1, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage6_translayer18_1, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage6_translayer19_1, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage6_translayer20_1, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage6_translayer21_1, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage6_translayer22_1, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage6_translayer23_1, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage6_translayer24_1, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage6_translayer25_1, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage6_translayer26_1, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage6_translayer27_1, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage6_translayer28_1, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage6_translayer29_1, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage6_translayer30_1, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage6_translayer31_1, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage6_translayer32_1, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage6_translayer33_1, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage6_translayer34_1, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage6_translayer35_1, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage6_translayer36_1, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage6_translayer37_1, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage6_translayer38_1, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage6_translayer39_1, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage6_translayer40_1, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage6_translayer41_1, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage6_translayer42_1, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage6_translayer43_1, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage6_translayer44_1, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage6_translayer45_1, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage6_translayer46_1, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage6_translayer47_1, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage6_translayer48_1, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage6_translayer49_1, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage6_translayer50_1, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage6_translayer51_1, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage6_translayer52_1, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage6_translayer53_1, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage6_translayer54_1, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage6_translayer55_1, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage6_translayer56_1, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage6_translayer57_1, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage6_translayer58_1, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage6_translayer59_1, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage6_translayer60_1, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage6_translayer61_1, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage6_translayer62_1, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage6_translayer63_1, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage6_translayer64_1, 32, 0)	   // filter 63
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end else if (inlayercount == 32'd32) begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage6_translayer1_2, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage6_translayer2_2, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage6_translayer3_2, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage6_translayer4_2, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage6_translayer5_2, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage6_translayer6_2, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage6_translayer7_2, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage6_translayer8_2, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage6_translayer9_2, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage6_translayer10_2, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage6_translayer11_2, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage6_translayer12_2, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage6_translayer13_2, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage6_translayer14_2, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage6_translayer15_2, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage6_translayer16_2, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage6_translayer17_2, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage6_translayer18_2, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage6_translayer19_2, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage6_translayer20_2, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage6_translayer21_2, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage6_translayer22_2, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage6_translayer23_2, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage6_translayer24_2, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage6_translayer25_2, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage6_translayer26_2, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage6_translayer27_2, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage6_translayer28_2, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage6_translayer29_2, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage6_translayer30_2, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage6_translayer31_2, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage6_translayer32_2, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage6_translayer33_2, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage6_translayer34_2, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage6_translayer35_2, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage6_translayer36_2, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage6_translayer37_2, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage6_translayer38_2, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage6_translayer39_2, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage6_translayer40_2, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage6_translayer41_2, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage6_translayer42_2, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage6_translayer43_2, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage6_translayer44_2, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage6_translayer45_2, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage6_translayer46_2, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage6_translayer47_2, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage6_translayer48_2, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage6_translayer49_2, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage6_translayer50_2, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage6_translayer51_2, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage6_translayer52_2, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage6_translayer53_2, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage6_translayer54_2, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage6_translayer55_2, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage6_translayer56_2, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage6_translayer57_2, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage6_translayer58_2, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage6_translayer59_2, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage6_translayer60_2, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage6_translayer61_2, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage6_translayer62_2, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage6_translayer63_2, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage6_translayer64_2, 32, 0)	   // filter 63
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end else if (inlayercount == 32'd64) begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage6_translayer1_3, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage6_translayer2_3, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage6_translayer3_3, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage6_translayer4_3, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage6_translayer5_3, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage6_translayer6_3, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage6_translayer7_3, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage6_translayer8_3, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage6_translayer9_3, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage6_translayer10_3, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage6_translayer11_3, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage6_translayer12_3, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage6_translayer13_3, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage6_translayer14_3, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage6_translayer15_3, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage6_translayer16_3, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage6_translayer17_3, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage6_translayer18_3, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage6_translayer19_3, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage6_translayer20_3, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage6_translayer21_3, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage6_translayer22_3, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage6_translayer23_3, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage6_translayer24_3, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage6_translayer25_3, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage6_translayer26_3, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage6_translayer27_3, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage6_translayer28_3, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage6_translayer29_3, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage6_translayer30_3, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage6_translayer31_3, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage6_translayer32_3, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage6_translayer33_3, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage6_translayer34_3, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage6_translayer35_3, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage6_translayer36_3, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage6_translayer37_3, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage6_translayer38_3, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage6_translayer39_3, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage6_translayer40_3, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage6_translayer41_3, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage6_translayer42_3, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage6_translayer43_3, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage6_translayer44_3, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage6_translayer45_3, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage6_translayer46_3, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage6_translayer47_3, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage6_translayer48_3, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage6_translayer49_3, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage6_translayer50_3, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage6_translayer51_3, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage6_translayer52_3, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage6_translayer53_3, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage6_translayer54_3, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage6_translayer55_3, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage6_translayer56_3, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage6_translayer57_3, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage6_translayer58_3, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage6_translayer59_3, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage6_translayer60_3, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage6_translayer61_3, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage6_translayer62_3, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage6_translayer63_3, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage6_translayer64_3, 32, 0)	   // filter 63
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end else begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage6_translayer1_4, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage6_translayer2_4, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage6_translayer3_4, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage6_translayer4_4, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage6_translayer5_4, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage6_translayer6_4, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage6_translayer7_4, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage6_translayer8_4, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage6_translayer9_4, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage6_translayer10_4, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage6_translayer11_4, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage6_translayer12_4, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage6_translayer13_4, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage6_translayer14_4, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage6_translayer15_4, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage6_translayer16_4, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage6_translayer17_4, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage6_translayer18_4, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage6_translayer19_4, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage6_translayer20_4, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage6_translayer21_4, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage6_translayer22_4, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage6_translayer23_4, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage6_translayer24_4, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage6_translayer25_4, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage6_translayer26_4, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage6_translayer27_4, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage6_translayer28_4, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage6_translayer29_4, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage6_translayer30_4, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage6_translayer31_4, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage6_translayer32_4, 32, 0)	   // filter 31
+											32'd32:  LOAD_WEIGHTS(stage6_translayer33_4, 32, 0)	   // filter 32
+											32'd33:  LOAD_WEIGHTS(stage6_translayer34_4, 32, 0)	   // filter 33
+											32'd34:  LOAD_WEIGHTS(stage6_translayer35_4, 32, 0)	   // filter 34
+											32'd35:  LOAD_WEIGHTS(stage6_translayer36_4, 32, 0)	   // filter 35
+											32'd36:  LOAD_WEIGHTS(stage6_translayer37_4, 32, 0)	   // filter 36
+											32'd37:  LOAD_WEIGHTS(stage6_translayer38_4, 32, 0)	   // filter 37
+											32'd38:  LOAD_WEIGHTS(stage6_translayer39_4, 32, 0)	   // filter 38
+											32'd39:  LOAD_WEIGHTS(stage6_translayer40_4, 32, 0)	   // filter 39
+											32'd40:  LOAD_WEIGHTS(stage6_translayer41_4, 32, 0)	   // filter 40
+											32'd41:  LOAD_WEIGHTS(stage6_translayer42_4, 32, 0)	   // filter 41
+											32'd42:  LOAD_WEIGHTS(stage6_translayer43_4, 32, 0)	   // filter 42
+											32'd43:  LOAD_WEIGHTS(stage6_translayer44_4, 32, 0)	   // filter 43
+											32'd44:  LOAD_WEIGHTS(stage6_translayer45_4, 32, 0)	   // filter 44
+											32'd45:  LOAD_WEIGHTS(stage6_translayer46_4, 32, 0)	   // filter 45
+											32'd46:  LOAD_WEIGHTS(stage6_translayer47_4, 32, 0)	   // filter 46
+											32'd47:  LOAD_WEIGHTS(stage6_translayer48_4, 32, 0)	   // filter 47
+											32'd48:  LOAD_WEIGHTS(stage6_translayer49_4, 32, 0)	   // filter 48
+											32'd49:  LOAD_WEIGHTS(stage6_translayer50_4, 32, 0)	   // filter 49
+											32'd50:  LOAD_WEIGHTS(stage6_translayer51_4, 32, 0)	   // filter 50
+											32'd51:  LOAD_WEIGHTS(stage6_translayer52_4, 32, 0)	   // filter 51
+											32'd52:  LOAD_WEIGHTS(stage6_translayer53_4, 32, 0)	   // filter 52
+											32'd53:  LOAD_WEIGHTS(stage6_translayer54_4, 32, 0)	   // filter 53
+											32'd54:  LOAD_WEIGHTS(stage6_translayer55_4, 32, 0)	   // filter 54
+											32'd55:  LOAD_WEIGHTS(stage6_translayer56_4, 32, 0)	   // filter 55
+											32'd56:  LOAD_WEIGHTS(stage6_translayer57_4, 32, 0)	   // filter 56
+											32'd57:  LOAD_WEIGHTS(stage6_translayer58_4, 32, 0)	   // filter 57
+											32'd58:  LOAD_WEIGHTS(stage6_translayer59_4, 32, 0)	   // filter 58
+											32'd59:  LOAD_WEIGHTS(stage6_translayer60_4, 32, 0)	   // filter 59
+											32'd60:  LOAD_WEIGHTS(stage6_translayer61_4, 32, 0)	   // filter 60
+											32'd61:  LOAD_WEIGHTS(stage6_translayer62_4, 32, 0)	   // filter 61
+											32'd62:  LOAD_WEIGHTS(stage6_translayer63_4, 32, 0)	   // filter 62
+											32'd63:  LOAD_WEIGHTS(stage6_translayer64_4, 32, 0)	   // filter 63
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end 
+								
+							
+									for (i=0; i<32; i=i+1) begin
+										// filters
+										intermediate[i] <= cv_pixelout[i];
+									end
+									
+									// add bias and quantization
+									if (inlayercount == 32'd96) begin
+										//qt0
+										qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+														+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+														+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+														+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+														+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+														+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+														+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+														+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31] 
+														+ intermediatesum[layercount];
+										qt0_bias <= bias0;
+										qt0_zp   <= zp0;
+										qt0_scale <= scale0;
+										
+										// save to buffer
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [255:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+										//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+										//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+										//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+										//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+										//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+										//   layerint_buf8         L33-P1         L34-P1         L35-P1        L36-P1
+										//   layerint_buf9         L37-P1         L38-P1         L39-P1        L40-P1
+										//   layerint_buf10        L41-P1         L42-P1         L43-P1        L44-P1
+										//   layerint_buf11        L45-P1         L46-P1         L47-P1        L48-P1
+										//   layerint_buf12        L49-P1         L50-P1         L51-P1        L52-P1
+										//   layerint_buf13        L53-P1         L54-P1         L55-P1        L56-P1
+										//   layerint_buf14        L57-P1         L58-P1         L59-P1        L60-P1
+										//   layerint_buf15        L61-P1         L62-P1         L63-P1        L64-P1
+										
+										if (pixelcount >9) begin
+											case (layercount-1):
+												32'd0:  layerint_buf0_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd16: layerint_buf4_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd17: layerint_buf4_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd18: layerint_buf4_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd19: layerint_buf4_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd20: layerint_buf5_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd21: layerint_buf5_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd22: layerint_buf5_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd23: layerint_buf5_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd24: layerint_buf6_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd25: layerint_buf6_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd26: layerint_buf6_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd27: layerint_buf6_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd28: layerint_buf7_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd29: layerint_buf7_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd30: layerint_buf7_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd31: layerint_buf7_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd32: layerint_buf8_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd33: layerint_buf8_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd34: layerint_buf8_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd35: layerint_buf8_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd36: layerint_buf9_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd37: layerint_buf9_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd38: layerint_buf9_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd39: layerint_buf9_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd40: layerint_buf10_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd41: layerint_buf10_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd42: layerint_buf10_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd43: layerint_buf10_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd44: layerint_buf11_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd45: layerint_buf11_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd46: layerint_buf11_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd47: layerint_buf11_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd48: layerint_buf12_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd49: layerint_buf12_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd50: layerint_buf12_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd51: layerint_buf12_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd52: layerint_buf13_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd53: layerint_buf13_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd54: layerint_buf13_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd55: layerint_buf13_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd56: layerint_buf14_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd57: layerint_buf14_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd58: layerint_buf14_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd59: layerint_buf14_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd60: layerint_buf15_st5[(pixelcount-10)*4]     <= {qt0_res};
+												32'd61: layerint_buf15_st5[((pixelcount-10)*4)+1] <= {qt0_res};
+												32'd62: layerint_buf15_st5[((pixelcount-10)*4)+2] <= {qt0_res};
+												32'd63: layerint_buf15_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+											endcase
+										end
+										
+									end else if (inlayercount == 32'd0) begin
+										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+																					+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																					+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																					+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																					+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																					+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																					+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																					+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									end else begin
+										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+																					+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																					+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																					+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																					+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																					+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																					+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																					+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+																					+ intermediatesum[layercount];
+									end
+								end
+							end
+						end
 					end
 					
 				STAGE6_CONV:
@@ -1931,14 +2424,14 @@ module unet_fsm(
 					// pixel1 - calc outlayers 1 intermediate
 					//          calc outlayers 2 intermediate
 					//          ...
-					//          calc outlayers 128 intermediate
+					//          calc outlayers 64 intermediate
 					// pixel2...
 					// ...
 					// pixel100...
 					// pixel1 - calc outlayers 1
 					//          calc outlayers 2
 					//          ...
-					//          calc outlayers 128
+					//          calc outlayers 64
 					// pixel2...
 					// ...
 					// pixel100...
@@ -2387,23 +2880,23 @@ module unet_fsm(
 										
 									end else if (inlayercount == 32'd0) begin
 										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-														+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-														+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-														+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-														+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-														+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-														+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-														+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+																					+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																					+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																					+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																					+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																					+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																					+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																					+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
 									end else begin
 										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-														+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-														+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-														+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-														+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-														+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-														+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-														+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
-														+ intermediatesum;
+																					+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																					+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																					+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																					+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																					+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																					+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																					+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+																					+ intermediatesum[layercount];
 									end
 								end
 							end
@@ -2412,27 +2905,24 @@ module unet_fsm(
 					
 				STAGE7_TRANSCONV:
 					// 64 (16x16) Layers ---> 32 (32x32) Layers
-				
-				STAGE7_CONV:
-					// 32 (32x32) + 32 (32x32) STAGE3_CONV Layers ---> 32 (32x32) Layers
 					//
 					// pixel1 - calc outlayers 1 intermediate
 					//          calc outlayers 2 intermediate
 					//          ...
-					//          calc outlayers 128 intermediate
+					//          calc outlayers 32 intermediate
 					// pixel2...
 					// ...
 					// pixel100...
 					// pixel1 - calc outlayers 1
 					//          calc outlayers 2
 					//          ...
-					//          calc outlayers 128
+					//          calc outlayers 32
 					// pixel2...
 					// ...
 					// pixel100...
 					
 					begin
-						if (pixelcount >= 32'd1156) begin
+						if (pixelcount >= 32'd273) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd64) begin
 								state <= STAGE8_TRANSCONV;
 								pixelcount <= 32'b0;
@@ -2445,91 +2935,455 @@ module unet_fsm(
 							end
 							
 						end else begin
-							if (layercount >= 32'd32) begin
-								layercount <= 0;
-								pixelcount <= pixelcount + 1;
-							
-							end else begin
-								layercount <= layercount + 32'd1;
+							if (pixelcount < 17) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
 								
-								if (inlayercount == 0) begin
-									case (layercount)
-										32'd0:   LOAD_WEIGHTS(stage6_layer1_1, 32, 0)	   // filter 0
-										32'd1:   LOAD_WEIGHTS(stage6_layer2_1, 32, 0)	   // filter 1
-										32'd2:   LOAD_WEIGHTS(stage6_layer3_1, 32, 0)	   // filter 2
-										32'd3:   LOAD_WEIGHTS(stage6_layer4_1, 32, 0)	   // filter 3
-										32'd4:   LOAD_WEIGHTS(stage6_layer5_1, 32, 0)	   // filter 4
-										32'd5:   LOAD_WEIGHTS(stage6_layer6_1, 32, 0)	   // filter 5
-										32'd6:   LOAD_WEIGHTS(stage6_layer7_1, 32, 0)	   // filter 6
-										32'd7:   LOAD_WEIGHTS(stage6_layer8_1, 32, 0)	   // filter 7
-										32'd8:   LOAD_WEIGHTS(stage6_layer9_1, 32, 0)	   // filter 8
-										32'd9:   LOAD_WEIGHTS(stage6_layer10_1, 32, 0)	   // filter 9
-										32'd10:  LOAD_WEIGHTS(stage6_layer11_1, 32, 0)	   // filter 10
-										32'd11:  LOAD_WEIGHTS(stage6_layer12_1, 32, 0)	   // filter 11
-										32'd12:  LOAD_WEIGHTS(stage6_layer13_1, 32, 0)	   // filter 12
-										32'd13:  LOAD_WEIGHTS(stage6_layer14_1, 32, 0)	   // filter 13
-										32'd14:  LOAD_WEIGHTS(stage6_layer15_1, 32, 0)	   // filter 14
-										32'd15:  LOAD_WEIGHTS(stage6_layer16_1, 32, 0)	   // filter 15
-										32'd16:  LOAD_WEIGHTS(stage6_layer17_1, 32, 0)	   // filter 16
-										32'd17:  LOAD_WEIGHTS(stage6_layer18_1, 32, 0)	   // filter 17
-										32'd18:  LOAD_WEIGHTS(stage6_layer19_1, 32, 0)	   // filter 18
-										32'd19:  LOAD_WEIGHTS(stage6_layer20_1, 32, 0)	   // filter 19
-										32'd20:  LOAD_WEIGHTS(stage6_layer21_1, 32, 0)	   // filter 20
-										32'd21:  LOAD_WEIGHTS(stage6_layer22_1, 32, 0)	   // filter 21
-										32'd22:  LOAD_WEIGHTS(stage6_layer23_1, 32, 0)	   // filter 22
-										32'd23:  LOAD_WEIGHTS(stage6_layer24_1, 32, 0)	   // filter 23
-										32'd24:  LOAD_WEIGHTS(stage6_layer25_1, 32, 0)	   // filter 24
-										32'd25:  LOAD_WEIGHTS(stage6_layer26_1, 32, 0)	   // filter 25
-										32'd26:  LOAD_WEIGHTS(stage6_layer27_1, 32, 0)	   // filter 26
-										32'd27:  LOAD_WEIGHTS(stage6_layer28_1, 32, 0)	   // filter 27
-										32'd28:  LOAD_WEIGHTS(stage6_layer29_1, 32, 0)	   // filter 28
-										32'd29:  LOAD_WEIGHTS(stage6_layer30_1, 32, 0)	   // filter 29
-										32'd30:  LOAD_WEIGHTS(stage6_layer31_1, 32, 0)	   // filter 30
-										32'd31:  LOAD_WEIGHTS(stage6_layer32_1, 32, 0)	   // filter 31
-											
-										default:
-											begin
-												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
-														cv_w[i][w]    <= 0;
-													end
-												end
-											end
-									endcase
+							end else begin 
+								if (layercount >= 32'd32) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
 								end else begin
+									layercount <= layercount + 32'd1;
+									
+									if (inlayercount == 0) begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage7_translayer1_1, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage7_translayer2_1, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage7_translayer3_1, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage7_translayer4_1, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage7_translayer5_1, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage7_translayer6_1, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage7_translayer7_1, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage7_translayer8_1, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage7_translayer9_1, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage7_translayer10_1, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage7_translayer11_1, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage7_translayer12_1, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage7_translayer13_1, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage7_translayer14_1, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage7_translayer15_1, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage7_translayer16_1, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage7_translayer17_1, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage7_translayer18_1, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage7_translayer19_1, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage7_translayer20_1, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage7_translayer21_1, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage7_translayer22_1, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage7_translayer23_1, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage7_translayer24_1, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage7_translayer25_1, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage7_translayer26_1, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage7_translayer27_1, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage7_translayer28_1, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage7_translayer29_1, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage7_translayer30_1, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage7_translayer31_1, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage7_translayer32_1, 32, 0)	   // filter 31
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end else begin
+										case (translayercount)
+											32'd0:   LOAD_WEIGHTS(stage7_translayer1_2, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage7_translayer2_2, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage7_translayer3_2, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage7_translayer4_2, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage7_translayer5_2, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage7_translayer6_2, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage7_translayer7_2, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage7_translayer8_2, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage7_translayer9_2, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage7_translayer10_2, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage7_translayer11_2, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage7_translayer12_2, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage7_translayer13_2, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage7_translayer14_2, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage7_translayer15_2, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage7_translayer16_2, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage7_translayer17_2, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage7_translayer18_2, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage7_translayer19_2, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage7_translayer20_2, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage7_translayer21_2, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage7_translayer22_2, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage7_translayer23_2, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage7_translayer24_2, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage7_translayer25_2, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage7_translayer26_2, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage7_translayer27_2, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage7_translayer28_2, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage7_translayer29_2, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage7_translayer30_2, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage7_translayer31_2, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage7_translayer32_2, 32, 0)	   // filter 31
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end
+								
+							
+									for (i=0; i<32; i=i+1) begin
+										// filters
+										intermediate[i] <= cv_pixelout[i];
+									end
+									
+									// add bias and quantization
+									if (inlayercount == 32'd32) begin
+										//qt0
+										qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+														+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+														+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+														+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+														+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+														+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+														+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+														+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+														+ intermediatesum[layercount];
+										qt0_bias <= bias0;
+										qt0_zp   <= zp0;
+										qt0_scale <= scale0;
+										
+										// save to buffer
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [1023:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+										//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+										//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+										//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+										//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+										//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+										// 			
+										
+										if (pixelcount >17) begin
+											case (layercount-1):
+												32'd0:  layerint_buf0_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd16: layerint_buf4_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd17: layerint_buf4_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd18: layerint_buf4_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd19: layerint_buf4_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd20: layerint_buf5_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd21: layerint_buf5_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd22: layerint_buf5_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd23: layerint_buf5_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd24: layerint_buf6_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd25: layerint_buf6_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd26: layerint_buf6_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd27: layerint_buf6_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd28: layerint_buf7_st5[(pixelcount-18)*4]     <= {qt0_res};
+												32'd29: layerint_buf7_st5[((pixelcount-18)*4)+1] <= {qt0_res};
+												32'd30: layerint_buf7_st5[((pixelcount-18)*4)+2] <= {qt0_res};
+												32'd31: layerint_buf7_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+											endcase
+										end
+									end else begin
+										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+																				 + intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																				 + intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																				 + intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																				 + intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																				 + intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																				 + intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																				 + intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									end
+								end
+							end
+						end
+					end
+				
+				STAGE7_CONV:
+					// 32 (32x32) + 32 (32x32) STAGE3_CONV Layers ---> 32 (32x32) Layers
+					//
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 32 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 32
+					// pixel2...
+					// ...
+					// pixel100...
+					
+					begin
+						if (pixelcount >= 32'd1057) begin  // (height*width + (width+1) for padding)
+							if (inlayercount >= 32'd64) begin
+								state <= STAGE8_TRANSCONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+								
+							end else begin
+								pixelcount <= 32'b0;
+								inlayercount <= inlayercount + 32'd32;
+							end
+							
+						end else begin
+							if (pixelcount < 33) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
+								
+							end else begin 
+								if (layercount >= 32'd32) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd1;
+									
+									if (inlayercount == 0) begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage7_layer1_1, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage7_layer2_1, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage7_layer3_1, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage7_layer4_1, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage7_layer5_1, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage7_layer6_1, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage7_layer7_1, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage7_layer8_1, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage7_layer9_1, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage7_layer10_1, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage7_layer11_1, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage7_layer12_1, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage7_layer13_1, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage7_layer14_1, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage7_layer15_1, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage7_layer16_1, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage7_layer17_1, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage7_layer18_1, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage7_layer19_1, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage7_layer20_1, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage7_layer21_1, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage7_layer22_1, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage7_layer23_1, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage7_layer24_1, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage7_layer25_1, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage7_layer26_1, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage7_layer27_1, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage7_layer28_1, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage7_layer29_1, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage7_layer30_1, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage7_layer31_1, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage7_layer32_1, 32, 0)	   // filter 31
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end else begin
+										case (layercount)
+											32'd0:   LOAD_WEIGHTS(stage7_layer1_2, 32, 0)	   // filter 0
+											32'd1:   LOAD_WEIGHTS(stage7_layer2_2, 32, 0)	   // filter 1
+											32'd2:   LOAD_WEIGHTS(stage7_layer3_2, 32, 0)	   // filter 2
+											32'd3:   LOAD_WEIGHTS(stage7_layer4_2, 32, 0)	   // filter 3
+											32'd4:   LOAD_WEIGHTS(stage7_layer5_2, 32, 0)	   // filter 4
+											32'd5:   LOAD_WEIGHTS(stage7_layer6_2, 32, 0)	   // filter 5
+											32'd6:   LOAD_WEIGHTS(stage7_layer7_2, 32, 0)	   // filter 6
+											32'd7:   LOAD_WEIGHTS(stage7_layer8_2, 32, 0)	   // filter 7
+											32'd8:   LOAD_WEIGHTS(stage7_layer9_2, 32, 0)	   // filter 8
+											32'd9:   LOAD_WEIGHTS(stage7_layer10_2, 32, 0)	   // filter 9
+											32'd10:  LOAD_WEIGHTS(stage7_layer11_2, 32, 0)	   // filter 10
+											32'd11:  LOAD_WEIGHTS(stage7_layer12_2, 32, 0)	   // filter 11
+											32'd12:  LOAD_WEIGHTS(stage7_layer13_2, 32, 0)	   // filter 12
+											32'd13:  LOAD_WEIGHTS(stage7_layer14_2, 32, 0)	   // filter 13
+											32'd14:  LOAD_WEIGHTS(stage7_layer15_2, 32, 0)	   // filter 14
+											32'd15:  LOAD_WEIGHTS(stage7_layer16_2, 32, 0)	   // filter 15
+											32'd16:  LOAD_WEIGHTS(stage7_layer17_2, 32, 0)	   // filter 16
+											32'd17:  LOAD_WEIGHTS(stage7_layer18_2, 32, 0)	   // filter 17
+											32'd18:  LOAD_WEIGHTS(stage7_layer19_2, 32, 0)	   // filter 18
+											32'd19:  LOAD_WEIGHTS(stage7_layer20_2, 32, 0)	   // filter 19
+											32'd20:  LOAD_WEIGHTS(stage7_layer21_2, 32, 0)	   // filter 20
+											32'd21:  LOAD_WEIGHTS(stage7_layer22_2, 32, 0)	   // filter 21
+											32'd22:  LOAD_WEIGHTS(stage7_layer23_2, 32, 0)	   // filter 22
+											32'd23:  LOAD_WEIGHTS(stage7_layer24_2, 32, 0)	   // filter 23
+											32'd24:  LOAD_WEIGHTS(stage7_layer25_2, 32, 0)	   // filter 24
+											32'd25:  LOAD_WEIGHTS(stage7_layer26_2, 32, 0)	   // filter 25
+											32'd26:  LOAD_WEIGHTS(stage7_layer27_2, 32, 0)	   // filter 26
+											32'd27:  LOAD_WEIGHTS(stage7_layer28_2, 32, 0)	   // filter 27
+											32'd28:  LOAD_WEIGHTS(stage7_layer29_2, 32, 0)	   // filter 28
+											32'd29:  LOAD_WEIGHTS(stage7_layer30_2, 32, 0)	   // filter 29
+											32'd30:  LOAD_WEIGHTS(stage7_layer31_2, 32, 0)	   // filter 30
+											32'd31:  LOAD_WEIGHTS(stage7_layer32_2, 32, 0)	   // filter 31
+												
+											default:
+												begin
+													for (int i=0; i<32; i=i+1) begin
+														for (int w=0; w<10; w=w+1) begin
+															cv_w[i][w]    <= 0;
+														end
+													end
+												end
+										endcase
+									end
+								
+							
+									for (i=0; i<32; i=i+1) begin
+										// filters
+										intermediate[i] <= cv_pixelout[i];
+									end
+									
+									// add bias and quantization
+									if (inlayercount == 32'd32) begin
+										//qt0
+										qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+														+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+														+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+														+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+														+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+														+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+														+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+														+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+														+ intermediatesum[layercount];
+										qt0_bias <= bias0;
+										qt0_zp   <= zp0;
+										qt0_scale <= scale0;
+										
+										// save to buffer
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [1023:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+										//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+										//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+										//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+										//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+										//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+										// 			
+										
+										if (pixelcount >33) begin
+											case (layercount-1):
+												32'd0:  layerint_buf0_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd16: layerint_buf4_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd17: layerint_buf4_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd18: layerint_buf4_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd19: layerint_buf4_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd20: layerint_buf5_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd21: layerint_buf5_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd22: layerint_buf5_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd23: layerint_buf5_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd24: layerint_buf6_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd25: layerint_buf6_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd26: layerint_buf6_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd27: layerint_buf6_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd28: layerint_buf7_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd29: layerint_buf7_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd30: layerint_buf7_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd31: layerint_buf7_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+											endcase
+										end
+									end else begin
+										intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+																				 + intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+																				 + intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+																				 + intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+																				 + intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+																				 + intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+																				 + intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+																				 + intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									end
+								end
+							end
+						end
+					end
+					
+				STAGE8_TRANSCONV:
+					// 32 (32x32) Layers ---> 16 (64x64) Layers
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 16
+					// pixel2...
+					//
+					begin
+						if (pixelcount >= 32'd1057) begin  // (height*width + (width+1) for padding)
+							state <= STAGE4_MXPL;
+							pixelcount <= 32'b0;
+							layercount <= 0;
+							
+						end else begin
+							if (pixelcount < 33) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
+								
+							end else begin
+								if (layercount >= 32'd16) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd1;
+									
 									case (layercount)
-										32'd0:   LOAD_WEIGHTS(stage6_layer1_2, 32, 0)	   // filter 0
-										32'd1:   LOAD_WEIGHTS(stage6_layer2_2, 32, 0)	   // filter 1
-										32'd2:   LOAD_WEIGHTS(stage6_layer3_2, 32, 0)	   // filter 2
-										32'd3:   LOAD_WEIGHTS(stage6_layer4_2, 32, 0)	   // filter 3
-										32'd4:   LOAD_WEIGHTS(stage6_layer5_2, 32, 0)	   // filter 4
-										32'd5:   LOAD_WEIGHTS(stage6_layer6_2, 32, 0)	   // filter 5
-										32'd6:   LOAD_WEIGHTS(stage6_layer7_2, 32, 0)	   // filter 6
-										32'd7:   LOAD_WEIGHTS(stage6_layer8_2, 32, 0)	   // filter 7
-										32'd8:   LOAD_WEIGHTS(stage6_layer9_2, 32, 0)	   // filter 8
-										32'd9:   LOAD_WEIGHTS(stage6_layer10_2, 32, 0)	   // filter 9
-										32'd10:  LOAD_WEIGHTS(stage6_layer11_2, 32, 0)	   // filter 10
-										32'd11:  LOAD_WEIGHTS(stage6_layer12_2, 32, 0)	   // filter 11
-										32'd12:  LOAD_WEIGHTS(stage6_layer13_2, 32, 0)	   // filter 12
-										32'd13:  LOAD_WEIGHTS(stage6_layer14_2, 32, 0)	   // filter 13
-										32'd14:  LOAD_WEIGHTS(stage6_layer15_2, 32, 0)	   // filter 14
-										32'd15:  LOAD_WEIGHTS(stage6_layer16_2, 32, 0)	   // filter 15
-										32'd16:  LOAD_WEIGHTS(stage6_layer17_2, 32, 0)	   // filter 16
-										32'd17:  LOAD_WEIGHTS(stage6_layer18_2, 32, 0)	   // filter 17
-										32'd18:  LOAD_WEIGHTS(stage6_layer19_2, 32, 0)	   // filter 18
-										32'd19:  LOAD_WEIGHTS(stage6_layer20_2, 32, 0)	   // filter 19
-										32'd20:  LOAD_WEIGHTS(stage6_layer21_2, 32, 0)	   // filter 20
-										32'd21:  LOAD_WEIGHTS(stage6_layer22_2, 32, 0)	   // filter 21
-										32'd22:  LOAD_WEIGHTS(stage6_layer23_2, 32, 0)	   // filter 22
-										32'd23:  LOAD_WEIGHTS(stage6_layer24_2, 32, 0)	   // filter 23
-										32'd24:  LOAD_WEIGHTS(stage6_layer25_2, 32, 0)	   // filter 24
-										32'd25:  LOAD_WEIGHTS(stage6_layer26_2, 32, 0)	   // filter 25
-										32'd26:  LOAD_WEIGHTS(stage6_layer27_2, 32, 0)	   // filter 26
-										32'd27:  LOAD_WEIGHTS(stage6_layer28_2, 32, 0)	   // filter 27
-										32'd28:  LOAD_WEIGHTS(stage6_layer29_2, 32, 0)	   // filter 28
-										32'd29:  LOAD_WEIGHTS(stage6_layer30_2, 32, 0)	   // filter 29
-										32'd30:  LOAD_WEIGHTS(stage6_layer31_2, 32, 0)	   // filter 30
-										32'd31:  LOAD_WEIGHTS(stage6_layer32_2, 32, 0)	   // filter 31
+										32'd0:  LOAD_WEIGHTS(stage8_translayer1, 32, 0)	   // filter 0
+										32'd1:  LOAD_WEIGHTS(stage8_translayer2, 32, 0)	   // filter 1
+										32'd2:  LOAD_WEIGHTS(stage8_translayer3, 32, 0)	   // filter 2
+										32'd3:  LOAD_WEIGHTS(stage8_translayer4, 32, 0)	   // filter 3
+										32'd4:  LOAD_WEIGHTS(stage8_translayer5, 32, 0)	   // filter 4
+										32'd5:  LOAD_WEIGHTS(stage8_translayer6, 32, 0)	   // filter 5
+										32'd6:  LOAD_WEIGHTS(stage8_translayer7, 32, 0)	   // filter 6
+										32'd7:  LOAD_WEIGHTS(stage8_translayer8, 32, 0)	   // filter 7
+										32'd8:  LOAD_WEIGHTS(stage8_translayer9, 32, 0)	   // filter 8
+										32'd9:  LOAD_WEIGHTS(stage8_translayer10, 32, 0)	   // filter 9
+										32'd10: LOAD_WEIGHTS(stage8_translayer11, 32, 0)	   // filter 10
+										32'd11: LOAD_WEIGHTS(stage8_translayer12, 32, 0)	   // filter 11
+										32'd12: LOAD_WEIGHTS(stage8_translayer13, 32, 0)	   // filter 12
+										32'd13: LOAD_WEIGHTS(stage8_translayer14, 32, 0)	   // filter 13
+										32'd14: LOAD_WEIGHTS(stage8_translayer15, 32, 0)	   // filter 14
+										32'd15: LOAD_WEIGHTS(stage8_translayer16, 32, 0)	   // filter 15
 											
 										default:
 											begin
@@ -2540,16 +3394,13 @@ module unet_fsm(
 												end
 											end
 									endcase
-								end
-							
-						
-								for (i=0; i<32; i=i+1) begin
-									// filters
-									intermediate[i] <= cv_pixelout[i];
-								end
-								
-								// add bias and quantization
-								if (inlayercount == 32'd32) begin
+
+									for (i=0; i<32; i=i+1) begin
+										// filters
+										intermediate[i] <= cv_pixelout[i];
+									end
+									
+									// add bias and quantization
 									//qt0
 									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
 													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
@@ -2558,44 +3409,72 @@ module unet_fsm(
 													+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
 													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
 													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
-													+ intermediatesum[layercount];
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
 									qt0_bias <= bias0;
 									qt0_zp   <= zp0;
 									qt0_scale <= scale0;
 									
 									// save to buffer
-									if (savebuf == 0) begin
-										outbuf0[outbuf_head[0]][31:24]  <= {qt0_res};
-									end else if (savebuf == 1) begin
-										outbuf0[outbuf_head[0]][23:16]  <= {qt0_res};
-									end else if (savebuf == 2) begin
-										outbuf0[outbuf_head[0]][15:8]   <= {qt0_res};
-									end else begin
-										outbuf0[outbuf_head[0]][7:0]    <= {qt0_res};
-										outbuf_head[0] <= outbuf_head[0] + 1;
-										bram_data <= outbuf0[outbuf_head[0] - 1];
-									end
+									//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+									// ------------------------------------------------------------------------------- Q1 [2047:0]
+									//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+									//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+									//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+									//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+									// ------------------------------------------------------------------------------- Q2 [4095:2048]
+									//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+									//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+									//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+									//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+									// 
 									
-									savebuf <= (savebuf == 2) ? 0 : savebuf + 1;
-								end else begin
-									intermediatesum[layercount] <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-													                   + intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-													                   + intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-													                   + intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-													                   + intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-													                   + intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-													                   + intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													                   + intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									if (pixelcount > 33) begin
+										if (pixelcount < 32'd2048) begin
+											case (layercount-1):
+												32'd0:  layerint_buf0_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+											endcase
+										end else begin
+											case (layercount-1):
+												32'd0:  layerint_buf4_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd1:  layerint_buf4_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf4_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf4_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf5_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd5:  layerint_buf5_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf5_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf5_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf6_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd9:  layerint_buf6_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf6_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf6_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf7_st5[(pixelcount-34)*4]     <= {qt0_res};
+												32'd13: layerint_buf7_st5[((pixelcount-34)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf7_st5[((pixelcount-34)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf7_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+											endcase
+										end
+									end
 								end
 							end
 						end
 					end
-					
-				STAGE8_TRANSCONV:
-					// 32 (32x32) Layers ---> 16 (64x64) Layers
 				
-				STAGE9_CONV:
+				STAGE8_CONV:
 					// 16 (64x64) + 16 (64x64) STAGE2_CONV Layers ---> 16 (64x64) Layers
 					//
 					// pixel1 - calc outlayers 1
@@ -2605,88 +3484,271 @@ module unet_fsm(
 					// pixel2...
 					//
 					begin
-						if (pixelcount >= 32'd4356) begin
+						if (pixelcount >= 32'd4161) begin  // (height*width + (width+1) for padding)
 							state <= STAGE4_MXPL;
 							pixelcount <= 32'b0;
 							layercount <= 0;
 							
 						end else begin
-							if (layercount >= 32'd16) begin
-								layercount <= 0;
-								pixelcount <= pixelcount + 1;
-							
-							end else begin
-								layercount <= layercount + 32'd1;
+							if (pixelcount < 65) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
 								
-								case (layercount)
-									32'd0:  LOAD_WEIGHTS(stage4_layer1, 32, 0)	   // filter 0
-									32'd1:  LOAD_WEIGHTS(stage4_layer2, 32, 0)	   // filter 1
-									32'd2:  LOAD_WEIGHTS(stage4_layer3, 32, 0)	   // filter 2
-									32'd3:  LOAD_WEIGHTS(stage4_layer4, 32, 0)	   // filter 3
-									32'd4:  LOAD_WEIGHTS(stage4_layer5, 32, 0)	   // filter 4
-									32'd5:  LOAD_WEIGHTS(stage4_layer6, 32, 0)	   // filter 5
-									32'd6:  LOAD_WEIGHTS(stage4_layer7, 32, 0)	   // filter 6
-									32'd7:  LOAD_WEIGHTS(stage4_layer8, 32, 0)	   // filter 7
-									32'd8:  LOAD_WEIGHTS(stage4_layer9, 32, 0)	   // filter 8
-									32'd9:  LOAD_WEIGHTS(stage4_layer10, 32, 0)	   // filter 9
-									32'd10: LOAD_WEIGHTS(stage4_layer11, 32, 0)	   // filter 10
-									32'd11: LOAD_WEIGHTS(stage4_layer12, 32, 0)	   // filter 11
-									32'd12: LOAD_WEIGHTS(stage4_layer13, 32, 0)	   // filter 12
-									32'd13: LOAD_WEIGHTS(stage4_layer14, 32, 0)	   // filter 13
-									32'd14: LOAD_WEIGHTS(stage4_layer15, 32, 0)	   // filter 14
-									32'd15: LOAD_WEIGHTS(stage4_layer16, 32, 0)	   // filter 15
-										
-									default:
-										begin
-											for (int i=0; i<32; i=i+1) begin
-												for (int w=0; w<10; w=w+1) begin
-													cv_w[i][w]    <= 0;
+							end else begin
+								if (layercount >= 32'd16) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd1;
+									
+									case (layercount)
+										32'd0:  LOAD_WEIGHTS(stage8_layer1, 32, 0)	   // filter 0
+										32'd1:  LOAD_WEIGHTS(stage8_layer2, 32, 0)	   // filter 1
+										32'd2:  LOAD_WEIGHTS(stage8_layer3, 32, 0)	   // filter 2
+										32'd3:  LOAD_WEIGHTS(stage8_layer4, 32, 0)	   // filter 3
+										32'd4:  LOAD_WEIGHTS(stage8_layer5, 32, 0)	   // filter 4
+										32'd5:  LOAD_WEIGHTS(stage8_layer6, 32, 0)	   // filter 5
+										32'd6:  LOAD_WEIGHTS(stage8_layer7, 32, 0)	   // filter 6
+										32'd7:  LOAD_WEIGHTS(stage8_layer8, 32, 0)	   // filter 7
+										32'd8:  LOAD_WEIGHTS(stage8_layer9, 32, 0)	   // filter 8
+										32'd9:  LOAD_WEIGHTS(stage8_layer10, 32, 0)	   // filter 9
+										32'd10: LOAD_WEIGHTS(stage8_layer11, 32, 0)	   // filter 10
+										32'd11: LOAD_WEIGHTS(stage8_layer12, 32, 0)	   // filter 11
+										32'd12: LOAD_WEIGHTS(stage8_layer13, 32, 0)	   // filter 12
+										32'd13: LOAD_WEIGHTS(stage8_layer14, 32, 0)	   // filter 13
+										32'd14: LOAD_WEIGHTS(stage8_layer15, 32, 0)	   // filter 14
+										32'd15: LOAD_WEIGHTS(stage8_layer16, 32, 0)	   // filter 15
+											
+										default:
+											begin
+												for (int i=0; i<32; i=i+1) begin
+													for (int w=0; w<10; w=w+1) begin
+														cv_w[i][w]    <= 0;
+													end
 												end
 											end
-										end
-								endcase
+									endcase
 
-								for (i=0; i<32; i=i+1) begin
-									// filters
-									intermediate[i] <= cv_pixelout[i];
+									for (i=0; i<32; i=i+1) begin
+										// filters
+										intermediate[i] <= cv_pixelout[i];
+									end
+									
+									// add bias and quantization
+									//qt0
+									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+													+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									qt0_bias <= bias0;
+									qt0_zp   <= zp0;
+									qt0_scale <= scale0;
+									
+									// save to buffer
+									//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+									// ------------------------------------------------------------------------------- Q1 [2047:0]
+									//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+									//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+									//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+									//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+									// ------------------------------------------------------------------------------- Q2 [4095:2048]
+									//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+									//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+									//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+									//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+									// 
+									
+									if (pixelcount > 65) begin
+										if (pixelcount < 32'd2114) begin
+											case (layercount-1):
+												32'd0:  layerint_buf0_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd1:  layerint_buf0_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf0_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf1_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd5:  layerint_buf1_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf1_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf2_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd9:  layerint_buf2_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf2_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf2_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf3_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd13: layerint_buf3_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf3_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf3_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+											endcase
+										end else begin
+											case (layercount-1):
+												32'd0:  layerint_buf4_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd1:  layerint_buf4_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd2:  layerint_buf4_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd3:  layerint_buf4_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd4:  layerint_buf5_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd5:  layerint_buf5_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd6:  layerint_buf5_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd7:  layerint_buf5_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd8:  layerint_buf6_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd9:  layerint_buf6_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd10: layerint_buf6_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd11: layerint_buf6_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd12: layerint_buf7_st5[(pixelcount-66)*4]     <= {qt0_res};
+												32'd13: layerint_buf7_st5[((pixelcount-66)*4)+1] <= {qt0_res};
+												32'd14: layerint_buf7_st5[((pixelcount-66)*4)+2] <= {qt0_res};
+												32'd15: layerint_buf7_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+											endcase
+										end
+									end
 								end
-								
-								// add bias and quantization
-								//qt0
-								qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-												+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-												+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-												+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-												+ intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-												+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-												+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-												+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
-								qt0_bias <= bias0;
-								qt0_zp   <= zp0;
-								qt0_scale <= scale0;
-								
-								// save to buffer
-								if (savebuf == 0) begin
-									outbuf0[outbuf_head[0]][31:24]  <= {qt0_res};
-								end else if (savebuf == 1) begin
-									outbuf0[outbuf_head[0]][23:16]  <= {qt0_res};
-								end else if (savebuf == 2) begin
-									outbuf0[outbuf_head[0]][15:8]   <= {qt0_res};
-								end else begin
-									outbuf0[outbuf_head[0]][7:0]    <= {qt0_res};
-									outbuf_head[0] <= outbuf_head[0] + 1;
-									bram_data <= outbuf0[outbuf_head[0] - 1];
-								end
-								
-								savebuf <= (savebuf == 2) ? 0 : savebuf + 1;
 							end
 						end
 					end
 					
 				STAGE9_TRANSCONV:
 					// 16 (64x64) Layers ---> 8 (128x128) Layers
+					// pixel1 - calc outlayers 1,2
+					//          calc outlayers 3,4
+					//          ...
+					//          calc outlayers 7,8
+					// pixel2...
+					//
+					begin
+						if (pixelcount >= 32'd4161) begin  // (height*width + (width+1) for padding)
+							state <= STAGE10_CONV;
+							pixelcount <= 32'b0;
+							layercount <= 0;
+							
+						end else begin
+							if (pixelcount < 65) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
+								
+							end else begin
+								if (layercount >= 32'd8) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd2;
+									
+									case (layercount)
+										32'd0:
+											begin
+												`LOAD_WEIGHTS(stage9_translayer1, 16, 0)	   // filter 0
+												`LOAD_WEIGHTS(stage9_translayer2, 16, 16)	// filter 1
+											end
+											
+										32'd2:
+											begin
+												`LOAD_WEIGHTS(stage9_translayer3, 16, 0)	   // filter 2
+												`LOAD_WEIGHTS(stage9_translayer4, 16, 16)	// filter 3
+											end
+											
+										32'd4:
+											begin
+												`LOAD_WEIGHTS(stage9_translayer5, 16, 0)	   // filter 4
+												`LOAD_WEIGHTS(stage9_translayer6, 16, 16)	// filter 5
+											end
+											
+										32'd6:
+											begin
+												`LOAD_WEIGHTS(stage9_translayer7, 16, 0)	   // filter 6
+												`LOAD_WEIGHTS(stage9_translayer8, 16, 16)	// filter 7
+											end
+											
+										default:
+											begin
+												for (int i=0; i<32; i=i+1) begin
+													for (int w=0; w<10; w=w+1) begin
+														cv_w[i][w]    <= 0;
+													end
+												end
+											end
+									endcase			
+				
+									for (i=0; i<32; i=i+16) begin
+										// filters
+										for (j=0; j<16; j=j+1) begin 
+											intermediate[i+j] <= cv_pixelout[i+j];
+										end
+									end
+									
+									// add bias and quantization
+									//qt0
+									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
+									qt0_bias <= bias0;
+									qt0_zp   <= zp0;
+									qt0_scale <= scale0;
+									
+									//qt1
+									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									qt1_bias <= bias0;
+									qt1_zp   <= zp0;
+									qt1_scale <= scale0;
+									
+									// save to buffer
+									if (pixelcount > 65) begin
+										// save image to buffer, seperated to 4 pices
+										// 
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [4095:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										// ------------------------------------------------------------------------------- Q2 [8191:4096]
+										//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+										//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+										// ------------------------------------------------------------------------------- Q3 [12287:8192]
+										//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+										//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+										// ------------------------------------------------------------------------------- Q4 [16383:12288]
+										//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+										//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+										
+										if (pixelcount < 32'd4226) begin
+											case (layercount-2)
+												32'd0:  layerint_buf0_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf1_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else if (pixelcount < 32'd8322) begin
+											case (layercount-2)
+												32'd0:  layerint_buf2_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf2_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf3_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf3_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else if (pixelcount < 32'd12418) begin
+											case (layercount-2)
+												32'd0:  layerint_buf4_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf4_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf5_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf5_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else begin
+											case (layercount-2)
+												32'd0:  layerint_buf6_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf6_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf7_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf7_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end
+									end			
+								end
+							end
+						end
+					end
 					
-				STAGE10_CONV:
+				STAGE9_CONV:
 					// 8 (128x128) + 8 (128x128) STAGE1_CONV Layers ---> 8 (128x128) Layers
 					//
 					// pixel1 - calc outlayers 1,2
@@ -2696,92 +3758,141 @@ module unet_fsm(
 					// pixel2...
 					//
 					begin
-						if (pixelcount >= 32'd16900) begin
-							state <= STAGE3_MXPL;
+						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
+							state <= STAGE10_CONV;
 							pixelcount <= 32'b0;
 							layercount <= 0;
 							
 						end else begin
-							if (layercount >= 32'd8) begin
-								layercount <= 0;
-								pixelcount <= pixelcount + 1;
-							
-							end else begin
-								layercount <= layercount + 32'd2;
+							if (pixelcount < 129) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
 								
-								case (layercount)
-									32'd0:
-										begin
-											`LOAD_WEIGHTS(stage3_layer1, 16, 0)	   // filter 0
-											`LOAD_WEIGHTS(stage3_layer2, 16, 16)	// filter 1
-										end
-										
-									32'd2:
-										begin
-											`LOAD_WEIGHTS(stage3_layer3, 16, 0)	   // filter 2
-											`LOAD_WEIGHTS(stage3_layer4, 16, 16)	// filter 3
-										end
-										
-									32'd4:
-										begin
-											`LOAD_WEIGHTS(stage3_layer5, 16, 0)	   // filter 4
-											`LOAD_WEIGHTS(stage3_layer6, 16, 16)	// filter 5
-										end
-										
-									32'd6:
-										begin
-											`LOAD_WEIGHTS(stage3_layer7, 16, 0)	   // filter 6
-											`LOAD_WEIGHTS(stage3_layer8, 16, 16)	// filter 7
-										end
-										
-									default:
-										begin
-											for (int i=0; i<32; i=i+1) begin
-												for (int w=0; w<10; w=w+1) begin
-													cv_w[i][w]    <= 0;
+							end else begin
+								if (layercount >= 32'd8) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd2;
+									
+									case (layercount)
+										32'd0:
+											begin
+												`LOAD_WEIGHTS(stage9_layer1, 16, 0)	   // filter 0
+												`LOAD_WEIGHTS(stage9_layer2, 16, 16)	// filter 1
+											end
+											
+										32'd2:
+											begin
+												`LOAD_WEIGHTS(stage9_layer3, 16, 0)	   // filter 2
+												`LOAD_WEIGHTS(stage9_layer4, 16, 16)	// filter 3
+											end
+											
+										32'd4:
+											begin
+												`LOAD_WEIGHTS(stage9_layer5, 16, 0)	   // filter 4
+												`LOAD_WEIGHTS(stage9_layer6, 16, 16)	// filter 5
+											end
+											
+										32'd6:
+											begin
+												`LOAD_WEIGHTS(stage9_layer7, 16, 0)	   // filter 6
+												`LOAD_WEIGHTS(stage9_layer8, 16, 16)	// filter 7
+											end
+											
+										default:
+											begin
+												for (int i=0; i<32; i=i+1) begin
+													for (int w=0; w<10; w=w+1) begin
+														cv_w[i][w]    <= 0;
+													end
 												end
 											end
+									endcase			
+				
+									for (i=0; i<32; i=i+16) begin
+										// filters
+										for (j=0; j<16; j=j+1) begin 
+											intermediate[i+j] <= cv_pixelout[i+j];
 										end
-								endcase			
-			
-								for (i=0; i<32; i=i+16) begin
-									// filters
-									for (j=0; j<16; j=j+1) begin 
-										intermediate[i+j] <= cv_pixelout[i+j];
 									end
+									
+									// add bias and quantization
+									//qt0
+									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
+									qt0_bias <= bias0;
+									qt0_zp   <= zp0;
+									qt0_scale <= scale0;
+									
+									//qt1
+									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									qt1_bias <= bias0;
+									qt1_zp   <= zp0;
+									qt1_scale <= scale0;
+									
+									// save to buffer
+									if (pixelcount > 129) begin
+										// save image to buffer, seperated to 4 pices
+										// 
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [4095:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										// ------------------------------------------------------------------------------- Q2 [8191:4096]
+										//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+										//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+										// ------------------------------------------------------------------------------- Q3 [12287:8192]
+										//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+										//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+										// ------------------------------------------------------------------------------- Q4 [16383:12288]
+										//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+										//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+										// 
+										
+										
+										if (pixelcount < 32'd4226) begin
+											case (layercount-2)
+												32'd0:  layerint_buf0_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf0_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf1_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf1_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else if (pixelcount < 32'd8322) begin
+											case (layercount-2)
+												32'd0:  layerint_buf2_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf2_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf3_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf3_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else if (pixelcount < 32'd12418) begin
+											case (layercount-2)
+												32'd0:  layerint_buf4_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf4_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf5_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf5_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end else begin
+											case (layercount-2)
+												32'd0:  layerint_buf6_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf6_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
+												32'd4:  layerint_buf7_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf7_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+											endcase
+										end
+									end			
 								end
-								
-								// add bias and quantization
-								//qt0
-								qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-												+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-												+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-												+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
-								qt0_bias <= bias0;
-								qt0_zp   <= zp0;
-								qt0_scale <= scale0;
-								
-								//qt1
-								qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-												+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-												+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-												+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
-								qt1_bias <= bias0;
-								qt1_zp   <= zp0;
-								qt1_scale <= scale0;
-								
-								// save to buffer
-								if (savebuf == 0) begin
-									outbuf0[outbuf_head[0]][31:16]  <= {qt0_res, qt1_res};
-								end else begin
-									outbuf0[outbuf_head[0]][15:0]   <= {qt0_res, qt1_res};
-									outbuf_head[0] <= outbuf_head[0] + 1;
-									bram_data <= outbuf0[outbuf_head[0] - 1];
-								end
-								
-								savebuf <= (savebuf == 0) ? 1 : 0;			
 							end
 						end
+					end
+					
+				STAGE10_CONV:
+					begin
 					end
 					
 				default:
@@ -3088,6 +4199,9 @@ module unet_fsm(
 			
 			STAGE5_CONV:
 				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= MUL;
+					end
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [63:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -3176,22 +4290,190 @@ module unet_fsm(
 				end
 				
 			STAGE6_TRANSCONV:
-			
-			STAGE6_CONV:
 				begin
-					// 64 (16x16) + 64 (16x16) STAGE4_CONV Layers ---> 64 (16x16) Layers
-					//
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= TRANS;
+					end
+					// 128 (8x8) Layers ---> 64 (16x16) Layers
 					// pixel1 - calc outlayers 1 intermediate
 					//          calc outlayers 2 intermediate
 					//          ...
-					//          calc outlayers 128 intermediate
+					//          calc outlayers 64 intermediate
 					// pixel2...
 					// ...
 					// pixel100...
 					// pixel1 - calc outlayers 1
 					//          calc outlayers 2
 					//          ...
-					//          calc outlayers 128
+					//          calc outlayers 64
+					// pixel2...
+					// ...
+					// pixel100...
+					//
+					//	Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [63:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					//   layerint_buf8         L33-P1         L34-P1         L35-P1        L36-P1
+					//   layerint_buf9         L37-P1         L38-P1         L39-P1        L40-P1
+					//   layerint_buf10        L41-P1         L42-P1         L43-P1        L44-P1
+					//   layerint_buf11        L45-P1         L46-P1         L47-P1        L48-P1
+					//   layerint_buf12        L49-P1         L50-P1         L51-P1        L52-P1
+					//   layerint_buf13        L53-P1         L54-P1         L55-P1        L56-P1
+					//   layerint_buf14        L57-P1         L58-P1         L59-P1        L60-P1
+					//   layerint_buf15        L61-P1         L62-P1         L63-P1        L64-P1
+					//   layerint_buf16        L65-P1         L66-P1         L67-P1        L68-P1
+					//   layerint_buf17        L69-P1         L70-P1         L71-P1        L72-P1
+					//   layerint_buf18        L73-P1         L74-P1         L75-P1        L76-P1
+					//   layerint_buf19        L77-P1         L78-P1         L79-P1        L80-P1
+					//   layerint_buf20        L81-P1         L82-P1         L83-P1        L84-P1
+					//   layerint_buf21        L85-P1         L86-P1         L87-P1        L88-P1
+					//   layerint_buf22        L89-P1         L90-P1         L91-P1        L92-P1
+					//   layerint_buf23        L93-P1         L94-P1         L95-P1        L96-P1
+					//   layerint_buf24        L97-P1         L98-P1         L99-P1        L100-P1
+					//   layerint_buf25        L101-P1        L102-P1        L103-P1       L104-P1
+					//   layerint_buf26        L105-P1        L106-P1        L107-P1       L108-P1
+					//   layerint_buf27        L109-P1        L110-P1        L111-P1       L112-P1
+					//   layerint_buf28        L113-P1        L114-P1        L115-P1       L116-P1
+					//   layerint_buf29        L117-P1        L118-P1        L119-P1       L120-P1
+					//   layerint_buf30        L121-P1        L122-P1        L123-P1       L124-P1
+					//   layerint_buf31        L125-P1        L126-P1        L127-P1       L128-P1
+					
+					case (inlayercount)
+						32'd0:
+							begin
+								if (pixelcount<64) begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+									end
+								end else begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= 0;
+										cv_pixelin[b+4]  <= 0;
+										cv_pixelin[b+8]  <= 0;
+										cv_pixelin[b+12] <= 0;
+										cv_pixelin[b+16] <= 0;
+										cv_pixelin[b+20] <= 0;
+										cv_pixelin[b+24] <= 0;
+										cv_pixelin[b+28] <= 0;
+									end
+								end
+							end
+						32'd32:
+							begin
+								if (pixelcount<64) begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+									end
+								end else begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= 0;
+										cv_pixelin[b+4]  <= 0;
+										cv_pixelin[b+8]  <= 0;
+										cv_pixelin[b+12] <= 0;
+										cv_pixelin[b+16] <= 0;
+										cv_pixelin[b+20] <= 0;
+										cv_pixelin[b+24] <= 0;
+										cv_pixelin[b+28] <= 0;
+									end
+								end
+							end
+						32'd64:
+							begin
+								if (pixelcount<64) begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= layerint_buf16_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf17_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf18_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf19_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf20_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf21_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf22_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf23_st5[(pixelcount*4)][31-(b*8) -:8];
+									end
+								end else begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= 0;
+										cv_pixelin[b+4]  <= 0;
+										cv_pixelin[b+8]  <= 0;
+										cv_pixelin[b+12] <= 0;
+										cv_pixelin[b+16] <= 0;
+										cv_pixelin[b+20] <= 0;
+										cv_pixelin[b+24] <= 0;
+										cv_pixelin[b+28] <= 0;
+									end
+								end
+							end
+						default:
+							// first half from st4
+							begin
+								if (pixelcount<64) begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= layerint_buf24_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf25_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf26_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf27_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf28_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf29_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf30_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf31_st5[(pixelcount*4)][31-(b*8) -:8];
+									end
+								end else begin
+									for (b=0; b<4; b=b+1) begin
+										cv_pixelin[b]    <= 0;
+										cv_pixelin[b+4]  <= 0;
+										cv_pixelin[b+8]  <= 0;
+										cv_pixelin[b+12] <= 0;
+										cv_pixelin[b+16] <= 0;
+										cv_pixelin[b+20] <= 0;
+										cv_pixelin[b+24] <= 0;
+										cv_pixelin[b+28] <= 0;
+									end
+								end
+							end
+					endcase
+				end
+			
+			STAGE6_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= MUL;
+					end
+					
+					// 64 (16x16) + 64 (16x16) STAGE4_CONV Layers ---> 64 (16x16) Layers
+					//
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 64 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 64
 					// pixel2...
 					// ...
 					// pixel100...
@@ -3349,29 +4631,31 @@ module unet_fsm(
 				end
 				
 			STAGE7_TRANSCONV:
-			
-			STAGE7_CONV:
 				begin
-					// 32 (32x32) + 32 (32x32) STAGE3_CONV Layers ---> 32 (32x32) Layers
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= TRANS;
+					end
+					
+					// 64 (16x16) ---> 32 (32x32) Layers
 					//
 					// pixel1 - calc outlayers 1 intermediate
 					//          calc outlayers 2 intermediate
 					//          ...
-					//          calc outlayers 128 intermediate
+					//          calc outlayers 32 intermediate
 					// pixel2...
 					// ...
 					// pixel100...
 					// pixel1 - calc outlayers 1
 					//          calc outlayers 2
 					//          ...
-					//          calc outlayers 128
+					//          calc outlayers 32
 					// pixel2...
 					// ...
 					// pixel100...
 					//
 					// Storage at st5
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
-					// ------------------------------------------------------------------------------- Q1 [511:0]
+					// ------------------------------------------------------------------------------- Q1 [255:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
 					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
 					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
@@ -3380,22 +4664,18 @@ module unet_fsm(
 					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
 					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
 					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
-					// 			
-					// Storage at st3
-					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
-					// ------------------------------------------------------------------------------- Q1 [511:0]
-					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
-					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
-					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
-					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
-					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
-					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
-					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
-					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					//   layerint_buf8         L33-P1         L34-P1         L35-P1        L36-P1
+					//   layerint_buf9         L37-P1         L38-P1         L39-P1        L40-P1
+					//   layerint_buf10        L41-P1         L42-P1         L43-P1        L44-P1
+					//   layerint_buf11        L45-P1         L46-P1         L47-P1        L48-P1
+					//   layerint_buf12        L49-P1         L50-P1         L51-P1        L52-P1
+					//   layerint_buf13        L53-P1         L54-P1         L55-P1        L56-P1
+					//   layerint_buf14        L57-P1         L58-P1         L59-P1        L60-P1
+					//   layerint_buf15        L61-P1         L62-P1         L63-P1        L64-P1
 					// 	
 					
 					if (inlayerscount == 0) begin
-						if (pixelcount<512) begin
+						if (pixelcount<256) begin
 							for (b=0; b<4; b=b+1) begin
 								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
 								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
@@ -3419,7 +4699,106 @@ module unet_fsm(
 							end
 						end
 					end else begin
-						if (pixelcount<512) begin
+						if (pixelcount<256) begin
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+							end
+						end else begin
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= 0;
+								cv_pixelin[b+4]  <= 0;
+								cv_pixelin[b+8]  <= 0;
+								cv_pixelin[b+12] <= 0;
+								cv_pixelin[b+16] <= 0;
+								cv_pixelin[b+20] <= 0;
+								cv_pixelin[b+24] <= 0;
+								cv_pixelin[b+28] <= 0;
+							end
+						end
+					end
+				end
+				
+			STAGE7_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= MUL;
+					end
+					
+					// 32 (32x32) + 32 (32x32) STAGE3_CONV Layers ---> 32 (32x32) Layers
+					//
+					// pixel1 - calc outlayers 1 intermediate
+					//          calc outlayers 2 intermediate
+					//          ...
+					//          calc outlayers 32 intermediate
+					// pixel2...
+					// ...
+					// pixel100...
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 32
+					// pixel2...
+					// ...
+					// pixel100...
+					//
+					// Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [1023:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					// 			
+					// Storage at st3
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [1023:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					// 	
+					
+					if (inlayerscount == 0) begin
+						if (pixelcount<1024) begin
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							end
+						end else begin
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= 0;
+								cv_pixelin[b+4]  <= 0;
+								cv_pixelin[b+8]  <= 0;
+								cv_pixelin[b+12] <= 0;
+								cv_pixelin[b+16] <= 0;
+								cv_pixelin[b+20] <= 0;
+								cv_pixelin[b+24] <= 0;
+								cv_pixelin[b+28] <= 0;
+							end
+						end
+					end else begin
+						if (pixelcount<1024) begin
 							for (b=0; b<4; b=b+1) begin
 								cv_pixelin[b]    <= layerint_buf0_st3[(pixelcount*4)][31-(b*8) -:8];
 								cv_pixelin[b+4]  <= layerint_buf1_st3[(pixelcount*4)][31-(b*8) -:8];
@@ -3446,9 +4825,307 @@ module unet_fsm(
 				end
 			
 			STAGE8_TRANSCONV:
-			
-			STAGE8_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= TRANS;
+					end
+					
+					// 32 (32x32) Layers ---> 16 (64x64) Layers
+					
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 16
+					// pixel2...
+					//
+					// Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [1023:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					// 	
+					
+					if (pixelcount<1024) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= 0;
+							cv_pixelin[b+4]  <= 0;
+							cv_pixelin[b+8]  <= 0;
+							cv_pixelin[b+12] <= 0;
+							cv_pixelin[b+16] <= 0;
+							cv_pixelin[b+20] <= 0;
+							cv_pixelin[b+24] <= 0;
+							cv_pixelin[b+28] <= 0;
+						end
+					end 
+				end
 				
+			STAGE8_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= MUL;
+					end
+					
+					// 16 (64x64) + 16 (64x64) STAGE2_CONV Layers ---> 16 (64x64) Layers
+					//
+					// pixel1 - calc outlayers 1
+					//          calc outlayers 2
+					//          ...
+					//          calc outlayers 16
+					// pixel2...
+					//
+					// Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [2047:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					// ------------------------------------------------------------------------------- Q2 [4095:2048]
+					//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+					//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+					//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+					//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+					// 			
+					// Storage at st2
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [2047:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					// ------------------------------------------------------------------------------- Q2 [4095:2048]
+					//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+					//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+					//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+					//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+					// 
+					
+					if (pixelcount<2048) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf1_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf2_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf3_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf4_st2[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<4096) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf4_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st2[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= 0;
+							cv_pixelin[b+4]  <= 0;
+							cv_pixelin[b+8]  <= 0;
+							cv_pixelin[b+12] <= 0;
+							cv_pixelin[b+16] <= 0;
+							cv_pixelin[b+20] <= 0;
+							cv_pixelin[b+24] <= 0;
+							cv_pixelin[b+28] <= 0;
+						end
+					end 
+				end
+				
+			STAGE9_TRANSCONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= TRANS;
+					end
+					
+					// 16 (64x64) ---> 8 (128x128) Layers
+					//
+					// pixel1 - calc outlayers 1,2
+					//          calc outlayers 3,4
+					//          ...
+					//          calc outlayers 7,8
+					// pixel2...
+					//
+					// Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [2047:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					// ------------------------------------------------------------------------------- Q2 [4095:2048]
+					//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+					//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+					//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+					//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+					// 
+					//
+					
+					if (pixelcount<2048) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<4096) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= 0;
+							cv_pixelin[b+4]  <= 0;
+							cv_pixelin[b+8]  <= 0;
+							cv_pixelin[b+12] <= 0;
+							cv_pixelin[b+16] <= 0;
+							cv_pixelin[b+20] <= 0;
+							cv_pixelin[b+24] <= 0;
+							cv_pixelin[b+28] <= 0;
+						end
+					end 
+				end
+				
+			STAGE9_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[i] <= MUL;
+					end
+					
+					// 8 (128x128) + 8 (128x128) STAGE1_CONV Layers ---> 8 (128x128) Layers
+					//
+					// pixel1 - calc outlayers 1,2
+					//          calc outlayers 3,4
+					//          ...
+					//          calc outlayers 7,8
+					// pixel2...
+					//
+					// Storage at st5
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [4095:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					// ------------------------------------------------------------------------------- Q2 [8191:4096]
+					//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+					//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+					// ------------------------------------------------------------------------------- Q3 [12287:8192]
+					//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+					//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+					// ------------------------------------------------------------------------------- Q4 [16383:12288]
+					//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+					//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+					//
+					// Storage at st1
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [4095:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					// ------------------------------------------------------------------------------- Q2 [8191:4096]
+					//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+					//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+					// ------------------------------------------------------------------------------- Q3 [12287:8192]
+					//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+					//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+					// ------------------------------------------------------------------------------- Q4 [16383:12288]
+					//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+					//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+					//
+					
+					if (pixelcount<4096) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<8192) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<12288) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<16384) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= 0;
+							cv_pixelin[b+4]  <= 0;
+							cv_pixelin[b+8]  <= 0;
+							cv_pixelin[b+12] <= 0;
+							cv_pixelin[b+16] <= 0;
+							cv_pixelin[b+20] <= 0;
+							cv_pixelin[b+24] <= 0;
+							cv_pixelin[b+28] <= 0;
+						end
+					end 
+				end
 			default:
 	end
 endmodule 
