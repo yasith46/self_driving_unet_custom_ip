@@ -14,6 +14,7 @@ module tb_collector3x3;
 		.out9(out9), .out8(out8), .out7(out7),
 		.out6(out6), .out5(out5), .out4(out4),
 		.out3(out3), .out2(out2), .out1(out1)
+		.stage_width(128)
 	);
 	
 	initial clk = 0;
