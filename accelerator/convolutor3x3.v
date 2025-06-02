@@ -1,20 +1,20 @@
 module convolutor3x3 #(
-		parameter IMAGE_WIDTH = 256,
-		parameter IMAGE_HEIGHT = 256
+		parameter IMAGE_WIDTH = 128,
+		parameter IMAGE_HEIGHT = 128
 	)(
 		input  [7:0] pixel_in,
 		input  [7:0] w9, w8, w7, w6, w5, w4, w3, w2, w1,
+		input  [7:0] width,
 		input  clk, rst_n, paddingl, paddingr,
 		input  [1:0] operation,
 		output reg [19:0] pixel_out,
-		output stall
 	);
 	
 	wire [7:0] convout9, convout8, convout7, convout6, convout5, convout4, convout3, convout2, convout1;
 	
 	collector3x3 #(.IMAGE_WIDTH(IMAGE_WIDTH), .IMAGE_HEIGHT(IMAGE_HEIGHT)) collector0 (
 		.pixel_in(pixel_in),
-		.clk(clk), .rst_n(rst_n), .stall(stall),
+		.clk(clk), .rst_n(rst_n), .stage_width(width),
 		.out9(convout9), .out8(convout8), .out7(convout7),
 		.out6(convout6), .out5(convout5), .out4(convout4),
 		.out3(convout3), .out2(convout2), .out1(convout1)

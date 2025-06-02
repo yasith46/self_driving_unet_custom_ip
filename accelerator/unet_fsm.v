@@ -1,11 +1,12 @@
 module unet_fsm(
-		input rst_n, clk, unet_en
+		input rst_n, clk, unet_en, data_in
 	);
 	
 	parameter IDLE             = 5'd0,
-	          STAGE1_CONV      = 5'd1,
-	          STAGE1_MXPL      = 5'd2,
-	          STAGE2_CONV      = 5'd3,
+				 STAGE1_LOAD      = 5'd1,
+	          STAGE1_CONV      = 5'd2,
+	          STAGE1_MXPL      = 5'd3,
+	          STAGE2_CONV      = 5'd4,
 				 STAGE2_MXPL      = 5'd5,
 				 STAGE2_CONV      = 5'd6,
 				 STAGE2_MXPL      = 5'd7,
@@ -25,11 +26,25 @@ module unet_fsm(
 	
 	
 	
-	/*************************
+	/*********************************************************************************
 	 * Set of convolutors
 	 */
+	 
+	reg [7:0] cv_pixelin [0:31];
+	reg [7:0] cv_w [0:31][1:9];
+	reg cv_paddingL, cv_paddingR;
+	reg [1:0] cv_op [0:31];
+	reg [7:0] cv_width [0:31];
+	
+	wire [19:0] cv_pixelout [0:31];
+	
+	parameter CONV        = 2'd0,
+	          MAXPOOL2X2 = 2'd1,
+				 TRANS      = 2'd2;
 				 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv0 (
+	
+				 
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv0 (
 		.pixel_in(cv_pixelin[0]),
 		.w9(cv_w[0][9]), .w8(cv_w[0][8]), .w7(cv_w[0][7]), 
 		.w6(cv_w[0][6]), .w5(cv_w[0][5]), .w4(cv_w[0][4]), 
@@ -40,10 +55,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[0]),
 		.operation(cv_op[0]),
-		.stall(cv0_stall)
+		.width(cv_width[0])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv1 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv1 (
 		.pixel_in(cv_pixelin[1]),
 		.w9(cv_w[1][9]), .w8(cv_w[1][8]), .w7(cv_w[1][7]), 
 		.w6(cv_w[1][6]), .w5(cv_w[1][5]), .w4(cv_w[1][4]), 
@@ -54,10 +69,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[1]),
 		.operation(cv_op[1]),
-		.stall(cv1_stall)
+		.width(cv_width[1])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv2 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv2 (
 		.pixel_in(cv_pixelin[2]),
 		.w9(cv_w[2][9]), .w8(cv_w[2][8]), .w7(cv_w[2][7]), 
 		.w6(cv_w[2][6]), .w5(cv_w[2][5]), .w4(cv_w[2][4]), 
@@ -68,10 +83,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[2]),
 		.operation(cv_op[2]),
-		.stall(cv2_stall)
+		.width(cv_width[2])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv3 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv3 (
 		.pixel_in(cv_pixelin[3]),
 		.w9(cv_w[3][9]), .w8(cv_w[3][8]), .w7(cv_w[3][7]), 
 		.w6(cv_w[3][6]), .w5(cv_w[3][5]), .w4(cv_w[3][4]), 
@@ -82,10 +97,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[3]),
 		.operation(cv_op[3]),
-		.stall(cv3_stall)
+		.width(cv_width[3])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv4 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv4 (
 		.pixel_in(cv_pixelin[4]),
 		.w9(cv_w[4][9]), .w8(cv_w[4][8]), .w7(cv_w[4][7]), 
 		.w6(cv_w[4][6]), .w5(cv_w[4][5]), .w4(cv_w[4][4]), 
@@ -96,10 +111,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[4]),
 		.operation(cv_op[4]),
-		.stall(cv4_stall)
+		.width(cv_width[4])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv5 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv5 (
 		.pixel_in(cv_pixelin[5]),
 		.w9(cv_w[5][9]), .w8(cv_w[5][8]), .w7(cv_w[5][7]), 
 		.w6(cv_w[5][6]), .w5(cv_w[5][5]), .w4(cv_w[5][4]), 
@@ -110,10 +125,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[5]),
 		.operation(cv_op[5]),
-		.stall(cv5_stall)
+		.width(cv_width[5])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv6 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv6 (
 		.pixel_in(cv_pixelin[6]),
 		.w9(cv_w[6][9]), .w8(cv_w[6][8]), .w7(cv_w[6][7]), 
 		.w6(cv_w[6][6]), .w5(cv_w[6][5]), .w4(cv_w[6][4]), 
@@ -124,10 +139,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[6]),
 		.operation(cv_op[6]),
-		.stall(cv6_stall)
+		.width(cv_width[6])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv7 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv7 (
 		.pixel_in(cv_pixelin[7]),
 		.w9(cv_w[7][9]), .w8(cv_w[7][8]), .w7(cv_w[7][7]), 
 		.w6(cv_w[7][6]), .w5(cv_w[7][5]), .w4(cv_w[7][4]), 
@@ -138,10 +153,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[7]),
 		.operation(cv_op[7]),
-		.stall(cv7_stall)
+		.width(cv_width[7])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv8 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv8 (
 		.pixel_in(cv_pixelin[8]),
 		.w9(cv_w[8][9]), .w8(cv_w[8][8]), .w7(cv_w[8][7]), 
 		.w6(cv_w[8][6]), .w5(cv_w[8][5]), .w4(cv_w[8][4]), 
@@ -152,10 +167,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[8]),
 		.operation(cv_op[8]),
-		.stall(cv8_stall)
+		.width(cv_width[8])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv9 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv9 (
 		.pixel_in(cv_pixelin[9]),
 		.w9(cv_w[9][9]), .w8(cv_w[9][8]), .w7(cv_w[9][7]), 
 		.w6(cv_w[9][6]), .w5(cv_w[9][5]), .w4(cv_w[9][4]), 
@@ -166,10 +181,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[9]),
 		.operation(cv_op[9]),
-		.stall(cv9_stall)
+		.width(cv_width[9])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv10 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv10 (
 		.pixel_in(cv_pixelin[10]),
 		.w9(cv_w[10][9]), .w8(cv_w[10][8]), .w7(cv_w[10][7]), 
 		.w6(cv_w[10][6]), .w5(cv_w[10][5]), .w4(cv_w[10][4]), 
@@ -180,10 +195,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[10]),
 		.operation(cv_op[10]),
-		.stall(cv10_stall)
+		.width(cv_width[10])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv11 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv11 (
 		.pixel_in(cv_pixelin[11]),
 		.w9(cv_w[11][9]), .w8(cv_w[11][8]), .w7(cv_w[11][7]), 
 		.w6(cv_w[11][6]), .w5(cv_w[11][5]), .w4(cv_w[11][4]), 
@@ -194,10 +209,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[11]),
 		.operation(cv_op[11]),
-		.stall(cv11_stall)
+		.width(cv_width[11])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv12 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv12 (
 		.pixel_in(cv_pixelin[12]),
 		.w9(cv_w[12][9]), .w8(cv_w[12][8]), .w7(cv_w[12][7]), 
 		.w6(cv_w[12][6]), .w5(cv_w[12][5]), .w4(cv_w[12][4]), 
@@ -208,10 +223,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[12]),
 		.operation(cv_op[12]),
-		.stall(cv12_stall)
+		.width(cv_width[12])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv13 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv13 (
 		.pixel_in(cv_pixelin[13]),
 		.w9(cv_w[13][9]), .w8(cv_w[13][8]), .w7(cv_w[13][7]), 
 		.w6(cv_w[13][6]), .w5(cv_w[13][5]), .w4(cv_w[13][4]), 
@@ -222,10 +237,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[13]),
 		.operation(cv_op[13]),
-		.stall(cv13_stall)
+		.width(cv_width[13])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv14 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv14 (
 		.pixel_in(cv_pixelin[14]),
 		.w9(cv_w[14][9]), .w8(cv_w[14][8]), .w7(cv_w[14][7]), 
 		.w6(cv_w[14][6]), .w5(cv_w[14][5]), .w4(cv_w[14][4]), 
@@ -236,10 +251,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[14]),
 		.operation(cv_op[14]),
-		.stall(cv14_stall)
+		.width(cv_width[14])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv15 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv15 (
 		.pixel_in(cv_pixelin[15]),
 		.w9(cv_w[15][9]), .w8(cv_w[15][8]), .w7(cv_w[15][7]), 
 		.w6(cv_w[15][6]), .w5(cv_w[15][5]), .w4(cv_w[15][4]), 
@@ -250,10 +265,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[15]),
 		.operation(cv_op[15]),
-		.stall(cv15_stall)
+		.width(cv_width[15])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv16 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv16 (
 		.pixel_in(cv_pixelin[16]),
 		.w9(cv_w[16][9]), .w8(cv_w[16][8]), .w7(cv_w[16][7]), 
 		.w6(cv_w[16][6]), .w5(cv_w[16][5]), .w4(cv_w[16][4]), 
@@ -264,10 +279,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[16]),
 		.operation(cv_op[16]),
-		.stall(cv16_stall)
+		.width(cv_width[16])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv17 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv17 (
 		.pixel_in(cv_pixelin[17]),
 		.w9(cv_w[17][9]), .w8(cv_w[17][8]), .w7(cv_w[17][7]), 
 		.w6(cv_w[17][6]), .w5(cv_w[17][5]), .w4(cv_w[17][4]), 
@@ -278,10 +293,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[17]),
 		.operation(cv_op[17]),
-		.stall(cv17_stall)
+		.width(cv_width[17])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv18 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv18 (
 		.pixel_in(cv_pixelin[18]),
 		.w9(cv_w[18][9]), .w8(cv_w[18][8]), .w7(cv_w[18][7]), 
 		.w6(cv_w[18][6]), .w5(cv_w[18][5]), .w4(cv_w[18][4]), 
@@ -292,10 +307,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[18]),
 		.operation(cv_op[18]),
-		.stall(cv18_stall)
+		.width(cv_width[18])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv19 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv19 (
 		.pixel_in(cv_pixelin[19]),
 		.w9(cv_w[19][9]), .w8(cv_w[19][8]), .w7(cv_w[19][7]), 
 		.w6(cv_w[19][6]), .w5(cv_w[19][5]), .w4(cv_w[19][4]), 
@@ -306,10 +321,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[19]),
 		.operation(cv_op[19]),
-		.stall(cv19_stall)
+		.width(cv_width[19])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv20 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv20 (
 		.pixel_in(cv_pixelin[20]),
 		.w9(cv_w[20][9]), .w8(cv_w[20][8]), .w7(cv_w[20][7]), 
 		.w6(cv_w[20][6]), .w5(cv_w[20][5]), .w4(cv_w[20][4]), 
@@ -320,10 +335,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[20]),
 		.operation(cv_op[20]),
-		.stall(cv20_stall)
+		.width(cv_width[20])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv21 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv21 (
 		.pixel_in(cv_pixelin[21]),
 		.w9(cv_w[21][9]), .w8(cv_w[21][8]), .w7(cv_w[21][7]), 
 		.w6(cv_w[21][6]), .w5(cv_w[21][5]), .w4(cv_w[21][4]), 
@@ -334,10 +349,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[21]),
 		.operation(cv_op[21]),
-		.stall(cv21_stall)
+		.width(cv_width[21])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv22 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv22 (
 		.pixel_in(cv_pixelin[22]),
 		.w9(cv_w[22][9]), .w8(cv_w[22][8]), .w7(cv_w[22][7]), 
 		.w6(cv_w[22][6]), .w5(cv_w[22][5]), .w4(cv_w[22][4]), 
@@ -348,10 +363,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[22]),
 		.operation(cv_op[22]),
-		.stall(cv22_stall)
+		.width(cv_width[22])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv23 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv23 (
 		.pixel_in(cv_pixelin[23]),
 		.w9(cv_w[23][9]), .w8(cv_w[23][8]), .w7(cv_w[23][7]), 
 		.w6(cv_w[23][6]), .w5(cv_w[23][5]), .w4(cv_w[23][4]), 
@@ -362,10 +377,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[23]),
 		.operation(cv_op[23]),
-		.stall(cv23_stall)
+		.width(cv_width[23])
 	);
 	
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv24 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv24 (
     .pixel_in(cv_pixelin[24]),
     .w9(cv_w[24][9]), .w8(cv_w[24][8]), .w7(cv_w[24][7]), 
 		.w6(cv_w[24][6]), .w5(cv_w[24][5]), .w4(cv_w[24][4]), 
@@ -376,10 +391,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
     .pixel_out(cv_pixelout[24]),
     .operation(cv_op[24]),
-    .stall(cv24_stall)
+		.width(cv_width[24])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv25 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv25 (
 		 .pixel_in(cv_pixelin[25]),
 		 .w9(cv_w[25][9]), .w8(cv_w[25][8]), .w7(cv_w[25][7]), 
 		.w6(cv_w[25][6]), .w5(cv_w[25][5]), .w4(cv_w[25][4]), 
@@ -390,10 +405,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[25]),
 		 .operation(cv_op[25]),
-		 .stall(cv25_stall)
+		.width(cv_width[25])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv26 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv26 (
 		 .pixel_in(cv_pixelin[26]),
 		 .w9(cv_w[26][9]), .w8(cv_w[26][8]), .w7(cv_w[26][7]), 
 		.w6(cv_w[26][6]), .w5(cv_w[26][5]), .w4(cv_w[26][4]), 
@@ -404,10 +419,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[26]),
 		 .operation(cv_op[26]),
-		 .stall(cv26_stall)
+		.width(cv_width[26])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv27 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv27 (
 		 .pixel_in(cv_pixelin[27]),
 		 .w9(cv_w[27][9]), .w8(cv_w[27][8]), .w7(cv_w[27][7]), 
 		.w6(cv_w[27][6]), .w5(cv_w[27][5]), .w4(cv_w[27][4]), 
@@ -418,10 +433,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[27]),
 		 .operation(cv_op[27]),
-		 .stall(cv27_stall)
+		.width(cv_width[27])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv28 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv28 (
 		 .pixel_in(cv_pixelin[28]),
 		 .w9(cv_w[28][9]), .w8(cv_w[28][8]), .w7(cv_w[28][7]), 
 		.w6(cv_w[28][6]), .w5(cv_w[28][5]), .w4(cv_w[28][4]), 
@@ -432,10 +447,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[28]),
 		 .operation(cv_op[28]),
-		 .stall(cv28_stall)
+		.width(cv_width[28])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv29 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv29 (
 		 .pixel_in(cv_pixelin[29]),
 		 .w9(cv_w[29][9]), .w8(cv_w[29][8]), .w7(cv_w[29][7]), 
 		.w6(cv_w[29][6]), .w5(cv_w[29][5]), .w4(cv_w[29][4]), 
@@ -446,10 +461,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[29]),
 		 .operation(cv_op[29]),
-		 .stall(cv29_stall)
+		.width(cv_width[29])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv30 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv30 (
 		 .pixel_in(cv_pixelin[30]),
 		 .w9(cv_w[30][9]), .w8(cv_w[30][8]), .w7(cv_w[30][7]), 
 		.w6(cv_w[30][6]), .w5(cv_w[30][5]), .w4(cv_w[30][4]), 
@@ -460,10 +475,10 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[30]),
 		 .operation(cv_op[30]),
-		 .stall(cv30_stall)
+		.width(cv_width[30])
 	);
 
-	convolutor3x3 #(.IMAGE_WIDTH(256), .IMAGE_HEIGHT(256)) conv31 (
+	convolutor3x3 #(.IMAGE_WIDTH(128), .IMAGE_HEIGHT(128)) conv31 (
 		 .pixel_in(cv_pixelin[31]),
 		 .w9(cv_w[31][9]), .w8(cv_w[31][8]), .w7(cv_w[31][7]), 
 		 .w6(cv_w[31][6]), .w5(cv_w[31][5]), .w4(cv_w[31][4]), 
@@ -474,8 +489,20 @@ module unet_fsm(
 		.paddingr(cv_paddingR),
 		 .pixel_out(cv_pixelout[31]),
 		 .operation(cv_op[31]),
-		 .stall(cv31_stall)
+		.width(cv_width[31])
 	);
+	
+	
+	/*********************************************************************************
+	 * Set of quantizers
+	 */
+	 
+	reg [31:0] qt0_in, qt1_in, qt2_in, qt3_in, qt4_in, qt5_in, qt6_in, qt7_in, 
+	           qt0_bias, qt1_bias, qt2_bias, qt3_bias, qt4_bias, qt5_bias, qt6_bias, qt7_bias,
+				  qt0_zp, qt1_zp, qt2_zp, qt3_zp, qt4_zp, qt5_zp, qt6_zp, qt7_zp, 
+				  qt0_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale;
+	
+	wire [7:0] qt0_res, qt1_res, qt2_res, qt3_res, qt4_res, qt5_res, qt6_res, qt7_res;
 
 	// Quantizers
 	quant qt0(.in(qt0_in), .bias(qt0_bias), .zeropoint(qt0_zp), .scaler_scaled16(qt0_scale), .result(.qt0_res));
@@ -488,44 +515,214 @@ module unet_fsm(
 	quant qt7(.in(qt7_in), .bias(qt7_bias), .zeropoint(qt7_zp), .scaler_scaled16(qt7_scale), .result(.qt7_res));
 	
 	
-	// Macros for loading weights
-	`define LOAD_WEIGHTS(src, n_filters, offset) \
-		for (i = 0; i < n_filters; i = i + 1) \
-        for (w = 0; w < 10; w = w + 1) \
-            cv_w[i+offset][w] <= src[i][w];
+	
+	
+	/*********************************************************************************
+	 * Macros for loading weights
+	 */
+	
+	`define LOAD_WEIGHTS(src) \
+		begin \
+			word_index = src; \
+			byte_offset = 0; \
+			for (f = 0; f < 32; f = f + 1) begin \
+				for (w = 1; w < 10; w = w + 1) begin \
+					case (byte_offset) \
+						0: cv_w[f][w] <= weightbank[word_index][31:24]; \
+						1: cv_w[f][w] <= weightbank[word_index][23:16]; \
+						2: cv_w[f][w] <= weightbank[word_index][15:8];  \
+						3: cv_w[f][w] <= weightbank[word_index][7:0]; \
+					endcase \
+					byte_offset = byte_offset + 1; \
+					if (byte_offset == 4) begin \
+						byte_offset = 0; \
+						word_index = word_index + 1; \
+					end \
+				end \
+			end \
+			qt0_bias <= weightbank[src+72]; \
+			qt0_zp   <= weightbank[src+73]; \
+			qt0_scale <= weightbank[src+74];	\	
+			qt1_bias <= weightbank[src+75]; \
+			qt1_zp   <= weightbank[src+76]; \
+			qt1_scale <= weightbank[src+77];	\
+			qt2_bias <= weightbank[src+78]; \
+			qt2_zp   <= weightbank[src+79]; \
+			qt2_scale <= weightbank[src+80];	\	
+			qt3_bias <= weightbank[src+81]; \
+			qt3_zp   <= weightbank[src+82]; \
+			qt3_scale <= weightbank[src+83]; \
+			qt4_bias <= weightbank[src+84]; \
+			qt4_zp   <= weightbank[src+85]; \
+			qt4_scale <= weightbank[src+86];	 \	
+			qt5_bias <= weightbank[src+87]; \
+			qt5_zp   <= weightbank[src+88]; \
+			qt5_scale <= weightbank[src+89];	 \
+			qt6_bias <= weightbank[src+90]; \ 
+			qt6_zp   <= weightbank[src+91];\ 
+			qt6_scale <= weightbank[src+92];	\ 	
+			qt7_bias <= weightbank[src+93]; \
+			qt7_zp   <= weightbank[src+94]; \
+			qt7_scale <= weightbank[src+95];	 \
+		end
 				
-	integer i, j, k, w;	
+	
+	
+	
+	
+	/*********************************************************************************
+	 * Stages of the UNET, doing the operations...
+	 */
+	 
+	reg [31:0] pixelcount, layercount, inlayercount;
+	
+	// inter-stage memory
+	reg [19:0] intermediate [0:31];
+	
+	// intra-stage memory
+	reg [31:0] layerint_buf0_st1 [0:4095];
+	reg [31:0] layerint_buf1_st1 [0:4095];
+	reg [31:0] layerint_buf2_st1 [0:4095];
+	reg [31:0] layerint_buf3_st1 [0:4095];
+	reg [31:0] layerint_buf4_st1 [0:4095];
+	reg [31:0] layerint_buf5_st1 [0:4095];
+	reg [31:0] layerint_buf6_st1 [0:4095];
+	reg [31:0] layerint_buf7_st1 [0:4095];
+	
+	reg [31:0] layerint_buf0_st2 [0:4095];
+	reg [31:0] layerint_buf1_st2 [0:4095];
+	reg [31:0] layerint_buf2_st2 [0:4095];
+	reg [31:0] layerint_buf3_st2 [0:4095];
+	reg [31:0] layerint_buf4_st2 [0:4095];
+	reg [31:0] layerint_buf5_st2 [0:4095];
+	reg [31:0] layerint_buf6_st2 [0:4095];
+	reg [31:0] layerint_buf7_st2 [0:4095];
+	
+	reg [31:0] layerint_buf0_st3 [0:1023];
+	reg [31:0] layerint_buf1_st3 [0:1023];
+	reg [31:0] layerint_buf2_st3 [0:1023];
+	reg [31:0] layerint_buf3_st3 [0:1023];
+	reg [31:0] layerint_buf4_st3 [0:1023];
+	reg [31:0] layerint_buf5_st3 [0:1023];
+	reg [31:0] layerint_buf6_st3 [0:1023];
+	reg [31:0] layerint_buf7_st3 [0:1023];
+	
+	reg [31:0] layerint_buf0_st4 [0:255];
+	reg [31:0] layerint_buf1_st4 [0:255];
+	reg [31:0] layerint_buf2_st4 [0:255];
+	reg [31:0] layerint_buf3_st4 [0:255];
+	reg [31:0] layerint_buf4_st4 [0:255];
+	reg [31:0] layerint_buf5_st4 [0:255];
+	reg [31:0] layerint_buf6_st4 [0:255];
+	reg [31:0] layerint_buf7_st4 [0:255];
+	reg [31:0] layerint_buf8_st4 [0:255];
+	reg [31:0] layerint_buf9_st4 [0:255];
+	reg [31:0] layerint_buf10_st4 [0:255];
+	reg [31:0] layerint_buf11_st4 [0:255];
+	reg [31:0] layerint_buf12_st4 [0:255];
+	reg [31:0] layerint_buf13_st4 [0:255];
+	reg [31:0] layerint_buf14_st4 [0:255];
+	reg [31:0] layerint_buf15_st4 [0:255];
+	
+	reg [31:0] layerint_buf0_st5 [0:63];
+	reg [31:0] layerint_buf1_st5 [0:63];
+	reg [31:0] layerint_buf2_st5 [0:63];
+	reg [31:0] layerint_buf3_st5 [0:63];
+	reg [31:0] layerint_buf4_st5 [0:63];
+	reg [31:0] layerint_buf5_st5 [0:63];
+	reg [31:0] layerint_buf6_st5 [0:63];
+	reg [31:0] layerint_buf7_st5 [0:63];
+	reg [31:0] layerint_buf8_st5 [0:63];
+	reg [31:0] layerint_buf9_st5 [0:63];
+	reg [31:0] layerint_buf10_st5 [0:63];
+	reg [31:0] layerint_buf11_st5 [0:63];
+	reg [31:0] layerint_buf12_st5 [0:63];
+	reg [31:0] layerint_buf13_st5 [0:63];
+	reg [31:0] layerint_buf14_st5 [0:63];
+	reg [31:0] layerint_buf15_st5 [0:63];
+	
+	reg [31:0] layerint_buf16_st5 [0:15];
+	reg [31:0] layerint_buf17_st5 [0:15];
+	reg [31:0] layerint_buf18_st5 [0:15];
+	reg [31:0] layerint_buf19_st5 [0:15];
+	reg [31:0] layerint_buf20_st5 [0:15];
+	reg [31:0] layerint_buf21_st5 [0:15];
+	reg [31:0] layerint_buf22_st5 [0:15];
+	reg [31:0] layerint_buf23_st5 [0:15];
+	reg [31:0] layerint_buf24_st5 [0:15];
+	reg [31:0] layerint_buf25_st5 [0:15];
+	reg [31:0] layerint_buf26_st5 [0:15];
+	reg [31:0] layerint_buf27_st5 [0:15];
+	reg [31:0] layerint_buf28_st5 [0:15];
+	reg [31:0] layerint_buf29_st5 [0:15];
+	reg [31:0] layerint_buf30_st5 [0:15];
+	reg [31:0] layerint_buf31_st5 [0:15];	
+	
+	
+	
+	
+	integer i, j, k, l, w;	
 	
 	always@(posedge clk or negedge rst_n) begin
 		if (~rst_n) begin
-			// Reset stuff
-			buffer0_head <= 0;
+			pixelcount <= 0;
+			layercount <= 0;
+			inlayercount <= 0;
+			writepixel <= 0;
+			row <= 0;
+			savebuffer <=0
+			for (i=0; i<128; i=i+1) intermediatesum[i] <= 0;
+			
+			for (i=0; i<32; i=i+1) begin
+				intermediate[i] <= 0;
+				for (w=1; w<10) cv_w[i][w] <= 0;
+			end
 		end else begin
 			case (state)
 				IDLE:
-				STAGE1_LOAD:
+					begin
+						pixelcount <= 0;
+						layercount <= 0;
+						inlayercount <= 0;
+						writepixel <= 0;
+						row <= 0;
+						savebuffer <=0
+						for (i=0; i<128; i=i+1) intermediatesum[i] <= 0;
+						
+						for (i=0; i<32; i=i+1) begin
+							intermediate[i] <= 0;
+							for (w=1; w<10) cv_w[i][w] <= 0;
+						end
+					end
+					
+					
+				STAGE1_WEIGHTLOAD:
+					begin
+					end
+					
+					
 				STAGE1_CONV:
 					// 3 (128x128) Layers ---> 8 (128x128) Layers
 					// Here all 8 outlayers calced parellelly
 					
 					begin
 						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
- 							state <= STAGE1_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 32'b0;
+							if (pixelcount == 32'd16513) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE1_MXPL;
+								pixelcount <= 32'b0;
+								layercount <= 32'b0;
+							end
 							
 						end else begin
 							// pixelcount
 							pixelcount <= pixelcount + 1;
 							
 							// filling weights
-							for (i=0; i<24; i=i+3) begin
-								for (w=0; w<10; w=w+1) begin
-									cv_w[i][w]   <= stage1_layer1[i][w];	// R
-									cv_w[i+1][w] <= stage1_layer2[i][w];	// G
-									cv_w[i+2][w] <= stage1_layer3[i][w];	// B
-								end
-							end
+							`LOAD_WEIGHTS(0)
 							
 							if (pixelcount >= 129) begin  // ( width+2 for the padding )
 								for (i=0; i<24; i=i+3) begin
@@ -624,10 +821,16 @@ module unet_fsm(
 				STAGE1_MXPL:
 					// 8 (128x128) Layers ---> 8 (64x64) Layers
 					begin
-						if (pixelcount >= 32'd4096) begin // (128*128/4 as 1/4th image pooled parellerly)
-							state <= STAGE2_CONV;
-							pixelcount <= 32'b0;
-							skips <= 0;
+						if (pixelcount >= 32'd4225) begin // (128*128/4 as 1/4th image pooled parellerly)
+							if (pixelcount == 32'd4225) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE2_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 32'b0;
+							end
 							
 						end else begin
 							// pixelcount
@@ -647,17 +850,20 @@ module unet_fsm(
 							//   layerint_buf6         L1-P3072       L2-P3072       L3-P3072      L4-P3072
 							//   layerint_buf7         L5-P3072       L6-P3072       L7-P3072      L8-P3072
 							// 
-							if ((pixelcount >= 129) && (pixelcount % 128 == 0)) skips <= skips + 1;
+							if ((pixelcount + 1) % 128 == 0) row <= row + 1;
 							
-							if ((pixelcount >= 129) && ~(pixelcount % 128 == 0)) begin
-								layerint_buf0_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
-								layerint_buf1_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
-								layerint_buf2_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
-								layerint_buf3_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
-								layerint_buf4_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
-								layerint_buf5_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
-								layerint_buf6_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
-								layerint_buf7_st2[((pixelcount-skips-129)*4)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
+							
+							if ((pixelcount >= 129) && (pixelcount % 2 == 1) && (row % 2 == 0)) begin
+								writepixel <= writepixel + 1;
+								
+								layerint_buf0_st2[(writepixel)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
+								layerint_buf1_st2[(writepixel)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
+								layerint_buf2_st2[(writepixel)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
+								layerint_buf3_st2[(writepixel)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
+								layerint_buf4_st2[(writepixel)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
+								layerint_buf5_st2[(writepixel)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
+								layerint_buf6_st2[(writepixel)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
+								layerint_buf7_st2[(writepixel)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
 							end
 						end
 					end
@@ -674,9 +880,16 @@ module unet_fsm(
 					
 					begin
 						if (pixelcount >= 32'd4161) begin  // (height*width + (width+1) for padding)
-							state <= STAGE2_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+							if (pixelcount == 32'd4161) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE2_MXPL;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+							end
+														
 							
 						end else begin
 							if (pixelcount < 65) begin  // ( width+2 for the padding )
@@ -692,10 +905,7 @@ module unet_fsm(
 									case (layercount)
 										32'd0:
 											begin
-												`LOAD_WEIGHTS(stage2_layer1, 8, 0)	// filter 0
-												`LOAD_WEIGHTS(stage2_layer2, 8, 8)	// filter 1
-												`LOAD_WEIGHTS(stage2_layer3, 8, 16)	// filter 2
-												`LOAD_WEIGHTS(stage2_layer4, 8, 24)	// filter 3
+												`LOAD_WEIGHTS(96)
 											end
 											
 										32'd4:
@@ -725,7 +935,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w] <= 1;
 													end
 												end
@@ -789,33 +999,33 @@ module unet_fsm(
 											32'd0:
 												begin
 													if (pixelcount < 32'd2114) 
-														layerint_buf0_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf0_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 													else
-														layerint_buf4_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf4_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 												end
 											
 											32'd4:
 												begin
 													if (pixelcount < 32'd2114) 
-														layerint_buf1_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf1_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 													else
-														layerint_buf5_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf5_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 												end
 												
 											32'd8:
 												begin
 													if (pixelcount < 32'd2114) 
-														layerint_buf2_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf2_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 													else
-														layerint_buf6_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf6_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 												end
 												
 											32'd12:
 												begin
 													if (pixelcount < 32'd2114) 
-														layerint_buf3_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf3_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 													else
-														layerint_buf7_st2[(pixelcount-66)*4]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														layerint_buf7_st2[(pixelcount-66)]  <= {qt0_res, qt1_res, qt2_res, qt3_res};
 												end
 										endcase
 									end
@@ -827,13 +1037,21 @@ module unet_fsm(
 				STAGE2_MXPL:
 					// 16 (64x64) Layers ---> 16 (32x32) Layers
 					begin
-						if (pixelcount >= 32'd4356) begin
-							state <= STAGE3_CONV;
-							pixelcount <= 32'b0;
-						
-						end else begin
-							pixelcount <= pixelcount + 1;
+						if (pixelcount >= 32'd2113) begin // (64*64/2 as 1/2th image pooled parellerly + 64 + 1)
+							if (pixelcount == 32'd2113) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE3_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+							end
 							
+						end else begin
+							// pixelcount
+							pixelcount <= pixelcount + 1;
+								
 							//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 							// ------------------------------------------------------------------------------- Q1 [511:0]
 							//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -846,21 +1064,25 @@ module unet_fsm(
 							//   layerint_buf6         L9-P512        L10-P512       L11-P512      L12-P512 
 							//   layerint_buf7         L13-P512       L14-P512       L15-P512      L16-P512
 							// 
-				
-							if ((pixelcount >= 129) && (pixelcount % 128 == 0)) skips <= skips + 1;
 							
-							if ((pixelcount >= 129) && ~(pixelcount % 128 == 0)) begin
-								layerint_buf0_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
-								layerint_buf1_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
-								layerint_buf2_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
-								layerint_buf3_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
-								layerint_buf4_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
-								layerint_buf5_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
-								layerint_buf6_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
-								layerint_buf7_st3[((pixelcount-skips-129)*4)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
+							if ((pixelcount + 1) % 64 == 0) row <= row + 1;
+							
+							
+							if ((pixelcount >= 65) && (pixelcount % 2 == 1) && (row % 2 == 0)) begin
+								writepixel <= writepixel + 1;
+								
+								layerint_buf0_st2[(writepixel)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
+								layerint_buf1_st2[(writepixel)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
+								layerint_buf2_st2[(writepixel)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
+								layerint_buf3_st2[(writepixel)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
+								layerint_buf4_st2[(writepixel)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
+								layerint_buf5_st2[(writepixel)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
+								layerint_buf6_st2[(writepixel)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
+								layerint_buf7_st2[(writepixel)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
 							end
 						end
 					end
+					
 					
 				STAGE3_CONV:
 					// 16 (32x32) levels ---> 32 (32x32) levels
@@ -873,9 +1095,15 @@ module unet_fsm(
 					//
 					begin
 						if (pixelcount >= 32'd1057) begin  // (height*width + (width+1) for padding)
-							state <= STAGE3_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+							if (pixelcount == 32'd1057) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE3_MXPL;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 33) begin  // ( width+2 for the padding )
@@ -988,7 +1216,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -1036,22 +1264,22 @@ module unet_fsm(
 									
 									if (pixelcount >33) begin
 										case (layercount-2):
-											32'd0:  layerint_buf0_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd2:  layerint_buf0_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd4:  layerint_buf1_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd6:  layerint_buf1_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd8:  layerint_buf2_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd10: layerint_buf2_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd12: layerint_buf3_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd14: layerint_buf3_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd16: layerint_buf4_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd18: layerint_buf4_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd20: layerint_buf5_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd22: layerint_buf5_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd24: layerint_buf6_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd26: layerint_buf6_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
-											32'd28: layerint_buf7_st3[(pixelcount-34)*4]     <= {qt0_res, qt1_res};
-											32'd30: layerint_buf7_st3[((pixelcount-34)*4)+2] <= {qt0_res, qt1_res};
+											32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd2:  layerint_buf0_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd6:  layerint_buf1_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd8:  savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd10: layerint_buf2_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd12: savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd14: layerint_buf3_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd16: savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd18: layerint_buf4_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd20: savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd22: layerint_buf5_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd24: savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd26: layerint_buf6_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											32'd28: savebuffer[31:16] <= {qt0_res, qt1_res};
+											32'd30: layerint_buf7_st3[(pixelcount-34)] <= {savebuffer[31:16], qt0_res, qt1_res};
 										endcase
 									end
 								end
@@ -1061,56 +1289,49 @@ module unet_fsm(
 					
 				STAGE3_MXPL:
 					// 32 (32x32) Layers ---> 32 (16x16) Layers
-					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
-					// ------------------------------------------------------------------------------- Q1 [255:0]
-					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
-					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
-					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
-					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
-					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
-					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
-					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
-					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
-					begin
-						if (pixelcount >= 32'd1057) begin
-							state <= STAGE4_CONV;
-							pixelcount <= 32'b0;
-						
-						end else begin
-							pixelcount <= pixelcount + 1;
-							
-							// filter 0,1,2,3
-							outbuf0[outbuf_head[0]] <= {cv_pixelout[0], cv_pixelout[1], cv_pixelout[2], cv_pixelout[3]};
-							// filter 4,5,6,7
-							outbuf1[outbuf_head[1]] <= {cv_pixelout[4], cv_pixelout[5], cv_pixelout[6], cv_pixelout[7]};
-							// filter 8,9,10,11
-							outbuf2[outbuf_head[2]] <= {cv_pixelout[8], cv_pixelout[9], cv_pixelout[10], cv_pixelout[11]};
-							// filter 12,13,14,15
-							outbuf3[outbuf_head[3]] <= {cv_pixelout[12], cv_pixelout[13], cv_pixelout[14], cv_pixelout[15]};
-							// filter 16,17,18,19
-							outbuf4[outbuf_head[4]] <= {cv_pixelout[16], cv_pixelout[17], cv_pixelout[18], cv_pixelout[19]};
-							// filter 20,21,22,23
-							outbuf5[outbuf_head[5]] <= {cv_pixelout[20], cv_pixelout[21], cv_pixelout[22], cv_pixelout[23]};
-							// filter 24,25,26,27
-							outbuf6[outbuf_head[6]] <= {cv_pixelout[24], cv_pixelout[25], cv_pixelout[26], cv_pixelout[27]};
-							// filter 28,29,30,31
-							outbuf7[outbuf_head[7]] <= {cv_pixelout[28], cv_pixelout[29], cv_pixelout[30], cv_pixelout[31]};
 					
-							for (int i = 0; i < 8; i = i + 1)
-								outbuf_head[i] <= outbuf_head[i] + 1;
-								
-							case (readbuf_id)
-								3'd0: bram_data <= outbuf0[outbuf_head[0] - 1]; 
-								3'd1: bram_data <= outbuf1[outbuf_head[1] - 1]; 
-								3'd2: bram_data <= outbuf2[outbuf_head[2] - 1]; 
-								3'd3: bram_data <= outbuf3[outbuf_head[3] - 1]; 
-								3'd4: bram_data <= outbuf4[outbuf_head[4] - 1]; 
-								3'd5: bram_data <= outbuf5[outbuf_head[5] - 1]; 
-								3'd6: bram_data <= outbuf6[outbuf_head[6] - 1]; 
-								3'd7: bram_data <= outbuf7[outbuf_head[7] - 1]; 
-							endcase
+					begin
+						if (pixelcount >= 32'd1057) begin // (32*32 + 32 + 1)
+							if (pixelcount == 32'd4161) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE4_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+							end
 							
-							readbuf_id <= (readbuf_id == 7) ? 0 : readbuf_id + 1;
+						end else begin
+							// pixelcount
+							pixelcount <= pixelcount + 1;
+								
+							//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+							// ------------------------------------------------------------------------------- Q1 [255:0]
+							//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+							//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+							//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+							//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+							//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+							//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+							//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+							//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+							
+							if ((pixelcount + 1) % 32 == 0) row <= row + 1;
+							
+							
+							if ((pixelcount >= 33) && (pixelcount % 2 == 1) && (row % 2 == 0)) begin
+								writepixel <= writepixel + 1;
+								
+								layerint_buf0_st2[(writepixel)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
+								layerint_buf1_st2[(writepixel)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
+								layerint_buf2_st2[(writepixel)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
+								layerint_buf3_st2[(writepixel)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
+								layerint_buf4_st2[(writepixel)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
+								layerint_buf5_st2[(writepixel)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
+								layerint_buf6_st2[(writepixel)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
+								layerint_buf7_st2[(writepixel)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
+							end
 						end
 					end
 					
@@ -1125,9 +1346,15 @@ module unet_fsm(
 					//
 					begin
 						if (pixelcount >= 32'd273) begin  // (height*width + (width+1) for padding)
-							state <= STAGE4_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+							if (pixelcount == 32'd4161) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE4_MXPL;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 17) begin  // ( width+2 for the padding )
@@ -1209,7 +1436,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -1257,70 +1484,70 @@ module unet_fsm(
 									
 									if (pixelcount >17) begin
 										case (layercount-1):
-											32'd0:  layerint_buf0_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd1:  layerint_buf0_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd2:  layerint_buf0_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd3:  layerint_buf0_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd4:  layerint_buf1_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd5:  layerint_buf1_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd6:  layerint_buf1_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd7:  layerint_buf1_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd8:  layerint_buf2_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd9:  layerint_buf2_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd10: layerint_buf2_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd11: layerint_buf2_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd12: layerint_buf3_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd13: layerint_buf3_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd14: layerint_buf3_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd15: layerint_buf3_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd16: layerint_buf4_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd17: layerint_buf4_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd18: layerint_buf4_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd19: layerint_buf4_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd20: layerint_buf5_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd21: layerint_buf5_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd22: layerint_buf5_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd23: layerint_buf5_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd24: layerint_buf6_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd25: layerint_buf6_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd26: layerint_buf6_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd27: layerint_buf6_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd28: layerint_buf7_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd29: layerint_buf7_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd30: layerint_buf7_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd31: layerint_buf7_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd32: layerint_buf8_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd33: layerint_buf8_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd34: layerint_buf8_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd35: layerint_buf8_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd36: layerint_buf9_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd37: layerint_buf9_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd38: layerint_buf9_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd39: layerint_buf9_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd40: layerint_buf10_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd41: layerint_buf10_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd42: layerint_buf10_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd43: layerint_buf10_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd44: layerint_buf11_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd45: layerint_buf11_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd46: layerint_buf11_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd47: layerint_buf11_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd48: layerint_buf12_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd49: layerint_buf12_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd50: layerint_buf12_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd51: layerint_buf12_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd52: layerint_buf13_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd53: layerint_buf13_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd54: layerint_buf13_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd55: layerint_buf13_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd56: layerint_buf14_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd57: layerint_buf14_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd58: layerint_buf14_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd59: layerint_buf14_st4[((pixelcount-18)*4)+3] <= {qt0_res};
-											32'd60: layerint_buf15_st4[(pixelcount-18)*4]     <= {qt0_res};
-											32'd61: layerint_buf15_st4[((pixelcount-18)*4)+1] <= {qt0_res};
-											32'd62: layerint_buf15_st4[((pixelcount-18)*4)+2] <= {qt0_res};
-											32'd63: layerint_buf15_st4[((pixelcount-18)*4)+3] <= {qt0_res};
+											32'd0:  savebuffer[31:24] <= {qt0_res};
+											32'd1:  savebuffer[23:16] <= {qt0_res};
+											32'd2:  savebuffer[15:8]  <= {qt0_res};
+											32'd3:  layerint_buf0_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd4:  savebuffer[31:24] <= {qt0_res};
+											32'd5:  savebuffer[23:16] <= {qt0_res};
+											32'd6:  savebuffer[15:8]  <= {qt0_res};
+											32'd7:  layerint_buf1_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd8:  savebuffer[31:24] <= {qt0_res};
+											32'd9:  savebuffer[23:16] <= {qt0_res};
+											32'd10: savebuffer[15:8]  <= {qt0_res};
+											32'd11: layerint_buf2_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd12: savebuffer[31:24] <= {qt0_res};
+											32'd13: savebuffer[23:16] <= {qt0_res};
+											32'd14: savebuffer[15:8]  <= {qt0_res};
+											32'd15: layerint_buf3_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd16: savebuffer[31:24] <= {qt0_res};
+											32'd17: savebuffer[23:16] <= {qt0_res};
+											32'd18: savebuffer[15:8]  <= {qt0_res};
+											32'd19: layerint_buf4_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd20: savebuffer[31:24] <= {qt0_res};
+											32'd21: savebuffer[23:16] <= {qt0_res};
+											32'd22: savebuffer[15:8]  <= {qt0_res};
+											32'd23: layerint_buf5_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd24: savebuffer[31:24] <= {qt0_res};
+											32'd25: savebuffer[23:16] <= {qt0_res};
+											32'd26: savebuffer[15:8]  <= {qt0_res};
+											32'd27: layerint_buf6_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd28: savebuffer[31:24] <= {qt0_res};
+											32'd29: savebuffer[23:16] <= {qt0_res};
+											32'd30: savebuffer[15:8]  <= {qt0_res};
+											32'd31: layerint_buf7_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd32: savebuffer[31:24] <= {qt0_res};
+											32'd33: savebuffer[23:16] <= {qt0_res};
+											32'd34: savebuffer[15:8]  <= {qt0_res};
+											32'd35: layerint_buf8_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd36: savebuffer[31:24] <= {qt0_res};
+											32'd37: savebuffer[23:16] <= {qt0_res};
+											32'd38: savebuffer[15:8]  <= {qt0_res};
+											32'd39: layerint_buf9_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd40: savebuffer[31:24] <= {qt0_res};
+											32'd41: savebuffer[23:16] <= {qt0_res};
+											32'd42: savebuffer[15:8]  <= {qt0_res};
+											32'd43: layerint_buf10_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd44: savebuffer[31:24] <= {qt0_res};
+											32'd45: savebuffer[23:16] <= {qt0_res};
+											32'd46: savebuffer[15:8]  <= {qt0_res};
+											32'd47: layerint_buf11_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd48: savebuffer[31:24] <= {qt0_res};
+											32'd49: savebuffer[23:16] <= {qt0_res};
+											32'd50: savebuffer[15:8]  <= {qt0_res};
+											32'd51: layerint_buf12_st4[[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd52: savebuffer[31:24] <= {qt0_res};
+											32'd53: savebuffer[23:16] <= {qt0_res};
+											32'd54: savebuffer[15:8]  <= {qt0_res};
+											32'd55: layerint_buf13_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd56: savebuffer[31:24] <= {qt0_res};
+											32'd57: savebuffer[23:16] <= {qt0_res};
+											32'd58: savebuffer[15:8]  <= {qt0_res};
+											32'd59: layerint_buf14_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+											32'd60: savebuffer[31:24] <= {qt0_res};
+											32'd61: savebuffer[23:16] <= {qt0_res};
+											32'd62: savebuffer[15:8]  <= {qt0_res};
+											32'd63: layerint_buf15_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
 										endcase
 									end
 								end
@@ -1330,55 +1557,75 @@ module unet_fsm(
 					
 				STAGE4_MXPL:
 					// 64 (16x16) Layers ---> 64 (8x8) Layers
-					//
-					// input layers 1-32 first done
-					// then input layers 33-64 done
+					
 					begin
-						if (pixelcount >= 32'd100) begin
-							if (inlayercount >=64) begin
-								state <= STAGE5_CONV;
-								pixelcount <= 32'b0;
-								inlayercount <= 32'b0;
+						if (pixelcount >= 32'd273) begin  // (height*width + (width+1) for padding)
+							if (inlayercount >= 32'd64) begin
+								if (pixelcount == 32'd273) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE5_CONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
+								writepixel <= 0;
+								row <= 0;
 								inlayercount <= inlayercount + 32'd32;
 							end
+							
 						end else begin
 							pixelcount <= pixelcount + 1;
-							
-							// filter 0,1,2,3
-							outbuf0[outbuf_head[0]] <= {cv_pixelout[0], cv_pixelout[1], cv_pixelout[2], cv_pixelout[3]};
-							// filter 4,5,6,7
-							outbuf1[outbuf_head[1]] <= {cv_pixelout[4], cv_pixelout[5], cv_pixelout[6], cv_pixelout[7]};
-							// filter 8,9,10,11
-							outbuf2[outbuf_head[2]] <= {cv_pixelout[8], cv_pixelout[9], cv_pixelout[10], cv_pixelout[11]};
-							// filter 12,13,14,15
-							outbuf3[outbuf_head[3]] <= {cv_pixelout[12], cv_pixelout[13], cv_pixelout[14], cv_pixelout[15]};
-							// filter 16,17,18,19
-							outbuf4[outbuf_head[4]] <= {cv_pixelout[16], cv_pixelout[17], cv_pixelout[18], cv_pixelout[19]};
-							// filter 20,21,22,23
-							outbuf5[outbuf_head[5]] <= {cv_pixelout[20], cv_pixelout[21], cv_pixelout[22], cv_pixelout[23]};
-							// filter 24,25,26,27
-							outbuf6[outbuf_head[6]] <= {cv_pixelout[24], cv_pixelout[25], cv_pixelout[26], cv_pixelout[27]};
-							// filter 28,29,30,31
-							outbuf7[outbuf_head[7]] <= {cv_pixelout[28], cv_pixelout[29], cv_pixelout[30], cv_pixelout[31]};
-					
-							for (int i = 0; i < 8; i = i + 1)
-								outbuf_head[i] <= outbuf_head[i] + 1;
 								
-							case (readbuf_id)
-								3'd0: bram_data <= outbuf0[outbuf_head[0] - 1]; 
-								3'd1: bram_data <= outbuf1[outbuf_head[1] - 1]; 
-								3'd2: bram_data <= outbuf2[outbuf_head[2] - 1]; 
-								3'd3: bram_data <= outbuf3[outbuf_head[3] - 1]; 
-								3'd4: bram_data <= outbuf4[outbuf_head[4] - 1]; 
-								3'd5: bram_data <= outbuf5[outbuf_head[5] - 1]; 
-								3'd6: bram_data <= outbuf6[outbuf_head[6] - 1]; 
-								3'd7: bram_data <= outbuf7[outbuf_head[7] - 1]; 
-							endcase
+							//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+							// ------------------------------------------------------------------------------- Q1 [63:0]
+							//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+							//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+							//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+							//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+							//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+							//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+							//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+							//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+							//   layerint_buf8         L33-P1         L34-P1         L35-P1        L36-P1
+							//   layerint_buf9         L37-P1         L38-P1         L39-P1        L40-P1
+							//   layerint_buf10        L41-P1         L42-P1         L43-P1        L44-P1
+							//   layerint_buf11        L45-P1         L46-P1         L47-P1        L48-P1
+							//   layerint_buf12        L49-P1         L50-P1         L51-P1        L52-P1
+							//   layerint_buf13        L53-P1         L54-P1         L55-P1        L56-P1
+							//   layerint_buf14        L57-P1         L58-P1         L59-P1        L60-P1
+							//   layerint_buf15        L61-P1         L62-P1         L63-P1        L64-P1
 							
-							readbuf_id <= (readbuf_id == 7) ? 0 : readbuf_id + 1;
+							if ((pixelcount + 1) % 16 == 0) row <= row + 1;
+							
+							
+							if ((pixelcount >= 33) && (pixelcount % 2 == 1) && (row % 2 == 0)) begin
+								writepixel <= writepixel + 1;
+								
+								if (inlayercount == 0) begin
+									layerint_buf0_st2[(writepixel)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
+									layerint_buf1_st2[(writepixel)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
+									layerint_buf2_st2[(writepixel)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
+									layerint_buf3_st2[(writepixel)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
+									layerint_buf4_st2[(writepixel)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
+									layerint_buf5_st2[(writepixel)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
+									layerint_buf6_st2[(writepixel)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
+									layerint_buf7_st2[(writepixel)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
+								end else begin
+									layerint_buf8_st2[(writepixel)] <= {cv_pixelout[0][7:0], cv_pixelout[1][7:0], cv_pixelout[2][7:0], cv_pixelout[3][7:0]};
+									layerint_buf9_st2[(writepixel)] <= {cv_pixelout[4][7:0], cv_pixelout[5][7:0], cv_pixelout[6][7:0], cv_pixelout[7][7:0]};
+									layerint_buf10_st2[(writepixel)] <= {cv_pixelout[8][7:0], cv_pixelout[9][7:0], cv_pixelout[10][7:0], cv_pixelout[11][7:0]};
+									layerint_buf11_st2[(writepixel)] <= {cv_pixelout[12][7:0], cv_pixelout[13][7:0], cv_pixelout[14][7:0], cv_pixelout[15][7:0]};
+									layerint_buf12_st2[(writepixel)] <= {cv_pixelout[16][7:0], cv_pixelout[17][7:0], cv_pixelout[18][7:0], cv_pixelout[19][7:0]};
+									layerint_buf13_st2[(writepixel)] <= {cv_pixelout[20][7:0], cv_pixelout[21][7:0], cv_pixelout[22][7:0], cv_pixelout[23][7:0]};
+									layerint_buf14_st2[(writepixel)] <= {cv_pixelout[24][7:0], cv_pixelout[25][7:0], cv_pixelout[26][7:0], cv_pixelout[27][7:0]};
+									layerint_buf15_st2[(writepixel)] <= {cv_pixelout[28][7:0], cv_pixelout[29][7:0], cv_pixelout[30][7:0], cv_pixelout[31][7:0]};
+								end
+							end
 						end
 					end
 					
@@ -1403,10 +1650,16 @@ module unet_fsm(
 					begin
 						if (pixelcount >= 32'd73) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd64) begin
-								state <= STAGE6_TRANSCONV;
-								pixelcount <= 32'b0;
-								layercount <= 0;
-								inlayercount <= 0;
+								if (pixelcount == 32'd73) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE6_TRANSCONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
@@ -1559,7 +1812,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -1699,7 +1952,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -1767,134 +2020,134 @@ module unet_fsm(
 										
 										if (pixelcount >9) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd16: layerint_buf4_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd17: layerint_buf4_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd18: layerint_buf4_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd19: layerint_buf4_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd20: layerint_buf5_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd21: layerint_buf5_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd22: layerint_buf5_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd23: layerint_buf5_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd24: layerint_buf6_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd25: layerint_buf6_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd26: layerint_buf6_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd27: layerint_buf6_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd28: layerint_buf7_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd29: layerint_buf7_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd30: layerint_buf7_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd31: layerint_buf7_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd32: layerint_buf8_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd33: layerint_buf8_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd34: layerint_buf8_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd35: layerint_buf8_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd36: layerint_buf9_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd37: layerint_buf9_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd38: layerint_buf9_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd39: layerint_buf9_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd40: layerint_buf10_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd41: layerint_buf10_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd42: layerint_buf10_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd43: layerint_buf10_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd44: layerint_buf11_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd45: layerint_buf11_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd46: layerint_buf11_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd47: layerint_buf11_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd48: layerint_buf12_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd49: layerint_buf12_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd50: layerint_buf12_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd51: layerint_buf12_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd52: layerint_buf13_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd53: layerint_buf13_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd54: layerint_buf13_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd55: layerint_buf13_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd56: layerint_buf14_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd57: layerint_buf14_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd58: layerint_buf14_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd59: layerint_buf14_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd60: layerint_buf15_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd61: layerint_buf15_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd62: layerint_buf15_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd63: layerint_buf15_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd64: layerint_buf16_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd65: layerint_buf16_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd66: layerint_buf16_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd67: layerint_buf16_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd68: layerint_buf17_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd69: layerint_buf17_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd70: layerint_buf17_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd71: layerint_buf17_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd72: layerint_buf18_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd73: layerint_buf18_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd74: layerint_buf18_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd75: layerint_buf18_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd76: layerint_buf19_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd77: layerint_buf19_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd78: layerint_buf19_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd79: layerint_buf19_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd80: layerint_buf20_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd81: layerint_buf20_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd82: layerint_buf20_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd83: layerint_buf20_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd84: layerint_buf21_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd85: layerint_buf21_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd86: layerint_buf21_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd87: layerint_buf21_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd88: layerint_buf22_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd89: layerint_buf22_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd90: layerint_buf22_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd91: layerint_buf22_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd92: layerint_buf23_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd93: layerint_buf23_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd94: layerint_buf23_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd95: layerint_buf23_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd96: layerint_buf24_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd97: layerint_buf24_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd98: layerint_buf24_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd99: layerint_buf24_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd100: layerint_buf25_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd101: layerint_buf25_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd102: layerint_buf25_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd103: layerint_buf25_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd104: layerint_buf26_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd105: layerint_buf26_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd106: layerint_buf26_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd107: layerint_buf26_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd108: layerint_buf27_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd109: layerint_buf27_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd110: layerint_buf27_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd111: layerint_buf27_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd112: layerint_buf28_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd113: layerint_buf28_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd114: layerint_buf28_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd115: layerint_buf28_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd116: layerint_buf29_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd117: layerint_buf29_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd118: layerint_buf29_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd119: layerint_buf29_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd120: layerint_buf30_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd121: layerint_buf30_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd122: layerint_buf30_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd123: layerint_buf30_st5[((pixelcount-10)*4)+3] <= {qt0_res};
-												32'd124: layerint_buf31_st5[(pixelcount-10)*4]     <= {qt0_res};
-												32'd125: layerint_buf31_st5[((pixelcount-10)*4)+1] <= {qt0_res};
-												32'd126: layerint_buf31_st5[((pixelcount-10)*4)+2] <= {qt0_res};
-												32'd127: layerint_buf31_st5[((pixelcount-10)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd16: savebuffer[31:24] <= {qt0_res};
+												32'd17: savebuffer[23:16] <= {qt0_res};
+												32'd18: savebuffer[15:8]  <= {qt0_res};
+												32'd19: layerint_buf4_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd20: savebuffer[31:24] <= {qt0_res};
+												32'd21: savebuffer[23:16] <= {qt0_res};
+												32'd22: savebuffer[15:8]  <= {qt0_res};
+												32'd23: layerint_buf5_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd24: savebuffer[31:24] <= {qt0_res};
+												32'd25: savebuffer[23:16] <= {qt0_res};
+												32'd26: savebuffer[15:8]  <= {qt0_res};
+												32'd27: layerint_buf6_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd28: savebuffer[31:24] <= {qt0_res};
+												32'd29: savebuffer[23:16] <= {qt0_res};
+												32'd30: savebuffer[15:8]  <= {qt0_res};
+												32'd31: layerint_buf7_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd32: savebuffer[31:24] <= {qt0_res};
+												32'd33: savebuffer[23:16] <= {qt0_res};
+												32'd34: savebuffer[15:8]  <= {qt0_res};
+												32'd35: layerint_buf8_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd36: savebuffer[31:24] <= {qt0_res};
+												32'd37: savebuffer[23:16] <= {qt0_res};
+												32'd38: savebuffer[15:8]  <= {qt0_res};
+												32'd39: layerint_buf9_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd40: savebuffer[31:24] <= {qt0_res};
+												32'd41: savebuffer[23:16] <= {qt0_res};
+												32'd42: savebuffer[15:8]  <= {qt0_res};
+												32'd43: layerint_buf10_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd44: savebuffer[31:24] <= {qt0_res};
+												32'd45: savebuffer[23:16] <= {qt0_res};
+												32'd46: savebuffer[15:8]  <= {qt0_res};
+												32'd47: layerint_buf11_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd48: savebuffer[31:24] <= {qt0_res};
+												32'd49: savebuffer[23:16] <= {qt0_res};
+												32'd50: savebuffer[15:8]  <= {qt0_res};
+												32'd51: layerint_buf12_st5[[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd52: savebuffer[31:24] <= {qt0_res};
+												32'd53: savebuffer[23:16] <= {qt0_res};
+												32'd54: savebuffer[15:8]  <= {qt0_res};
+												32'd55: layerint_buf13_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd56: savebuffer[31:24] <= {qt0_res};
+												32'd57: savebuffer[23:16] <= {qt0_res};
+												32'd58: savebuffer[15:8]  <= {qt0_res};
+												32'd59: layerint_buf14_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd60: savebuffer[31:24] <= {qt0_res};
+												32'd61: savebuffer[23:16] <= {qt0_res};
+												32'd62: savebuffer[15:8]  <= {qt0_res};
+												32'd63: layerint_buf15_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd64:  savebuffer[31:24] <= {qt0_res};
+												32'd65:  savebuffer[23:16] <= {qt0_res};
+												32'd66:  savebuffer[15:8]  <= {qt0_res};
+												32'd67:  layerint_buf16_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd68:  savebuffer[31:24] <= {qt0_res};
+												32'd69:  savebuffer[23:16] <= {qt0_res};
+												32'd70:  savebuffer[15:8]  <= {qt0_res};
+												32'd71:  layerint_buf17_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd72:  savebuffer[31:24] <= {qt0_res};
+												32'd73:  savebuffer[23:16] <= {qt0_res};
+												32'd74: savebuffer[15:8]  <= {qt0_res};
+												32'd75: layerint_buf18_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd76: savebuffer[31:24] <= {qt0_res};
+												32'd77: savebuffer[23:16] <= {qt0_res};
+												32'd78: savebuffer[15:8]  <= {qt0_res};
+												32'd79: layerint_buf19_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd80: savebuffer[31:24] <= {qt0_res};
+												32'd81: savebuffer[23:16] <= {qt0_res};
+												32'd82: savebuffer[15:8]  <= {qt0_res};
+												32'd83: layerint_buf20_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd84: savebuffer[31:24] <= {qt0_res};
+												32'd85: savebuffer[23:16] <= {qt0_res};
+												32'd86: savebuffer[15:8]  <= {qt0_res};
+												32'd87: layerint_buf21_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd88: savebuffer[31:24] <= {qt0_res};
+												32'd89: savebuffer[23:16] <= {qt0_res};
+												32'd90: savebuffer[15:8]  <= {qt0_res};
+												32'd91: layerint_buf22_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd92: savebuffer[31:24] <= {qt0_res};
+												32'd93: savebuffer[23:16] <= {qt0_res};
+												32'd94: savebuffer[15:8]  <= {qt0_res};
+												32'd95: layerint_buf23_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd96: savebuffer[31:24] <= {qt0_res};
+												32'd97: savebuffer[23:16] <= {qt0_res};
+												32'd98: savebuffer[15:8]  <= {qt0_res};
+												32'd99: layerint_buf24_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd100: savebuffer[31:24] <= {qt0_res};
+												32'd101: savebuffer[23:16] <= {qt0_res};
+												32'd102: savebuffer[15:8]  <= {qt0_res};
+												32'd103: layerint_buf25_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd104: savebuffer[31:24] <= {qt0_res};
+												32'd105: savebuffer[23:16] <= {qt0_res};
+												32'd106: savebuffer[15:8]  <= {qt0_res};
+												32'd107: layerint_buf26_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd108: savebuffer[31:24] <= {qt0_res};
+												32'd109: savebuffer[23:16] <= {qt0_res};
+												32'd110: savebuffer[15:8]  <= {qt0_res};
+												32'd111: layerint_buf27_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd112: savebuffer[31:24] <= {qt0_res};
+												32'd113: savebuffer[23:16] <= {qt0_res};
+												32'd114: savebuffer[15:8]  <= {qt0_res};
+												32'd115: layerint_buf28_st5[[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd116: savebuffer[31:24] <= {qt0_res};
+												32'd117: savebuffer[23:16] <= {qt0_res};
+												32'd118: savebuffer[15:8]  <= {qt0_res};
+												32'd119: layerint_buf29_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd120: savebuffer[31:24] <= {qt0_res};
+												32'd121: savebuffer[23:16] <= {qt0_res};
+												32'd122: savebuffer[15:8]  <= {qt0_res};
+												32'd123: layerint_buf30_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
+												32'd124: savebuffer[31:24] <= {qt0_res};
+												32'd125: savebuffer[23:16] <= {qt0_res};
+												32'd126: savebuffer[15:8]  <= {qt0_res};
+												32'd127: layerint_buf31_st5[(pixelcount-10)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 									end else begin
@@ -1952,12 +2205,18 @@ module unet_fsm(
 					// pixel100...
 					
 					begin
-						if (pixelcount >= 32'd73) begin  // (height*width + (width+1) for padding)
+						if (pixelcount >= 32'd265) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd128) begin
-								state <= STAGE7_TRANSCONV;
-								pixelcount <= 32'b0;
-								layercount <= 0;
-								inlayercount <= 0;
+								if (pixelcount == 32'd265) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE67_CONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
@@ -2046,7 +2305,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2122,7 +2381,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2198,7 +2457,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2274,7 +2533,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2439,10 +2698,16 @@ module unet_fsm(
 					begin
 						if (pixelcount >= 32'd273) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd128) begin
-								state <= STAGE7_TRANSCONV;
-								pixelcount <= 32'b0;
-								layercount <= 0;
-								inlayercount <= 0;
+								if (pixelcount == 32'd273) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE7_TRANSCONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
@@ -2531,7 +2796,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2607,7 +2872,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2683,7 +2948,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2759,7 +3024,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -2811,70 +3076,70 @@ module unet_fsm(
 										
 										if (pixelcount >17) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd16: layerint_buf4_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd17: layerint_buf4_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd18: layerint_buf4_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd19: layerint_buf4_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd20: layerint_buf5_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd21: layerint_buf5_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd22: layerint_buf5_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd23: layerint_buf5_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd24: layerint_buf6_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd25: layerint_buf6_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd26: layerint_buf6_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd27: layerint_buf6_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd28: layerint_buf7_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd29: layerint_buf7_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd30: layerint_buf7_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd31: layerint_buf7_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd32: layerint_buf8_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd33: layerint_buf8_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd34: layerint_buf8_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd35: layerint_buf8_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd36: layerint_buf9_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd37: layerint_buf9_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd38: layerint_buf9_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd39: layerint_buf9_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd40: layerint_buf10_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd41: layerint_buf10_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd42: layerint_buf10_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd43: layerint_buf10_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd44: layerint_buf11_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd45: layerint_buf11_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd46: layerint_buf11_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd47: layerint_buf11_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd48: layerint_buf12_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd49: layerint_buf12_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd50: layerint_buf12_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd51: layerint_buf12_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd52: layerint_buf13_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd53: layerint_buf13_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd54: layerint_buf13_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd55: layerint_buf13_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd56: layerint_buf14_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd57: layerint_buf14_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd58: layerint_buf14_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd59: layerint_buf14_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd60: layerint_buf15_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd61: layerint_buf15_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd62: layerint_buf15_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd63: layerint_buf15_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd16: savebuffer[31:24] <= {qt0_res};
+												32'd17: savebuffer[23:16] <= {qt0_res};
+												32'd18: savebuffer[15:8]  <= {qt0_res};
+												32'd19: layerint_buf4_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd20: savebuffer[31:24] <= {qt0_res};
+												32'd21: savebuffer[23:16] <= {qt0_res};
+												32'd22: savebuffer[15:8]  <= {qt0_res};
+												32'd23: layerint_buf5_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd24: savebuffer[31:24] <= {qt0_res};
+												32'd25: savebuffer[23:16] <= {qt0_res};
+												32'd26: savebuffer[15:8]  <= {qt0_res};
+												32'd27: layerint_buf6_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd28: savebuffer[31:24] <= {qt0_res};
+												32'd29: savebuffer[23:16] <= {qt0_res};
+												32'd30: savebuffer[15:8]  <= {qt0_res};
+												32'd31: layerint_buf7_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd32: savebuffer[31:24] <= {qt0_res};
+												32'd33: savebuffer[23:16] <= {qt0_res};
+												32'd34: savebuffer[15:8]  <= {qt0_res};
+												32'd35: layerint_buf8_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd36: savebuffer[31:24] <= {qt0_res};
+												32'd37: savebuffer[23:16] <= {qt0_res};
+												32'd38: savebuffer[15:8]  <= {qt0_res};
+												32'd39: layerint_buf9_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd40: savebuffer[31:24] <= {qt0_res};
+												32'd41: savebuffer[23:16] <= {qt0_res};
+												32'd42: savebuffer[15:8]  <= {qt0_res};
+												32'd43: layerint_buf10_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd44: savebuffer[31:24] <= {qt0_res};
+												32'd45: savebuffer[23:16] <= {qt0_res};
+												32'd46: savebuffer[15:8]  <= {qt0_res};
+												32'd47: layerint_buf11_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd48: savebuffer[31:24] <= {qt0_res};
+												32'd49: savebuffer[23:16] <= {qt0_res};
+												32'd50: savebuffer[15:8]  <= {qt0_res};
+												32'd51: layerint_buf12_st5[[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd52: savebuffer[31:24] <= {qt0_res};
+												32'd53: savebuffer[23:16] <= {qt0_res};
+												32'd54: savebuffer[15:8]  <= {qt0_res};
+												32'd55: layerint_buf13_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd56: savebuffer[31:24] <= {qt0_res};
+												32'd57: savebuffer[23:16] <= {qt0_res};
+												32'd58: savebuffer[15:8]  <= {qt0_res};
+												32'd59: layerint_buf14_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd60: savebuffer[31:24] <= {qt0_res};
+												32'd61: savebuffer[23:16] <= {qt0_res};
+												32'd62: savebuffer[15:8]  <= {qt0_res};
+												32'd63: layerint_buf15_st5[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 										
@@ -2922,12 +3187,18 @@ module unet_fsm(
 					// pixel100...
 					
 					begin
-						if (pixelcount >= 32'd273) begin  // (height*width + (width+1) for padding)
+						if (pixelcount >= 32'd1041) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd64) begin
-								state <= STAGE8_TRANSCONV;
-								pixelcount <= 32'b0;
-								layercount <= 0;
-								inlayercount <= 0;
+								if (pixelcount == 32'd1041) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE7_CONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
@@ -2984,7 +3255,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -3028,7 +3299,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -3073,38 +3344,38 @@ module unet_fsm(
 										
 										if (pixelcount >17) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd16: layerint_buf4_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd17: layerint_buf4_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd18: layerint_buf4_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd19: layerint_buf4_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd20: layerint_buf5_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd21: layerint_buf5_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd22: layerint_buf5_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd23: layerint_buf5_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd24: layerint_buf6_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd25: layerint_buf6_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd26: layerint_buf6_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd27: layerint_buf6_st5[((pixelcount-18)*4)+3] <= {qt0_res};
-												32'd28: layerint_buf7_st5[(pixelcount-18)*4]     <= {qt0_res};
-												32'd29: layerint_buf7_st5[((pixelcount-18)*4)+1] <= {qt0_res};
-												32'd30: layerint_buf7_st5[((pixelcount-18)*4)+2] <= {qt0_res};
-												32'd31: layerint_buf7_st5[((pixelcount-18)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd16: savebuffer[31:24] <= {qt0_res};
+												32'd17: savebuffer[23:16] <= {qt0_res};
+												32'd18: savebuffer[15:8]  <= {qt0_res};
+												32'd19: layerint_buf4_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd20: savebuffer[31:24] <= {qt0_res};
+												32'd21: savebuffer[23:16] <= {qt0_res};
+												32'd22: savebuffer[15:8]  <= {qt0_res};
+												32'd23: layerint_buf5_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd24: savebuffer[31:24] <= {qt0_res};
+												32'd25: savebuffer[23:16] <= {qt0_res};
+												32'd26: savebuffer[15:8]  <= {qt0_res};
+												32'd27: layerint_buf6_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
+												32'd28: savebuffer[31:24] <= {qt0_res};
+												32'd29: savebuffer[23:16] <= {qt0_res};
+												32'd30: savebuffer[15:8]  <= {qt0_res};
+												32'd31: layerint_buf7_st4[(pixelcount-18)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 									end else begin
@@ -3143,10 +3414,16 @@ module unet_fsm(
 					begin
 						if (pixelcount >= 32'd1057) begin  // (height*width + (width+1) for padding)
 							if (inlayercount >= 32'd64) begin
-								state <= STAGE8_TRANSCONV;
-								pixelcount <= 32'b0;
-								layercount <= 0;
-								inlayercount <= 0;
+								if (pixelcount == 32'd1057) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= STAGE8_TRANSCONV;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+								end
 								
 							end else begin
 								pixelcount <= 32'b0;
@@ -3203,7 +3480,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -3247,7 +3524,7 @@ module unet_fsm(
 											default:
 												begin
 													for (int i=0; i<32; i=i+1) begin
-														for (int w=0; w<10; w=w+1) begin
+														for (int w=1; w<10; w=w+1) begin
 															cv_w[i][w]    <= 0;
 														end
 													end
@@ -3292,38 +3569,38 @@ module unet_fsm(
 										
 										if (pixelcount >33) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd16: layerint_buf4_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd17: layerint_buf4_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd18: layerint_buf4_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd19: layerint_buf4_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd20: layerint_buf5_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd21: layerint_buf5_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd22: layerint_buf5_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd23: layerint_buf5_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd24: layerint_buf6_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd25: layerint_buf6_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd26: layerint_buf6_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd27: layerint_buf6_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd28: layerint_buf7_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd29: layerint_buf7_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd30: layerint_buf7_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd31: layerint_buf7_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd16: savebuffer[31:24] <= {qt0_res};
+												32'd17: savebuffer[23:16] <= {qt0_res};
+												32'd18: savebuffer[15:8]  <= {qt0_res};
+												32'd19: layerint_buf4_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd20: savebuffer[31:24] <= {qt0_res};
+												32'd21: savebuffer[23:16] <= {qt0_res};
+												32'd22: savebuffer[15:8]  <= {qt0_res};
+												32'd23: layerint_buf5_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd24: savebuffer[31:24] <= {qt0_res};
+												32'd25: savebuffer[23:16] <= {qt0_res};
+												32'd26: savebuffer[15:8]  <= {qt0_res};
+												32'd27: layerint_buf6_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd28: savebuffer[31:24] <= {qt0_res};
+												32'd29: savebuffer[23:16] <= {qt0_res};
+												32'd30: savebuffer[15:8]  <= {qt0_res};
+												32'd31: layerint_buf7_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 									end else begin
@@ -3350,10 +3627,17 @@ module unet_fsm(
 					// pixel2...
 					//
 					begin
-						if (pixelcount >= 32'd1057) begin  // (height*width + (width+1) for padding)
-							state <= STAGE4_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+						if (pixelcount >= 32'd4129) begin  // (height*width + (width+1) for padding)
+							if (pixelcount == 32'd4129) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE8_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 33) begin  // ( width+2 for the padding )
@@ -3388,7 +3672,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -3431,41 +3715,41 @@ module unet_fsm(
 									if (pixelcount > 33) begin
 										if (pixelcount < 32'd2048) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end else begin
 											case (layercount-1):
-												32'd0:  layerint_buf4_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd1:  layerint_buf4_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf4_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf4_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf5_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd5:  layerint_buf5_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf5_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf5_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf6_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd9:  layerint_buf6_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf6_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf6_st5[((pixelcount-34)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf7_st5[(pixelcount-34)*4]     <= {qt0_res};
-												32'd13: layerint_buf7_st5[((pixelcount-34)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf7_st5[((pixelcount-34)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf7_st5[((pixelcount-34)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf4_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf5_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf6_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf7_st3[(pixelcount-34)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 									end
@@ -3485,9 +3769,16 @@ module unet_fsm(
 					//
 					begin
 						if (pixelcount >= 32'd4161) begin  // (height*width + (width+1) for padding)
-							state <= STAGE4_MXPL;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+							if (pixelcount == 32'd4161) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE9_TRANSCONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 65) begin  // ( width+2 for the padding )
@@ -3522,7 +3813,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -3565,41 +3856,41 @@ module unet_fsm(
 									if (pixelcount > 65) begin
 										if (pixelcount < 32'd2114) begin
 											case (layercount-1):
-												32'd0:  layerint_buf0_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd1:  layerint_buf0_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf0_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf1_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd5:  layerint_buf1_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf1_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf2_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd9:  layerint_buf2_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf2_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf2_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf3_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd13: layerint_buf3_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf3_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf3_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf0_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf1_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf2_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf3_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end else begin
 											case (layercount-1):
-												32'd0:  layerint_buf4_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd1:  layerint_buf4_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd2:  layerint_buf4_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd3:  layerint_buf4_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd4:  layerint_buf5_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd5:  layerint_buf5_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd6:  layerint_buf5_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd7:  layerint_buf5_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd8:  layerint_buf6_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd9:  layerint_buf6_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd10: layerint_buf6_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd11: layerint_buf6_st5[((pixelcount-66)*4)+3] <= {qt0_res};
-												32'd12: layerint_buf7_st5[(pixelcount-66)*4]     <= {qt0_res};
-												32'd13: layerint_buf7_st5[((pixelcount-66)*4)+1] <= {qt0_res};
-												32'd14: layerint_buf7_st5[((pixelcount-66)*4)+2] <= {qt0_res};
-												32'd15: layerint_buf7_st5[((pixelcount-66)*4)+3] <= {qt0_res};
+												32'd0:  savebuffer[31:24] <= {qt0_res};
+												32'd1:  savebuffer[23:16] <= {qt0_res};
+												32'd2:  savebuffer[15:8]  <= {qt0_res};
+												32'd3:  layerint_buf4_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd4:  savebuffer[31:24] <= {qt0_res};
+												32'd5:  savebuffer[23:16] <= {qt0_res};
+												32'd6:  savebuffer[15:8]  <= {qt0_res};
+												32'd7:  layerint_buf5_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd8:  savebuffer[31:24] <= {qt0_res};
+												32'd9:  savebuffer[23:16] <= {qt0_res};
+												32'd10: savebuffer[15:8]  <= {qt0_res};
+												32'd11: layerint_buf6_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
+												32'd12: savebuffer[31:24] <= {qt0_res};
+												32'd13: savebuffer[23:16] <= {qt0_res};
+												32'd14: savebuffer[15:8]  <= {qt0_res};
+												32'd15: layerint_buf7_st2[(pixelcount-66)] <= {savebuffer[31:8], qt0_res};
 											endcase
 										end
 									end
@@ -3617,10 +3908,17 @@ module unet_fsm(
 					// pixel2...
 					//
 					begin
-						if (pixelcount >= 32'd4161) begin  // (height*width + (width+1) for padding)
-							state <= STAGE10_CONV;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+						if (pixelcount >= 32'd16449) begin  // (height*width + (width+1) for padding)
+							if (pixelcount == 32'd16449) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE9_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 65) begin  // ( width+2 for the padding )
@@ -3662,7 +3960,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -3715,31 +4013,31 @@ module unet_fsm(
 										
 										if (pixelcount < 32'd4226) begin
 											case (layercount-2)
-												32'd0:  layerint_buf0_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf1_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf0_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res};  
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf1_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res};
 											endcase
 										end else if (pixelcount < 32'd8322) begin
 											case (layercount-2)
-												32'd0:  layerint_buf2_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf2_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf3_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf3_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf2_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf3_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
 											endcase
 										end else if (pixelcount < 32'd12418) begin
 											case (layercount-2)
-												32'd0:  layerint_buf4_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf4_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf5_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf5_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf4_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res};   
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf5_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
 											endcase
 										end else begin
 											case (layercount-2)
-												32'd0:  layerint_buf6_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf6_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf7_st5[(pixelcount-66)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf7_st5[((pixelcount-66)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf6_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res};  
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf7_st2[((pixelcount-66)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
 											endcase
 										end
 									end			
@@ -3759,9 +4057,16 @@ module unet_fsm(
 					//
 					begin
 						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
-							state <= STAGE10_CONV;
-							pixelcount <= 32'b0;
-							layercount <= 0;
+							if (pixelcount == 32'd16513) begin
+								pixelcount <= pixelcount + 1;
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+							end else begin
+								for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+								state <= STAGE10_CONV;
+								pixelcount <= 32'b0;
+								layercount <= 0;
+								inlayercount <= 0;
+							end
 							
 						end else begin
 							if (pixelcount < 129) begin  // ( width+2 for the padding )
@@ -3803,7 +4108,7 @@ module unet_fsm(
 										default:
 											begin
 												for (int i=0; i<32; i=i+1) begin
-													for (int w=0; w<10; w=w+1) begin
+													for (int w=1; w<10; w=w+1) begin
 														cv_w[i][w]    <= 0;
 													end
 												end
@@ -3858,31 +4163,31 @@ module unet_fsm(
 										
 										if (pixelcount < 32'd4226) begin
 											case (layercount-2)
-												32'd0:  layerint_buf0_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf0_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf1_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf1_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf0_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};   
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf1_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
 											endcase
 										end else if (pixelcount < 32'd8322) begin
 											case (layercount-2)
-												32'd0:  layerint_buf2_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf2_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf3_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf3_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf2_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf3_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
 											endcase
 										end else if (pixelcount < 32'd12418) begin
 											case (layercount-2)
-												32'd0:  layerint_buf4_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf4_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf5_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf5_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf4_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf5_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
 											endcase
 										end else begin
 											case (layercount-2)
-												32'd0:  layerint_buf6_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd2:  layerint_buf6_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res};  
-												32'd4:  layerint_buf7_st5[(pixelcount-130)*2]     <= {qt0_res, qt1_res};
-												32'd6:  layerint_buf7_st5[((pixelcount-130)*2)+2] <= {qt0_res, qt1_res}; 
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf6_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf7_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
 											endcase
 										end
 									end			
@@ -3893,6 +4198,162 @@ module unet_fsm(
 					
 				STAGE10_CONV:
 					begin
+						// 8 (128x128) ---> 16 (128x128) Layers
+						//
+						// pixel1 - calc outlayers 1,2
+						//          calc outlayers 3,4
+						//          ...
+						//          calc outlayers 14,15
+						// pixel2...
+						//
+						begin
+						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
+							state <= SENDDATA;
+							pixelcount <= 32'b0;
+							layercount <= 0;
+							
+						end else begin
+							if (pixelcount < 129) begin  // ( width+2 for the padding )
+								pixelcount <= pixelcount+1;
+								
+							end else begin
+								if (layercount >= 32'd16) begin
+									layercount <= 0;
+									pixelcount <= pixelcount + 1;
+								
+								end else begin
+									layercount <= layercount + 32'd2;
+									
+									case (layercount)
+										32'd0:
+											begin
+												`LOAD_WEIGHTS(stage10_layer1, 16, 0)	   // filter 0
+												`LOAD_WEIGHTS(stage10_layer2, 16, 16)	// filter 1
+											end
+											
+										32'd2:
+											begin
+												`LOAD_WEIGHTS(stage10_layer3, 16, 0)	   // filter 2
+												`LOAD_WEIGHTS(stage10_layer4, 16, 16)	// filter 3
+											end
+											
+										32'd4:
+											begin
+												`LOAD_WEIGHTS(stage10_layer5, 16, 0)	   // filter 4
+												`LOAD_WEIGHTS(stage10_layer6, 16, 16)	// filter 5
+											end
+											
+										32'd6:
+											begin
+												`LOAD_WEIGHTS(stage10_layer7, 16, 0)	   // filter 6
+												`LOAD_WEIGHTS(stage10_layer8, 16, 16)	// filter 7
+											end
+											
+										32'd8:
+											begin
+												`LOAD_WEIGHTS(stage10_layer9, 16, 0)	   // filter 8
+												`LOAD_WEIGHTS(stage10_layer10, 16, 16)	// filter 9
+											end
+											
+										32'd10:
+											begin
+												`LOAD_WEIGHTS(stage10_layer11, 16, 0)	   // filter 10
+												`LOAD_WEIGHTS(stage10_layer12, 16, 16)	// filter 11
+											end
+										
+										32'd12:
+											begin
+												`LOAD_WEIGHTS(stage10_layer13, 16, 0)	   // filter 12
+												`LOAD_WEIGHTS(stage10_layer14, 16, 16)	// filter 13
+											end
+										
+										32'd14:
+											begin
+												`LOAD_WEIGHTS(stage10_layer15, 16, 0)	   // filter 14
+												`LOAD_WEIGHTS(stage10_layer16, 16, 16)	// filter 15
+											end
+											
+										default:
+											begin
+												for (int i=0; i<32; i=i+1) begin
+													for (int w=1; w<10; w=w+1) begin
+														cv_w[i][w]    <= 0;
+													end
+												end
+											end
+									endcase			
+				
+									for (i=0; i<32; i=i+16) begin
+										// filters
+										for (j=0; j<16; j=j+1) begin 
+											intermediate[i+j] <= cv_pixelout[i+j];
+										end
+									end
+									
+									// add bias and quantization
+									//qt0
+									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
+									qt0_bias <= bias0;
+									qt0_zp   <= zp0;
+									qt0_scale <= scale0;
+									
+									//qt1
+									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+									qt1_bias <= bias0;
+									qt1_zp   <= zp0;
+									qt1_scale <= scale0;
+									
+									// save to buffer
+									if (pixelcount > 129) begin
+										// save image to buffer, seperated to 4 pices
+										// 
+										//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+										// ------------------------------------------------------------------------------- Q1 [8191:0]
+										//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+										//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+										//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+										//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+										// ------------------------------------------------------------------------------- Q3 [16383:8192]
+										//   layerint_buf4         L1-P8192       L2-P8192       L3-P8192      L4-P8192
+										//   layerint_buf5         L5-P8192       L6-P8192       L7-P8192      L8-P8192
+										//   layerint_buf6         L9-P8192       L10-P8192      L11-P8192     L12-P8192
+										//   layerint_buf7         L13-P8192      L14-P8192      L15-P8192     L16-P8192
+										// 
+										
+										
+										if (pixelcount < 32'd8192) begin
+											case (layercount-2)
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf0_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res}; 
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf1_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd8:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd10: layerint_buf2_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd12: savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd14: layerint_buf3_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											endcase
+										end else begin
+											case (layercount-2)
+												32'd0:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd2:  layerint_buf4_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd4:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd6:  layerint_buf5_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd8:  savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd10: layerint_buf6_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+												32'd12: savebuffer[31:16] <= {qt0_res, qt1_res};
+												32'd14: layerint_buf7_st1[((pixelcount-130)] <= {savebuffer[31:16], qt0_res, qt1_res};
+											endcase
+										end
+									end			
+								end
+							end
+						end
 					end
 					
 				default:
@@ -3942,7 +4403,8 @@ module unet_fsm(
 				// Here all 8 outlayers calced parellelly
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd128;
 					end
 					
 					// Setting padding
@@ -3983,21 +4445,22 @@ module unet_fsm(
 					// 
 					
 					for (b=0; b<4; b=b+1) begin
-						cv_pixelin[b]    <= layerint_buf0_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+4]  <= layerint_buf1_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+8]  <= layerint_buf2_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+12] <= layerint_buf3_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+16] <= layerint_buf4_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+20] <= layerint_buf5_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+24] <= layerint_buf6_st1[pixelcount*4][31-(b*8) -:8];
-						cv_pixelin[b+28] <= layerint_buf7_st1[pixelcount*4][31-(b*8) -:8];
+						cv_pixelin[b]    <= layerint_buf0_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+4]  <= layerint_buf1_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+8]  <= layerint_buf2_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+12] <= layerint_buf3_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+16] <= layerint_buf4_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+20] <= layerint_buf5_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+24] <= layerint_buf6_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+28] <= layerint_buf7_st1[pixelcount][31-(b*8) -:8];
 					end
 				end
 				
 			STAGE2_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd64;
 					end
 					
 					// Setting padding
@@ -4032,29 +4495,29 @@ module unet_fsm(
 					if (pixelcount<1024) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+8) begin
-								cv_pixelin[b+c]   <= layerint_buf0_st2[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c] <= layerint_buf1_st2[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]   <= layerint_buf0_st2[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c] <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else if (pixelcount<2048) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+8) begin
-								cv_pixelin[b+c]   <= layerint_buf2_st2[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c] <= layerint_buf3_st2[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]   <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else if (pixelcount<3072) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+8) begin
-								cv_pixelin[b+c]   <= layerint_buf4_st2[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c] <= layerint_buf5_st2[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]   <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c] <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else if (pixelcount<4096) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+8) begin
-								cv_pixelin[b+c]   <= layerint_buf6_st2[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c] <= layerint_buf7_st2[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]   <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else begin
@@ -4068,11 +4531,43 @@ module unet_fsm(
 				end
 				
 			STAGE2_MXPL:
-//			
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[a] <= MAXPOOL2x2;
+					end
+					
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [2047:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					// ------------------------------------------------------------------------------- Q2 [4095:2048]
+					//   layerint_buf4         L1-P2048       L2-P2048       L3-P2048      L4-P2048
+					//   layerint_buf5         L5-P2048       L6-P2048       L7-P2048      L8-P2048
+					//   layerint_buf6         L9-P2048       L10-P2048      L11-P2048     L12-P2048
+					//   layerint_buf7         L13-P2048      L14-P2048      L15-P2048     L16-P2048
+					// 
+					// 
+					
+					for (b=0; b<4; b=b+1) begin
+						cv_pixelin[b]    <= layerint_buf0_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+4]  <= layerint_buf1_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+8]  <= layerint_buf2_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+12] <= layerint_buf3_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+16] <= layerint_buf4_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+20] <= layerint_buf5_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+24] <= layerint_buf6_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+28] <= layerint_buf7_st1[pixelcount][31-(b*8) -:8];
+					end
+				end
+				
 			STAGE3_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd32;
 					end
 					
 					// Setting padding
@@ -4107,19 +4602,19 @@ module unet_fsm(
 					if (pixelcount<512) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+16) begin
-								cv_pixelin[b+c]    <= layerint_buf0_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c]  <= layerint_buf1_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8+c]  <= layerint_buf2_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12+c] <= layerint_buf3_st3[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]    <= layerint_buf0_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c]  <= layerint_buf1_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8+c]  <= layerint_buf2_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12+c] <= layerint_buf3_st3[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else if (pixelcount<1024) begin
 						for (b=0; b<4; b=b+1) begin
 							for (c=0; c<32; c=c+8) begin
-								cv_pixelin[b+c]    <= layerint_buf4_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4+c]  <= layerint_buf5_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8+c]  <= layerint_buf6_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12+c] <= layerint_buf7_st3[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b+c]    <= layerint_buf4_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4+c]  <= layerint_buf5_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8+c]  <= layerint_buf6_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12+c] <= layerint_buf7_st3[(pixelcount)][31-(b*8) -:8];
 							end
 						end
 					end else begin
@@ -4135,11 +4630,40 @@ module unet_fsm(
 				end
 				
 			STAGE3_MXPL:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[a] <= MAXPOOL2x2;
+					end
+					
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [511:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					// 
+					
+					for (b=0; b<4; b=b+1) begin
+						cv_pixelin[b]    <= layerint_buf0_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+4]  <= layerint_buf1_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+8]  <= layerint_buf2_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+12] <= layerint_buf3_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+16] <= layerint_buf4_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+20] <= layerint_buf5_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+24] <= layerint_buf6_st1[pixelcount][31-(b*8) -:8];
+						cv_pixelin[b+28] <= layerint_buf7_st1[pixelcount][31-(b*8) -:8];
+					end
+				end
 			
 			STAGE4_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd16;
 					end
 					
 					// Setting padding
@@ -4196,12 +4720,68 @@ module unet_fsm(
 				end
 				
 			STAGE4_MXPL:
+				// save to buffer
+				
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[a] <= MAXPOOL2x2;
+					end
+					
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [255:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   layerint_buf2         L9-P1          L10-P1         L11-P1        L12-P1
+					//   layerint_buf3         L13-P1         L14-P1         L15-P1        L16-P1
+					//   layerint_buf4         L17-P1         L18-P1         L19-P1        L20-P1
+					//   layerint_buf5         L21-P1         L22-P1         L23-P1        L24-P1
+					//   layerint_buf6         L25-P1         L26-P1         L27-P1        L28-P1
+					//   layerint_buf7         L29-P1         L30-P1         L31-P1        L32-P1
+					//   layerint_buf8         L33-P1         L34-P1         L35-P1        L36-P1
+					//   layerint_buf9         L37-P1         L38-P1         L39-P1        L40-P1
+					//   layerint_buf10        L41-P1         L42-P1         L43-P1        L44-P1
+					//   layerint_buf11        L45-P1         L46-P1         L47-P1        L48-P1
+					//   layerint_buf12        L49-P1         L50-P1         L51-P1        L52-P1
+					//   layerint_buf13        L53-P1         L54-P1         L55-P1        L56-P1
+					//   layerint_buf14        L57-P1         L58-P1         L59-P1        L60-P1
+					//   layerint_buf15        L61-P1         L62-P1         L63-P1        L64-P1
+					
+					if (inlayercount == 0) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf4_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st1[pixelcount][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf8_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf9_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf10_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf11_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf12_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf13_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf14_st1[pixelcount][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf15_st1[pixelcount][31-(b*8) -:8];
+						end
+					end
+				end
 			
 			STAGE5_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd8;
 					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 8 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 8 == 1) ? 1 : 0; 
+					
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [63:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -4241,14 +4821,14 @@ module unet_fsm(
 					if (inlayercount==0) begin
 						if (pixelcount<64) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4265,14 +4845,14 @@ module unet_fsm(
 					end else begin
 						if (pixelcount<64) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4292,7 +4872,8 @@ module unet_fsm(
 			STAGE6_TRANSCONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= TRANS;
+						cv_op[a] <= TRANS;
+						cv_width[a] <= 7'd8;
 					end
 					// 128 (8x8) Layers ---> 64 (16x16) Layers
 					// pixel1 - calc outlayers 1 intermediate
@@ -4351,14 +4932,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<64) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4377,14 +4958,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<64) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4403,14 +4984,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<64) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf16_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf17_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf18_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf19_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf20_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf21_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf22_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf23_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf16_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf17_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf18_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf19_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf20_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf21_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf22_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf23_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4430,14 +5011,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<64) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf24_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf25_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf26_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf27_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf28_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf29_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf30_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf31_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf24_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf25_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf26_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf27_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf28_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf29_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf30_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf31_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4458,8 +5039,13 @@ module unet_fsm(
 			STAGE6_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd16;
 					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 16 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 16 == 1) ? 1 : 0; 
 					
 					// 64 (16x16) + 64 (16x16) STAGE4_CONV Layers ---> 64 (16x16) Layers
 					//
@@ -4524,14 +5110,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<256) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4551,14 +5137,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<256) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4578,14 +5164,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<256) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf0_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf1_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf2_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf3_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf4_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf5_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf6_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf7_st4[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf0_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf1_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf2_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf3_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf4_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf5_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf6_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf7_st4[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4605,14 +5191,14 @@ module unet_fsm(
 							begin
 								if (pixelcount<256) begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= layerint_buf8_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= layerint_buf9_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= layerint_buf10_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+12] <= layerint_buf11_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+16] <= layerint_buf12_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+20] <= layerint_buf13_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+24] <= layerint_buf14_st4[(pixelcount*4)][31-(b*8) -:8];
-										cv_pixelin[b+28] <= layerint_buf15_st4[(pixelcount*4)][31-(b*8) -:8];
+										cv_pixelin[b]    <= layerint_buf8_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= layerint_buf9_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= layerint_buf10_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+12] <= layerint_buf11_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+16] <= layerint_buf12_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+20] <= layerint_buf13_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+24] <= layerint_buf14_st4[(pixelcount)][31-(b*8) -:8];
+										cv_pixelin[b+28] <= layerint_buf15_st4[(pixelcount)][31-(b*8) -:8];
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -4633,7 +5219,8 @@ module unet_fsm(
 			STAGE7_TRANSCONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= TRANS;
+						cv_op[a] <= TRANS;
+						cv_width[a] <= 7'd16;
 					end
 					
 					// 64 (16x16) ---> 32 (32x32) Layers
@@ -4677,14 +5264,14 @@ module unet_fsm(
 					if (inlayerscount == 0) begin
 						if (pixelcount<256) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4701,14 +5288,14 @@ module unet_fsm(
 					end else begin
 						if (pixelcount<256) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf8_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf9_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf10_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf11_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf12_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf13_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf14_st5[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf15_st5[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4728,8 +5315,13 @@ module unet_fsm(
 			STAGE7_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd32;
 					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 32 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 32 == 1) ? 1 : 0; 
 					
 					// 32 (32x32) + 32 (32x32) STAGE3_CONV Layers ---> 32 (32x32) Layers
 					//
@@ -4748,7 +5340,7 @@ module unet_fsm(
 					// ...
 					// pixel100...
 					//
-					// Storage at st5
+					// Storage at st4
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [1023:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -4776,14 +5368,14 @@ module unet_fsm(
 					if (inlayerscount == 0) begin
 						if (pixelcount<1024) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf0_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf1_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf2_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf3_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf4_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf5_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf6_st4[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf7_st4[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4800,14 +5392,14 @@ module unet_fsm(
 					end else begin
 						if (pixelcount<1024) begin
 							for (b=0; b<4; b=b+1) begin
-								cv_pixelin[b]    <= layerint_buf0_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+4]  <= layerint_buf1_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+8]  <= layerint_buf2_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+12] <= layerint_buf3_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+16] <= layerint_buf4_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+20] <= layerint_buf5_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+24] <= layerint_buf6_st3[(pixelcount*4)][31-(b*8) -:8];
-								cv_pixelin[b+28] <= layerint_buf7_st3[(pixelcount*4)][31-(b*8) -:8];
+								cv_pixelin[b]    <= layerint_buf0_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= layerint_buf1_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= layerint_buf2_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+12] <= layerint_buf3_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+16] <= layerint_buf4_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+20] <= layerint_buf5_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+24] <= layerint_buf6_st3[(pixelcount)][31-(b*8) -:8];
+								cv_pixelin[b+28] <= layerint_buf7_st3[(pixelcount)][31-(b*8) -:8];
 							end
 						end else begin
 							for (b=0; b<4; b=b+1) begin
@@ -4827,7 +5419,8 @@ module unet_fsm(
 			STAGE8_TRANSCONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= TRANS;
+						cv_op[a] <= TRANS;
+						cv_width[a] <= 7'd32;
 					end
 					
 					// 32 (32x32) Layers ---> 16 (64x64) Layers
@@ -4838,7 +5431,7 @@ module unet_fsm(
 					//          calc outlayers 16
 					// pixel2...
 					//
-					// Storage at st5
+					// Storage at st4
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [1023:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -4853,14 +5446,14 @@ module unet_fsm(
 					
 					if (pixelcount<1024) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf0_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf4_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st3[(pixelcount)][31-(b*8) -:8];
 						end
 					end else begin
 						for (b=0; b<4; b=b+1) begin
@@ -4879,8 +5472,13 @@ module unet_fsm(
 			STAGE8_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd64;
 					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 64 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 64 == 1) ? 1 : 0; 
 					
 					// 16 (64x64) + 16 (64x64) STAGE2_CONV Layers ---> 16 (64x64) Layers
 					//
@@ -4890,7 +5488,7 @@ module unet_fsm(
 					//          calc outlayers 16
 					// pixel2...
 					//
-					// Storage at st5
+					// Storage at st3
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [2047:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -4919,25 +5517,25 @@ module unet_fsm(
 					
 					if (pixelcount<2048) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+16] <= layerint_buf1_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf2_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf3_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf4_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf0_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf1_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf3_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
 						end
 					end else if (pixelcount<4096) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+16] <= layerint_buf4_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf5_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf6_st2[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf7_st2[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf4_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf5_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf6_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf7_st3[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
 						end
 					end else begin
 						for (b=0; b<4; b=b+1) begin
@@ -4956,7 +5554,8 @@ module unet_fsm(
 			STAGE9_TRANSCONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= TRANS;
+						cv_op[a] <= TRANS;
+						cv_width[a] <= 7'd64;
 					end
 					
 					// 16 (64x64) ---> 8 (128x128) Layers
@@ -4967,7 +5566,7 @@ module unet_fsm(
 					//          calc outlayers 7,8
 					// pixel2...
 					//
-					// Storage at st5
+					// Storage at st2
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [2047:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -4984,27 +5583,27 @@ module unet_fsm(
 					
 					if (pixelcount<2048) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf0_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf0_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
 						end
 					end else if (pixelcount<4096) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
 						end
 					end else begin
 						for (b=0; b<4; b=b+1) begin
@@ -5023,8 +5622,13 @@ module unet_fsm(
 			STAGE9_CONV:
 				begin
 					for (a=0; a<32; a=a+1) begin
-						cv_op[i] <= MUL;
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd128;
 					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 128 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 128 == 1) ? 1 : 0; 
 					
 					// 8 (128x128) + 8 (128x128) STAGE1_CONV Layers ---> 8 (128x128) Layers
 					//
@@ -5034,7 +5638,7 @@ module unet_fsm(
 					//          calc outlayers 7,8
 					// pixel2...
 					//
-					// Storage at st5
+					// Storage at st2
 					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [4095:0]
 					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
@@ -5067,51 +5671,51 @@ module unet_fsm(
 					
 					if (pixelcount<4096) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf0_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf0_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf0_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf1_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf0_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf1_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf1_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
 						end
 					end else if (pixelcount<8192) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf2_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf2_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf3_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf2_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf3_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
 						end
 					end else if (pixelcount<12288) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf4_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf4_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf5_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf4_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf5_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
 						end
 					end else if (pixelcount<16384) begin
 						for (b=0; b<4; b=b+1) begin
-							cv_pixelin[b]    <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+4]  <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+8]  <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+12] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b]    <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf6_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
 							
-							cv_pixelin[b+16] <= layerint_buf6_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+20] <= layerint_buf7_st5[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+24] <= layerint_buf6_st1[(pixelcount*4)][31-(b*8) -:8];
-							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount*4)][31-(b*8) -:8];
+							cv_pixelin[b+16] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf7_st2[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
 						end
 					end else begin
 						for (b=0; b<4; b=b+1) begin
@@ -5126,6 +5730,98 @@ module unet_fsm(
 						end
 					end 
 				end
+				
+			STAGE10_CONV:
+				begin
+					for (a=0; a<32; a=a+1) begin
+						cv_op[a] <= CONV;
+						cv_width[a] <= 7'd128;
+					end
+					
+					// Setting padding
+					cv_paddingL <= (pixelcount % 128 == 0) ? 1 : 0;
+					cv_paddingR <= (pixelcount % 128 == 1) ? 1 : 0; 
+					
+					// save image to buffer, seperated to 4 pices
+					// 
+					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					// ------------------------------------------------------------------------------- Q1 [4095:0]
+					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					// ------------------------------------------------------------------------------- Q2 [8191:4096]
+					//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+					//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+					// ------------------------------------------------------------------------------- Q3 [12287:8192]
+					//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+					//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+					// ------------------------------------------------------------------------------- Q4 [16383:12288]
+					//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+					//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+					// 
+					
+					if (pixelcount<4096) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf0_st1[(pixelcount)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf1_st1[(pixelcount)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<8192) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf2_st1[(pixelcount)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf3_st1[(pixelcount)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<12288) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf4_st1[(pixelcount)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf5_st1[(pixelcount)][31-(b*8) -:8];
+						end
+					end else if (pixelcount<16384) begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+4]  <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+8]  <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+12] <= layerint_buf6_st1[(pixelcount)][31-(b*8) -:8];
+							
+							cv_pixelin[b+16] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+20] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+24] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
+							cv_pixelin[b+28] <= layerint_buf7_st1[(pixelcount)][31-(b*8) -:8];
+						end
+					end else begin
+						for (b=0; b<4; b=b+1) begin
+							cv_pixelin[b]    <= 0;
+							cv_pixelin[b+4]  <= 0;
+							cv_pixelin[b+8]  <= 0;
+							cv_pixelin[b+12] <= 0;
+							cv_pixelin[b+16] <= 0;
+							cv_pixelin[b+20] <= 0;
+							cv_pixelin[b+24] <= 0;
+							cv_pixelin[b+28] <= 0;
+						end
+					end
+				end
+				
+				
 			default:
 	end
 endmodule 
