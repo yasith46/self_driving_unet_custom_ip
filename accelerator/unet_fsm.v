@@ -1,6 +1,15 @@
 module unet_fsm(
-		input rst_n, clk, unet_en, data_in
+		input rst_n, clk, unet_enpulse, 
+		input [31:0] data_in,
+		output reg [2:0] ctrl,
+		output reg busy,
+		output reg [31:0] data_out
 	);
+	
+	parameter SEND_WEIGHTS = 2'd1,
+	          SEND_DATA = 2d'2,
+				 DATA_READY = 2'd3
+				 IDLE = 2'd4;
 	
 	parameter IDLE             = 5'd0,
 				 STAGE1_LOAD      = 5'd1,
@@ -524,7 +533,7 @@ module unet_fsm(
 	`define LOAD_WEIGHTS(src) \
 		begin \
 			word_index = src; \
-			byte_offset = 0; \
+			byte_index = 0; \
 			for (f = 0; f < 32; f = f + 1) begin \
 				for (w = 1; w < 10; w = w + 1) begin \
 					case (byte_offset) \
@@ -539,7 +548,6 @@ module unet_fsm(
 						word_index = word_index + 1; \
 					end \
 				end \
-			end \
 			qt0_bias <= weightbank[src+72]; \
 			qt0_zp   <= weightbank[src+73]; \
 			qt0_scale <= weightbank[src+74];	\	
@@ -658,7 +666,7 @@ module unet_fsm(
 	reg [31:0] layerint_buf30_st5 [0:15];
 	reg [31:0] layerint_buf31_st5 [0:15];	
 	
-	
+	reg firsttime;
 	
 	
 	integer i, j, k, l, w;	
@@ -670,7 +678,8 @@ module unet_fsm(
 			inlayercount <= 0;
 			writepixel <= 0;
 			row <= 0;
-			savebuffer <=0
+			savebuffer <= 0;
+			firsttime <= 1;
 			for (i=0; i<128; i=i+1) intermediatesum[i] <= 0;
 			
 			for (i=0; i<32; i=i+1) begin
@@ -686,18 +695,41 @@ module unet_fsm(
 						inlayercount <= 0;
 						writepixel <= 0;
 						row <= 0;
+						busy <= 0;
 						savebuffer <=0
 						for (i=0; i<128; i=i+1) intermediatesum[i] <= 0;
+						ctrl <= IDLE;
 						
 						for (i=0; i<32; i=i+1) begin
 							intermediate[i] <= 0;
 							for (w=1; w<10) cv_w[i][w] <= 0;
+						end
+						
+						if (unet_enpulse) begin
+							stage <= STAGE1_WEIGHTLOAD;
+							busy <= 1;
+							pixelcount <= 0;
 						end
 					end
 					
 					
 				STAGE1_WEIGHTLOAD:
 					begin
+						if (firsttime) begin
+							ctrl <= SEND_WEIGHTS;
+							pixelcount <= pixelcount + 1;
+							
+							if (pixelcount <= 1344) begin
+								weightbank[pixelcount] <= datain;
+							end else begin
+								ctrl <= SEND_DATA
+								firsttime <= 0;
+								stage <= STAGE1_CONV;
+								pixelcount <= 0;
+							end
+						end else begin
+							stage <= STAGE1_CONV;
+						end
 					end
 					
 					
@@ -722,7 +754,14 @@ module unet_fsm(
 							pixelcount <= pixelcount + 1;
 							
 							// filling weights
-							`LOAD_WEIGHTS(0)
+							`LOAD_WEIGHTS(stage1_layer1, 3, 0)	// filter 0
+							`LOAD_WEIGHTS(stage1_layer2, 3, 3)	// filter 1
+							`LOAD_WEIGHTS(stage1_layer3, 3, 6)	// filter 2
+							`LOAD_WEIGHTS(stage1_layer4, 3, 9)	// filter 3
+							`LOAD_WEIGHTS(stage1_layer5, 3, 12)	// filter 4
+							`LOAD_WEIGHTS(stage1_layer6, 3, 15)	// filter 5
+							`LOAD_WEIGHTS(stage1_layer7, 3, 18)	// filter 6
+							`LOAD_WEIGHTS(stage1_layer8, 3, 21)	// filter 7
 							
 							if (pixelcount >= 129) begin  // ( width+2 for the padding )
 								for (i=0; i<24; i=i+3) begin
@@ -905,7 +944,10 @@ module unet_fsm(
 									case (layercount)
 										32'd0:
 											begin
-												`LOAD_WEIGHTS(96)
+												`LOAD_WEIGHTS(stage2_layer1, 8, 0)	// filter 0
+												`LOAD_WEIGHTS(stage2_layer2, 8, 8)	// filter 1
+												`LOAD_WEIGHTS(stage2_layer3, 8, 16)	// filter 2
+												`LOAD_WEIGHTS(stage2_layer4, 8, 24)	// filter 3
 											end
 											
 										32'd4:
@@ -4208,7 +4250,7 @@ module unet_fsm(
 						//
 						begin
 						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
-							state <= SENDDATA;
+							state <= SEND;
 							pixelcount <= 32'b0;
 							layercount <= 0;
 							
@@ -4356,7 +4398,34 @@ module unet_fsm(
 						end
 					end
 					
-				default:
+				SEND:
+					ctrl <= DATA_READY;
+					if (~unet_enpulse) begin
+						if (pixelcount >= 32'd16513) begin  // (height*width + (width+1) for padding)
+							if (inlayercount >= 32'd16) begin
+								if (pixelcount == 32'd16513) begin
+									pixelcount <= pixelcount + 1;
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 0;
+								end else begin
+									for (l=0; l<32; l=l+1) cv_rst[l] <= 1;
+									state <= IDLE;
+									pixelcount <= 32'b0;
+									layercount <= 0;
+									inlayercount <= 0;
+									busy <= 0;
+								end
+								
+							end else begin
+								pixelcount <= 32'b0;
+								inlayercount <= inlayercount + 32'd1;
+							end
+							
+						end else begin
+							pixelcount <= pixelcount + 1;
+						end
+					end
+					
+				default: stage <= idle;
 			endcase
 		end
 	end
@@ -5821,7 +5890,37 @@ module unet_fsm(
 					end
 				end
 				
+			SEND:
+				// 
+				//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+				// ------------------------------------------------------------------------------- Q1 [4095:0]
+				//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+				//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+				// ------------------------------------------------------------------------------- Q2 [8191:4096]
+				//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+				//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+				// ------------------------------------------------------------------------------- Q3 [12287:8192]
+				//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+				//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+				// ------------------------------------------------------------------------------- Q4 [16383:12288]
+				//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+				//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+				// 
+				begin
+					case (inlayercount)
+						32'd0: dataout <= layerint_buf0_st1[pixelcount];
+						32'd0: dataout <= layerint_buf1_st1[pixelcount];
+						32'd0: dataout <= layerint_buf2_st1[pixelcount];
+						32'd0: dataout <= layerint_buf3_st1[pixelcount];
+						32'd0: dataout <= layerint_buf4_st1[pixelcount];
+						32'd0: dataout <= layerint_buf5_st1[pixelcount];
+						32'd0: dataout <= layerint_buf6_st1[pixelcount];
+						32'd0: dataout <= layerint_buf7_st1[pixelcount];
+						default: dataout <= 0;
+					endcase
+				end
 				
 			default:
+				dataout <= 0;
 	end
 endmodule 
