@@ -1,0 +1,157 @@
+@startuml uvm_axi_lite_test
+
+set namespaceSeparator ::
+
+interface axi_lite_if{}
+
+package "env_pkg" #DDDDDD{
+    class axi_lite_env{
+        +new()
+        +build_phase(): void
+        +connect_phase(): void
+        +run_phase(): task
+    }
+
+    class env_configs{
+        -data_width : integer
+        -<color:purple> slave_driver_mode : logic [1:0]
+        'READY_BEFORE_VALID, VALID_BEFORE_READY
+    }
+}
+
+package "axi_lite_agent_pkg" #DDDDDD {
+
+    class axi_lite_agent_config{
+        -data_width : integer
+        -<color:purple> slave_driver_mode : logic [1:0]
+        'READY_BEFORE_VALID, VALID_BEFORE_READY
+        -is_master : bit
+    }
+
+    class axi_lite_driver{
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        #{abstract} axi_lite_transfer(axi_lite_transaction : axi_lite_seq_item): task
+    }
+
+    class axi_lite_master_driver{
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        +axi_lite_transfer(axi_lite_transaction : axi_lite_seq_item): task
+    }
+
+    class axi_lite_slave_driver{
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        +axi_lite_transfer(axi_lite_transaction : axi_lite_seq_item): task
+    }
+
+    axi_lite_driver   <|--  axi_lite_master_driver
+    axi_lite_driver   <|--  axi_lite_slave_driver
+
+    class axi_lite_monitor{
+        +new()
+        +build_phase(): void
+        +run_phase(): task
+    }
+
+    class axi_lite_agent{
+        -driver : axi_lite_dirver
+        -monitor : axi_lite_monitor
+        -sequencer : axi_lite_sequencer
+
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+    }
+}
+
+package "sequence_pkg" #DDDDDD{
+    class axi_lite_seq_item{
+        -user : logic[7:0]
+        +set_data() : void
+        +get_data(output : data) : void
+        +set_user() : void
+        +get_user(output : user) : void
+        +convert2string() : string
+        +do_print(printer: uvm_printer) : void
+        +do_compare(rhs:uvm_object, comparer : uvm_comparer ) : bit
+    }
+
+    class axi_lite_sequence{
+        +new()
+        +body() : task
+    }
+}
+
+package "axi_lite_agent_pkg" #DDDDDD {
+    class axi_lite_agent_config{
+        -data_width : integer
+        -<color:purple> slave_driver_mode : logic [1:0]
+        'READY_BEFORE_VALID, VALID_BEFORE_READY
+    }
+    
+    class axi_lite_master_driver{
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        +axi_lite_transfer(axi_lite_transaction : axi_lite_inp_seq_item): task
+    }
+
+    class axi_lite_slave_driver{
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        +axi_lite_transfer(axi_lite_transaction : axi_lite_inp_seq_item): task
+    }
+
+    class axi_lite_monitor{
+        +new()
+        +build_phase(): void
+        +run_phase(): task
+        +collect_transaction(): task
+    }
+
+    class axi_lite_agent{
+        -driver : axi_lite_master_driver
+        -monitor : axi_lite_master_monitor
+        -sequencer : axi_lite_master_sequencer
+
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+    }
+}
+
+package "axi_lite_analysis_components_pkg" #DDDDDD{
+    class axi_lite_checker {
+        +new()
+        +build_phase() : void
+        +connect_phase() : void
+        +run_phase() : task
+        +report_phase() : void
+    }
+
+    class axi_lite_predictor{
+        +new()
+        +split_and_push() : void
+        +reverse_data() : void
+        +write(t : axi_lite_axi_lite_seq_item) : void
+    }
+
+    class axi_lite_analysis_config{
+        -data_width : logic [9:0] 
+    }
+}
+
+@enduml

@@ -1,0 +1,64 @@
+config:
+    incremental_compilation:    true
+    relax_compilation:          true
+    debug:                      typical
+    multi_threading:            "8"
+    
+compiled_libs:
+    - "uvm"
+    - "unisims_ver"
+    - "unimacro_ver"
+    - "secureip"
+    - "xpm"   
+
+work_lib:           xil_defaultlib
+snapshot:           tb_top
+top_module:         tb_top
+tcl_batch:          cmd.tcl
+simulate_log:       simulate.log
+elaborate_log:      elaborate.log
+gui:                true
+
+
+#src files
+src_groups: 
+    - name: design_ip
+      include_dirs: 
+      file_type: verilog
+      src_files: 
+
+    - name: design_src
+      include_dirs:
+        - dut
+      file_type: systemverilog
+      src_files:
+        - dut/slave_axi_lite_slave_lite_v1_0_S00_AXI.v
+        - dut/slave_axi_lite.v
+    
+    - name: sim
+      include_dirs:
+        - test
+        - seq
+        - if
+        - env
+        - config_agent
+        - axi_lite_agent
+        - analysis_components
+      file_type: systemverilog
+      src_files:
+        - uvm_colors.sv 
+        - seq/sequence_pkg.sv 
+        - if/axi_lite_if.sv 
+        - if/config_if.sv 
+        - axi_lite_agent/axi_lite_agent_pkg.sv 
+        - config_agent/config_agent_pkg.sv 
+        - analysis_components/analysis_components_pkg.sv
+        - env/env_pkg.sv 
+        - test/axi_lite_test_pkg.sv 
+        - tb_top.sv                                        
+
+    - name: vhdl_files
+      include_dirs: 
+      file_type: vhdl
+      src_files:
+    
