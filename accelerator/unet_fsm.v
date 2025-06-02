@@ -7,8 +7,8 @@ module unet_fsm(
 	);
 	
 	parameter SEND_WEIGHTS = 2'd1,
-	          SEND_DATA = 2d'2,
-				 DATA_READY = 2'd3
+	          SEND_DATA = 2'd2,
+				 DATA_READY = 2'd3,
 				 IDLE = 2'd4;
 	
 	parameter IDLE             = 5'd0,
@@ -17,9 +17,9 @@ module unet_fsm(
 	          STAGE1_MXPL      = 5'd3,
 	          STAGE2_CONV      = 5'd4,
 				 STAGE2_MXPL      = 5'd5,
-				 STAGE2_CONV      = 5'd6,
-				 STAGE2_MXPL      = 5'd7,
-				 STAGE3_CONV      = 5'd8,
+				 STAGE3_CONV      = 5'd6,
+				 STAGE3_MXPL      = 5'd7,
+				 STAGE4_CONV      = 5'd8,
 				 STAGE4_MXPL      = 5'd9,
 				 STAGE5_CONV      = 5'd10,
 				 STAGE6_TRANSCONV = 5'd11,
@@ -62,6 +62,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv0_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[0]),
 		.pixel_out(cv_pixelout[0]),
 		.operation(cv_op[0]),
 		.width(cv_width[0])
@@ -76,6 +77,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv1_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[1]),
 		.pixel_out(cv_pixelout[1]),
 		.operation(cv_op[1]),
 		.width(cv_width[1])
@@ -90,6 +92,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv2_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[2]),
 		.pixel_out(cv_pixelout[2]),
 		.operation(cv_op[2]),
 		.width(cv_width[2])
@@ -104,6 +107,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv3_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[3]),
 		.pixel_out(cv_pixelout[3]),
 		.operation(cv_op[3]),
 		.width(cv_width[3])
@@ -118,6 +122,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv4_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[4]),
 		.pixel_out(cv_pixelout[4]),
 		.operation(cv_op[4]),
 		.width(cv_width[4])
@@ -132,6 +137,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv5_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[5]),
 		.pixel_out(cv_pixelout[5]),
 		.operation(cv_op[5]),
 		.width(cv_width[5])
@@ -147,6 +153,7 @@ module unet_fsm(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[6]),
+		.bias(cv_bias[6]),
 		.operation(cv_op[6]),
 		.width(cv_width[6])
 	);
@@ -161,6 +168,7 @@ module unet_fsm(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[7]),
+		.bias(cv_bias[7]),
 		.operation(cv_op[7]),
 		.width(cv_width[7])
 	);
@@ -175,6 +183,7 @@ module unet_fsm(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[8]),
+		.bias(cv_bias[8]),
 		.operation(cv_op[8]),
 		.width(cv_width[8])
 	);
@@ -189,6 +198,7 @@ module unet_fsm(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[9]),
+		.bias(cv_bias[9]),
 		.operation(cv_op[9]),
 		.width(cv_width[9])
 	);
@@ -203,6 +213,7 @@ module unet_fsm(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[10]),
+		.bias(cv_bias[10]),
 		.operation(cv_op[10]),
 		.width(cv_width[10])
 	);
@@ -216,6 +227,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv11_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[11]),
 		.pixel_out(cv_pixelout[11]),
 		.operation(cv_op[11]),
 		.width(cv_width[11])
@@ -230,6 +242,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv12_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[12]),
 		.pixel_out(cv_pixelout[12]),
 		.operation(cv_op[12]),
 		.width(cv_width[12])
@@ -244,6 +257,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv13_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[13]),
 		.pixel_out(cv_pixelout[13]),
 		.operation(cv_op[13]),
 		.width(cv_width[13])
@@ -258,6 +272,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv14_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[14]),
 		.pixel_out(cv_pixelout[14]),
 		.operation(cv_op[14]),
 		.width(cv_width[14])
@@ -272,6 +287,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv15_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[15]),
 		.pixel_out(cv_pixelout[15]),
 		.operation(cv_op[15]),
 		.width(cv_width[15])
@@ -286,6 +302,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv16_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[16]),
 		.pixel_out(cv_pixelout[16]),
 		.operation(cv_op[16]),
 		.width(cv_width[16])
@@ -300,6 +317,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv17_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[17]),
 		.pixel_out(cv_pixelout[17]),
 		.operation(cv_op[17]),
 		.width(cv_width[17])
@@ -314,6 +332,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv18_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[18]),
 		.pixel_out(cv_pixelout[18]),
 		.operation(cv_op[18]),
 		.width(cv_width[18])
@@ -328,6 +347,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv19_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[19]),
 		.pixel_out(cv_pixelout[19]),
 		.operation(cv_op[19]),
 		.width(cv_width[19])
@@ -342,6 +362,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv20_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[20]),
 		.pixel_out(cv_pixelout[20]),
 		.operation(cv_op[20]),
 		.width(cv_width[20])
@@ -356,6 +377,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv21_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[21]),
 		.pixel_out(cv_pixelout[21]),
 		.operation(cv_op[21]),
 		.width(cv_width[21])
@@ -370,6 +392,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv22_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[22]),
 		.pixel_out(cv_pixelout[22]),
 		.operation(cv_op[22]),
 		.width(cv_width[22])
@@ -384,6 +407,7 @@ module unet_fsm(
 		.rst_n(rst_n && cv23_int_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[23]),
 		.pixel_out(cv_pixelout[23]),
 		.operation(cv_op[23]),
 		.width(cv_width[23])
@@ -398,6 +422,7 @@ module unet_fsm(
     .rst_n(rst_n && cv24_int_rst),
 	 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[24]),
     .pixel_out(cv_pixelout[24]),
     .operation(cv_op[24]),
 		.width(cv_width[24])
@@ -412,6 +437,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv25_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[25]),
 		 .pixel_out(cv_pixelout[25]),
 		 .operation(cv_op[25]),
 		.width(cv_width[25])
@@ -426,6 +452,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv26_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[26]),
 		 .pixel_out(cv_pixelout[26]),
 		 .operation(cv_op[26]),
 		.width(cv_width[26])
@@ -440,6 +467,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv27_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[27]),
 		 .pixel_out(cv_pixelout[27]),
 		 .operation(cv_op[27]),
 		.width(cv_width[27])
@@ -454,6 +482,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv28_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[28]),
 		 .pixel_out(cv_pixelout[28]),
 		 .operation(cv_op[28]),
 		.width(cv_width[28])
@@ -468,6 +497,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv29_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[29]),
 		 .pixel_out(cv_pixelout[29]),
 		 .operation(cv_op[29]),
 		.width(cv_width[29])
@@ -482,6 +512,7 @@ module unet_fsm(
 		 .rst_n(rst_n && cv30_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
+		.bias(cv_bias[30]),
 		 .pixel_out(cv_pixelout[30]),
 		 .operation(cv_op[30]),
 		.width(cv_width[30])
@@ -493,6 +524,7 @@ module unet_fsm(
 		 .w6(cv_w[31][6]), .w5(cv_w[31][5]), .w4(cv_w[31][4]), 
 		 .w3(cv_w[31][3]), .w2(cv_w[31][2]), .w1(cv_w[31][1]),
 		 .clk(clk), 
+		 .bias(cv_bias[31]),
 		 .rst_n(rst_n && cv31_int_rst),
 		 .paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
@@ -509,19 +541,19 @@ module unet_fsm(
 	reg [31:0] qt0_in, qt1_in, qt2_in, qt3_in, qt4_in, qt5_in, qt6_in, qt7_in, 
 	           qt0_bias, qt1_bias, qt2_bias, qt3_bias, qt4_bias, qt5_bias, qt6_bias, qt7_bias,
 				  qt0_zp, qt1_zp, qt2_zp, qt3_zp, qt4_zp, qt5_zp, qt6_zp, qt7_zp, 
-				  qt0_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale, qt1_scale;
+				  qt0_scale, qt1_scale, qt2_scale, qt3_scale, qt4_scale, qt5_scale, qt6_scale, qt7_scale;
 	
 	wire [7:0] qt0_res, qt1_res, qt2_res, qt3_res, qt4_res, qt5_res, qt6_res, qt7_res;
 
 	// Quantizers
-	quant qt0(.in(qt0_in), .bias(qt0_bias), .zeropoint(qt0_zp), .scaler_scaled16(qt0_scale), .result(.qt0_res));
-	quant qt1(.in(qt1_in), .bias(qt1_bias), .zeropoint(qt1_zp), .scaler_scaled16(qt1_scale), .result(.qt1_res));
-	quant qt2(.in(qt2_in), .bias(qt2_bias), .zeropoint(qt2_zp), .scaler_scaled16(qt2_scale), .result(.qt2_res));
-	quant qt3(.in(qt3_in), .bias(qt3_bias), .zeropoint(qt3_zp), .scaler_scaled16(qt3_scale), .result(.qt3_res));
-	quant qt4(.in(qt4_in), .bias(qt4_bias), .zeropoint(qt4_zp), .scaler_scaled16(qt4_scale), .result(.qt4_res));
-	quant qt5(.in(qt5_in), .bias(qt5_bias), .zeropoint(qt5_zp), .scaler_scaled16(qt5_scale), .result(.qt5_res));
-	quant qt6(.in(qt6_in), .bias(qt6_bias), .zeropoint(qt6_zp), .scaler_scaled16(qt6_scale), .result(.qt6_res));
-	quant qt7(.in(qt7_in), .bias(qt7_bias), .zeropoint(qt7_zp), .scaler_scaled16(qt7_scale), .result(.qt7_res));
+	quant qt0(.in(qt0_in), .bias(qt0_bias), .zeropoint(qt0_zp), .scaler_scaled16(qt0_scale), .result(qt0_res));
+	quant qt1(.in(qt1_in), .bias(qt1_bias), .zeropoint(qt1_zp), .scaler_scaled16(qt1_scale), .result(qt1_res));
+	quant qt2(.in(qt2_in), .bias(qt2_bias), .zeropoint(qt2_zp), .scaler_scaled16(qt2_scale), .result(qt2_res));
+	quant qt3(.in(qt3_in), .bias(qt3_bias), .zeropoint(qt3_zp), .scaler_scaled16(qt3_scale), .result(qt3_res));
+	quant qt4(.in(qt4_in), .bias(qt4_bias), .zeropoint(qt4_zp), .scaler_scaled16(qt4_scale), .result(qt4_res));
+	quant qt5(.in(qt5_in), .bias(qt5_bias), .zeropoint(qt5_zp), .scaler_scaled16(qt5_scale), .result(qt5_res));
+	quant qt6(.in(qt6_in), .bias(qt6_bias), .zeropoint(qt6_zp), .scaler_scaled16(qt6_scale), .result(qt6_res));
+	quant qt7(.in(qt7_in), .bias(qt7_bias), .zeropoint(qt7_zp), .scaler_scaled16(qt7_scale), .result(qt7_res));
 	
 	
 	
@@ -531,48 +563,37 @@ module unet_fsm(
 	 */
 	
 	`define LOAD_WEIGHTS(src) \
-		begin \
-			word_index = src; \
-			byte_index = 0; \
-			for (f = 0; f < 32; f = f + 1) begin \
-				for (w = 1; w < 10; w = w + 1) begin \
+		 begin \
+			  word_index = src; \
+			  byte_offset = 0; \
+			  for (f = 0; f < 32; f = f + 1) begin \
+					for (w = 1; w <= 9; w = w + 1) begin \
+						 case (byte_offset) \
+							  0: cv_w[f][w] <= weightbank[word_index][31:24]; \
+							  1: cv_w[f][w] <= weightbank[word_index][23:16]; \
+							  2: cv_w[f][w] <= weightbank[word_index][15:8]; \
+							  3: cv_w[f][w] <= weightbank[word_index][7:0]; \
+						 endcase \
+						 byte_offset = byte_offset + 1; \
+						 if (byte_offset == 4) begin \
+							  byte_offset = 0; \
+							  word_index = word_index + 1; \
+						 end \
+					end \
+					/* Load bias (10th byte) */ \
 					case (byte_offset) \
-						0: cv_w[f][w] <= weightbank[word_index][31:24]; \
-						1: cv_w[f][w] <= weightbank[word_index][23:16]; \
-						2: cv_w[f][w] <= weightbank[word_index][15:8];  \
-						3: cv_w[f][w] <= weightbank[word_index][7:0]; \
+						 0: cv_bias[f] <= weightbank[word_index][31:24]; \
+						 1: cv_bias[f] <= weightbank[word_index][23:16]; \
+						 2: cv_bias[f] <= weightbank[word_index][15:8]; \
+						 3: cv_bias[f] <= weightbank[word_index][7:0]; \
 					endcase \
 					byte_offset = byte_offset + 1; \
 					if (byte_offset == 4) begin \
-						byte_offset = 0; \
-						word_index = word_index + 1; \
+						 byte_offset = 0; \
+						 word_index = word_index + 1; \
 					end \
-				end \
-			qt0_bias <= weightbank[src+72]; \
-			qt0_zp   <= weightbank[src+73]; \
-			qt0_scale <= weightbank[src+74];	\	
-			qt1_bias <= weightbank[src+75]; \
-			qt1_zp   <= weightbank[src+76]; \
-			qt1_scale <= weightbank[src+77];	\
-			qt2_bias <= weightbank[src+78]; \
-			qt2_zp   <= weightbank[src+79]; \
-			qt2_scale <= weightbank[src+80];	\	
-			qt3_bias <= weightbank[src+81]; \
-			qt3_zp   <= weightbank[src+82]; \
-			qt3_scale <= weightbank[src+83]; \
-			qt4_bias <= weightbank[src+84]; \
-			qt4_zp   <= weightbank[src+85]; \
-			qt4_scale <= weightbank[src+86];	 \	
-			qt5_bias <= weightbank[src+87]; \
-			qt5_zp   <= weightbank[src+88]; \
-			qt5_scale <= weightbank[src+89];	 \
-			qt6_bias <= weightbank[src+90]; \ 
-			qt6_zp   <= weightbank[src+91];\ 
-			qt6_scale <= weightbank[src+92];	\ 	
-			qt7_bias <= weightbank[src+93]; \
-			qt7_zp   <= weightbank[src+94]; \
-			qt7_scale <= weightbank[src+95];	 \
-		end
+			  end \
+		 end
 				
 	
 	
@@ -696,13 +717,13 @@ module unet_fsm(
 						writepixel <= 0;
 						row <= 0;
 						busy <= 0;
-						savebuffer <=0
+						savebuffer <=0;
 						for (i=0; i<128; i=i+1) intermediatesum[i] <= 0;
 						ctrl <= IDLE;
 						
 						for (i=0; i<32; i=i+1) begin
 							intermediate[i] <= 0;
-							for (w=1; w<10) cv_w[i][w] <= 0;
+							for (w=1; w<10; w=w+1) cv_w[i][w] <= 0;
 						end
 						
 						if (unet_enpulse) begin
@@ -722,7 +743,7 @@ module unet_fsm(
 							if (pixelcount <= 1344) begin
 								weightbank[pixelcount] <= datain;
 							end else begin
-								ctrl <= SEND_DATA
+								ctrl <= SEND_DATA;
 								firsttime <= 0;
 								stage <= STAGE1_CONV;
 								pixelcount <= 0;

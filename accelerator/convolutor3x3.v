@@ -3,7 +3,7 @@ module convolutor3x3 #(
 		parameter IMAGE_HEIGHT = 128
 	)(
 		input  [7:0] pixel_in,
-		input  [7:0] w9, w8, w7, w6, w5, w4, w3, w2, w1,
+		input  [7:0] w9, w8, w7, w6, w5, w4, w3, w2, w1, bias,
 		input  [7:0] width,
 		input  clk, rst_n, paddingl, paddingr,
 		input  [1:0] operation,
@@ -33,7 +33,8 @@ module convolutor3x3 #(
 			conv3x3:
 				pixel_out <= ((paddingl==1) ? 0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr==1) ? 0 : (convout7 * w7)) +
 	                      ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
-							    ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1));
+							    ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
+								 bias;
 			maxpool2x2:
 				begin
 					if (convout5 > convout6) begin
