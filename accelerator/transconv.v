@@ -11,7 +11,4 @@ module transconv #(
 	reg [8*IMAGE_WIDTH-1: 0] linebuf1;
 	reg [8*IMAGE_WIDTH-1: 0] linebuf2;
 	
-	always@(posedge clk or negedge rst_n) begin
-		if (~rst_n) begin
-		end else begin
 endmodule
