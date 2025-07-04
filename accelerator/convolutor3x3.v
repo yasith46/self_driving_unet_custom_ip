@@ -28,7 +28,8 @@ module convolutor3x3 #(
 	 */
 	 
 	parameter conv3x3    = 0,
-	          maxpool2x2 = 1;
+	          maxpool2x2 = 1,
+	          transconv  = 2;
 				 
 	reg signed [7:0] max1, max2;
 	
@@ -37,16 +38,16 @@ module convolutor3x3 #(
 			conv3x3:
 				begin
 					if (((paddingl==1) ? 0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr==1) ? 0 : (convout7 * w7)) +
-						 ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
-						 ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
-						 bias < 0
-						 && relu)	
+					    ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
+					    ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
+					    bias < 0
+					    && relu)	
 							pixel_out <= 0;
 					else
 							pixel_out <= ((paddingl==1) ? 0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr==1) ? 0 : (convout7 * w7)) +
-											 ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
-											 ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
-											 bias;
+							             ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
+							             ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
+							             bias;
 				end
 							
 			maxpool2x2:
