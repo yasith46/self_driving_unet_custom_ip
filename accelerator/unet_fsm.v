@@ -586,7 +586,7 @@ module unet_fsm(
 		.w3(cv_w[0][3]), .w2(cv_w[0][2]), .w1(cv_w[0][1]),
 		.bias(cv_bias[0][7:0]),
 		.width(cv_width[0]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[0]),
 		.rw(tr_rw),
@@ -601,7 +601,7 @@ module unet_fsm(
 		.w3(cv_w[1][3]), .w2(cv_w[1][2]), .w1(cv_w[1][1]),
 		.bias(cv_bias[1][7:0]),
 		.width(cv_width[1]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[1]),
 		.rw(tr_rw),
@@ -616,7 +616,7 @@ module unet_fsm(
 		.w3(cv_w[2][3]), .w2(cv_w[2][2]), .w1(cv_w[2][1]),
 		.bias(cv_bias[2][7:0]),
 		.width(cv_width[2]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[2]),
 		.rw(tr_rw),
@@ -631,7 +631,7 @@ module unet_fsm(
 		.w3(cv_w[3][3]), .w2(cv_w[3][2]), .w1(cv_w[3][1]),
 		.bias(cv_bias[3][7:0]),
 		.width(cv_width[3]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[3]),
 		.rw(tr_rw),
@@ -646,7 +646,7 @@ module unet_fsm(
 		.w3(cv_w[4][3]), .w2(cv_w[4][2]), .w1(cv_w[4][1]),
 		.bias(cv_bias[4][7:0]),
 		.width(cv_width[4]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[4]),
 		.rw(tr_rw),
@@ -661,7 +661,7 @@ module unet_fsm(
 		.w3(cv_w[5][3]), .w2(cv_w[5][2]), .w1(cv_w[5][1]),
 		.bias(cv_bias[5][7:0]),
 		.width(cv_width[5]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[5]),
 		.rw(tr_rw),
@@ -676,7 +676,7 @@ module unet_fsm(
 		.w3(cv_w[6][3]), .w2(cv_w[6][2]), .w1(cv_w[6][1]),
 		.bias(cv_bias[6][7:0]),
 		.width(cv_width[6]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[6]),
 		.rw(tr_rw),
@@ -691,7 +691,7 @@ module unet_fsm(
 		.w3(cv_w[7][3]), .w2(cv_w[7][2]), .w1(cv_w[7][1]),
 		.bias(cv_bias[7][7:0]),
 		.width(cv_width[7]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[7]),
 		.rw(tr_rw),
@@ -706,7 +706,7 @@ module unet_fsm(
 		.w3(cv_w[8][3]), .w2(cv_w[8][2]), .w1(cv_w[8][1]),
 		.bias(cv_bias[8][7:0]),
 		.width(cv_width[8]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[8]),
 		.rw(tr_rw),
@@ -721,7 +721,7 @@ module unet_fsm(
 		.w3(cv_w[9][3]), .w2(cv_w[9][2]), .w1(cv_w[9][1]),
 		.bias(cv_bias[9][7:0]),
 		.width(cv_width[9]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[9]),
 		.rw(tr_rw),
@@ -736,7 +736,7 @@ module unet_fsm(
 		.w3(cv_w[10][3]), .w2(cv_w[10][2]), .w1(cv_w[10][1]),
 		.bias(cv_bias[10][7:0]),
 		.width(cv_width[10]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[10]),
 		.rw(tr_rw),
@@ -751,7 +751,7 @@ module unet_fsm(
 		.w3(cv_w[11][3]), .w2(cv_w[11][2]), .w1(cv_w[11][1]),
 		.bias(cv_bias[11][7:0]),
 		.width(cv_width[11]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[11]),
 		.rw(tr_rw),
@@ -766,7 +766,7 @@ module unet_fsm(
 		.w3(cv_w[12][3]), .w2(cv_w[12][2]), .w1(cv_w[12][1]),
 		.bias(cv_bias[12][7:0]),
 		.width(cv_width[12]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[12]),
 		.rw(tr_rw),
@@ -781,7 +781,7 @@ module unet_fsm(
 		.w3(cv_w[13][3]), .w2(cv_w[13][2]), .w1(cv_w[13][1]),
 		.bias(cv_bias[13][7:0]),
 		.width(cv_width[13]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[13]),
 		.rw(tr_rw),
@@ -796,7 +796,7 @@ module unet_fsm(
 		.w3(cv_w[14][3]), .w2(cv_w[14][2]), .w1(cv_w[14][1]),
 		.bias(cv_bias[14][7:0]),
 		.width(cv_width[14]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[14]),
 		.rw(tr_rw),
@@ -811,7 +811,7 @@ module unet_fsm(
 		.w3(cv_w[15][3]), .w2(cv_w[15][2]), .w1(cv_w[15][1]),
 		.bias(cv_bias[15][7:0]),
 		.width(cv_width[15]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[15]),
 		.rw(tr_rw),
@@ -826,7 +826,7 @@ module unet_fsm(
 		.w3(cv_w[16][3]), .w2(cv_w[16][2]), .w1(cv_w[16][1]),
 		.bias(cv_bias[16][7:0]),
 		.width(cv_width[16]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[16]),
 		.rw(tr_rw),
@@ -841,7 +841,7 @@ module unet_fsm(
 		.w3(cv_w[17][3]), .w2(cv_w[17][2]), .w1(cv_w[17][1]),
 		.bias(cv_bias[17][7:0]),
 		.width(cv_width[17]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[17]),
 		.rw(tr_rw),
@@ -856,7 +856,7 @@ module unet_fsm(
 		.w3(cv_w[18][3]), .w2(cv_w[18][2]), .w1(cv_w[18][1]),
 		.bias(cv_bias[18][7:0]),
 		.width(cv_width[18]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[18]),
 		.rw(tr_rw),
@@ -871,7 +871,7 @@ module unet_fsm(
 		.w3(cv_w[19][3]), .w2(cv_w[19][2]), .w1(cv_w[19][1]),
 		.bias(cv_bias[19][7:0]),
 		.width(cv_width[19]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[19]),
 		.rw(tr_rw),
@@ -886,7 +886,7 @@ module unet_fsm(
 		.w3(cv_w[20][3]), .w2(cv_w[20][2]), .w1(cv_w[20][1]),
 		.bias(cv_bias[20][7:0]),
 		.width(cv_width[20]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[20]),
 		.rw(tr_rw),
@@ -901,7 +901,7 @@ module unet_fsm(
 		.w3(cv_w[21][3]), .w2(cv_w[21][2]), .w1(cv_w[21][1]),
 		.bias(cv_bias[21][7:0]),
 		.width(cv_width[21]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[21]),
 		.rw(tr_rw),
@@ -916,7 +916,7 @@ module unet_fsm(
 		.w3(cv_w[22][3]), .w2(cv_w[22][2]), .w1(cv_w[22][1]),
 		.bias(cv_bias[22][7:0]),
 		.width(cv_width[22]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[22]),
 		.rw(tr_rw),
@@ -931,7 +931,7 @@ module unet_fsm(
 		.w3(cv_w[23][3]), .w2(cv_w[23][2]), .w1(cv_w[23][1]),
 		.bias(cv_bias[23][7:0]),
 		.width(cv_width[23]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[23]),
 		.rw(tr_rw),
@@ -946,7 +946,7 @@ module unet_fsm(
 		.w3(cv_w[24][3]), .w2(cv_w[24][2]), .w1(cv_w[24][1]),
 		.bias(cv_bias[24][7:0]),
 		.width(cv_width[24]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[24]),
 		.rw(tr_rw),
@@ -961,7 +961,7 @@ module unet_fsm(
 		.w3(cv_w[25][3]), .w2(cv_w[25][2]), .w1(cv_w[25][1]),
 		.bias(cv_bias[25][7:0]),
 		.width(cv_width[25]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[25]),
 		.rw(tr_rw),
@@ -976,7 +976,7 @@ module unet_fsm(
 		.w3(cv_w[26][3]), .w2(cv_w[26][2]), .w1(cv_w[26][1]),
 		.bias(cv_bias[26][7:0]),
 		.width(cv_width[26]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[26]),
 		.rw(tr_rw),
@@ -991,7 +991,7 @@ module unet_fsm(
 		.w3(cv_w[27][3]), .w2(cv_w[27][2]), .w1(cv_w[27][1]),
 		.bias(cv_bias[27][7:0]),
 		.width(cv_width[27]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[27]),
 		.rw(tr_rw),
@@ -1006,7 +1006,7 @@ module unet_fsm(
 		.w3(cv_w[28][3]), .w2(cv_w[28][2]), .w1(cv_w[28][1]),
 		.bias(cv_bias[28][7:0]),
 		.width(cv_width[28]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[28]),
 		.rw(tr_rw),
@@ -1021,7 +1021,7 @@ module unet_fsm(
 		.w3(cv_w[29][3]), .w2(cv_w[29][2]), .w1(cv_w[29][1]),
 		.bias(cv_bias[29][7:0]),
 		.width(cv_width[29]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[29]),
 		.rw(tr_rw),
@@ -1036,7 +1036,7 @@ module unet_fsm(
 		.w3(cv_w[30][3]), .w2(cv_w[30][2]), .w1(cv_w[30][1]),
 		.bias(cv_bias[30][7:0]),
 		.width(cv_width[30]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[30]),
 		.rw(tr_rw),
@@ -1051,7 +1051,7 @@ module unet_fsm(
 		.w3(cv_w[31][3]), .w2(cv_w[31][2]), .w1(cv_w[31][1]),
 		.bias(cv_bias[31][7:0]),
 		.width(cv_width[31]),
-		.flip(tr_flip)
+		.flip(tr_flip),
 		.clk(clk),
 		.rst(rst_n && cv_rst[31]),
 		.rw(tr_rw),
@@ -2511,6 +2511,9 @@ module unet_fsm(
 								if (inlayercount == 32) begin
 									state <= STAGE6_TRANSCONV;
 									inlayercount <= 0;
+									tr_flip <= 0;
+									tr_hop <= 0;
+									tr_rw <= 1;
 								end else begin
 									inlayercount <= inlayercount + 32'd32;
 								end
@@ -2895,7 +2898,7 @@ module unet_fsm(
 							
 						end else begin
 							if (writepixel % 32 == 31) begin
-								(writepixel != 255) tr_rw <= 1;
+								if (writepixel != 255) tr_rw <= 1;
 								tr_flip <= ~tr_flip;
 								
 								if (writepixel == 255) begin

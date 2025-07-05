@@ -3,15 +3,16 @@ module transconv #(
 		parameter IMAGE_HEIGHT = 128
 	)(
 		input signed [7:0] in,
-		input signed [7:0]  w9, w8, w7, w6, w5, w4, w3, w2, w1,
-		input signed [7:0] bias, width,
-		input flip, clk, rst_n, rw, hop,
-		output signed [19:0] pixel
+		input signed [7:0] w9, w8, w7, w6, w5, w4, w3, w2, w1,
+		input signed [7:0] bias,
+		input [7:0] width,
+		input flip, clk, rst, rw, hop,
+		output reg signed [19:0] pixel
 	);
 	
-	reg [19:0] linebuf1_array [0:IMAGE_WIDTH];
-   reg [19:0] linebuf2_array [0:IMAGE_WIDTH];
-	reg [19:0] linebuf3_array [0:IMAGE_WIDTH];
+	reg signed [19:0] linebuf1_array [0:IMAGE_WIDTH];
+   reg signed [19:0] linebuf2_array [0:IMAGE_WIDTH];
+	reg signed [19:0] linebuf3_array [0:IMAGE_WIDTH];
 	
 	reg [8:0] wcounter, rcounter;
 	
@@ -19,8 +20,8 @@ module transconv #(
 	
 	integer i;
 	
-	always@(posedge clk or negedge rst_n) begin
-		if (!rst_n) begin
+	always@(posedge clk or negedge rst) begin
+		if (!rst) begin
 			wcounter <= 0;
 			rcounter <= 0;
 			hold_first <= 1;
@@ -44,7 +45,7 @@ module transconv #(
 					linebuf1_array[wcounter+1] <= (in*w8) + ((wcounter == 0 && hold_first) ? 0 : linebuf1_array[wcounter+1]) + bias;
 					linebuf1_array[wcounter+2] <= (in*w9) + ((wcounter == 0 && hold_first) ? 0 : linebuf1_array[wcounter+2]) + bias;
 					
-					if (counter == 0) begin
+					if (wcounter == 0) begin
 						for (i=3; i<IMAGE_WIDTH+1; i=i+1) linebuf1_array[i] <= 0;
 						for (i=3; i<IMAGE_WIDTH+1; i=i+1) linebuf2_array[i] <= 0;
 					end
@@ -62,7 +63,7 @@ module transconv #(
 					linebuf3_array[wcounter+1] <= (in*w8) + ((wcounter == 0 && hold_first) ? 0 : linebuf3_array[wcounter+1]) + bias;
 					linebuf3_array[wcounter+2] <= (in*w9) + ((wcounter == 0 && hold_first) ? 0 : linebuf3_array[wcounter+2]) + bias;
 					
-					if (counter == 0) begin
+					if (wcounter == 0) begin
 						for (i=3; i<IMAGE_WIDTH+1; i=i+1) linebuf2_array[i] <= 0;
 						for (i=3; i<IMAGE_WIDTH+1; i=i+1) linebuf3_array[i] <= 0;
 					end
