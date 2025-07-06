@@ -1,6 +1,6 @@
 module tb_collector3x3;
 
-	parameter IMAGE_WIDTH = 128;
+	parameter IMAGE_WIDTH = 8;
 	parameter IMAGE_HEIGHT = IMAGE_WIDTH;
 	
 	reg clk, rst;
@@ -14,7 +14,7 @@ module tb_collector3x3;
 		.out9(out9), .out8(out8), .out7(out7),
 		.out6(out6), .out5(out5), .out4(out4),
 		.out3(out3), .out2(out2), .out1(out1),
-		.stage_width(128)
+		.stage_width(8)
 	);
 	
 	initial clk = 0;
@@ -24,12 +24,13 @@ module tb_collector3x3;
 	
 	initial begin
 		rst <= 1;
+		pixel <= 0;
 		#10;
 		cycle = 0;
 		$display("Starting testbench");
 		
 		rst <= 0;
-		#4;
+		#7;
 		rst <= 1;
 		
 		for (row=0; row<IMAGE_HEIGHT; row=row+1) begin		

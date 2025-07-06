@@ -9,7 +9,7 @@ module convolutor3x3 #(
 		input clk, rst_n, paddingl, paddingr, relu,
 		input [1:0]  operation,
 		
-		output reg signed [19:0] pixel_out
+		output reg signed [31:0] pixel_out
 	);
 	
 	wire signed [7:0] convout9, convout8, convout7, convout6, convout5, convout4, convout3, convout2, convout1;
@@ -48,6 +48,9 @@ module convolutor3x3 #(
 							             ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
 							             ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
 							             bias;
+											 
+					max1 <= 0;
+					max2 <= 0;
 				end
 							
 			maxpool2x2:
@@ -72,7 +75,11 @@ module convolutor3x3 #(
 				
 				
 			default:
-				pixel_out <= 0;
+				begin
+					pixel_out <= 0;
+					max1 <= 0;
+					max2 <= 0;
+				end
 		endcase
 	end
 endmodule
