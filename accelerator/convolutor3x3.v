@@ -27,58 +27,34 @@ module convolutor3x3 #(
 	 * max pixel_out     = 16'b1111_1110_0000_0001 * 4d'9 = 20'b1000_1110_1110_0000_1001
 	 */
 	 
-	parameter conv3x3    = 0,
-	          maxpool2x2 = 1,
-	          transconv  = 2;
+	parameter conv3x3 = 2'd0,
+	          idle    = 2'd1;
 				 
-	reg signed [7:0] max1, max2;
+	reg signed [31:0] result;
 	
 	always@(*) begin
 		case (operation)
 			conv3x3:
 				begin
-					if (((paddingl==1) ? 0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr==1) ? 0 : (convout7 * w7)) +
-					    ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
-					    ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
-					    bias < 0
-					    && relu)	
-							pixel_out <= 0;
-					else
-							pixel_out <= ((paddingl==1) ? 0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr==1) ? 0 : (convout7 * w7)) +
-							             ((paddingl==1) ? 0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr==1) ? 0 : (convout4 * w4)) +
-							             ((paddingl==1) ? 0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr==1) ? 0 : (convout1 * w1)) +
-							             bias;
-											 
-					max1 <= 0;
-					max2 <= 0;
+					result <= ((paddingl) ? 32'sd0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr) ? 32'sd0 : (convout7 * w7)) +
+					          ((paddingl) ? 32'sd0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr) ? 32'sd0 : (convout4 * w4)) +
+					          ((paddingl) ? 32'sd0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr) ? 32'sd0 : (convout1 * w1)) +
+					          bias;
+								 
+					if (relu) begin
+						if (result < 32'sd0)
+							pixel_out <= 32'sd0;
+						else
+							pixel_out <= result;
+					end else begin
+						pixel_out <= result;
+					end
 				end
-							
-			maxpool2x2:
-				begin
-					if (convout1 > convout2)
-						max1 <= convout1;
-					else
-						max1 <= convout2;
-						
-						
-					if (convout4 > convout5)
-						max2 <= convout4;
-					else
-						max2 <= convout5;
-						
-						
-					if (max1 > max2)
-						pixel_out <= max1;
-					else
-						pixel_out <= max2;							
-				end
-				
 				
 			default:
 				begin
-					pixel_out <= 0;
-					max1 <= 0;
-					max2 <= 0;
+				    result <= 32'sd0;
+					pixel_out <= 32'sd0;
 				end
 		endcase
 	end

@@ -17,10 +17,9 @@ module collector3x3 #(
    always @(posedge clk or negedge rst_n) begin
 		if (!rst_n) begin
 			for (i = 0; i < IMAGE_WIDTH; i = i + 1) begin
-				linebuf1_array[i] <= 0;
-				linebuf2_array[i] <= 0;
+				linebuf1_array[i] <= 8'd0;
+				linebuf2_array[i] <= 8'd0;
 			end
-			for (i = 0; i < 6; i = i + 1)  buffer[i] <= 0;
 			
 		end else begin
 			// Shift linebuf1_array
