@@ -10,7 +10,7 @@ module collector3x3 #(
 
    reg [7:0] linebuf1_array [0:IMAGE_WIDTH-1];
    reg [7:0] linebuf2_array [0:IMAGE_WIDTH-1];
-   reg [7:0] buffer[5:0];
+   reg [7:0] buffer[6:0];
 
    integer i;
 
@@ -21,12 +21,16 @@ module collector3x3 #(
 				linebuf2_array[i] <= 8'd0;
 			end
 			
+			for (i = 0; i < 7; i = i+1) begin
+				buffer[i] <= 0;
+			end
+			
 		end else begin
 			// Shift linebuf1_array
 			for (i = IMAGE_WIDTH - 1; i > 0; i = i - 1) begin
 				linebuf1_array[i] <= linebuf1_array[i - 1];
 			end
-			linebuf1_array[0] <= pixel_in;
+			linebuf1_array[0] <= buffer[6];
 
 			// Shift linebuf2_array
 			for (i = IMAGE_WIDTH - 1; i > 0; i = i - 1) begin
@@ -35,7 +39,8 @@ module collector3x3 #(
 			linebuf2_array[0] <= linebuf1_array[stage_width-1];
 
 			// 6-element shift register for pixels
-			buffer[5] <= pixel_in;
+			buffer[6] <= pixel_in;
+			buffer[5] <= buffer[6];
 			buffer[4] <= buffer[5];
 
 			buffer[3] <= linebuf1_array[stage_width-1];
@@ -47,7 +52,7 @@ module collector3x3 #(
 	end
 
 
-	assign out9 = pixel_in;
+	assign out9 = buffer[6];
 	assign out8 = buffer[5];
 	assign out7 = buffer[4];
 	assign out6 = linebuf1_array[stage_width-1];

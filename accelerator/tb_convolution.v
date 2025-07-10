@@ -146,7 +146,7 @@ module tb_convolution;
 					$display("%d: ERROR - expected %d got %d", (pixelcount-8'd6), out[pixelcount-8'd6], intermediate_dummyreg);
 			end
 		end else begin
-			$diplay("Finished");
+			$display("Finished");
 			$stop;
 		end
 	end
