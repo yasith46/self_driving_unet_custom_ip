@@ -2656,19 +2656,23 @@ module unet_fsm_3_1(
 								end
 							end
 							
-							 for (b=0; b<4; b=b+1) begin
-								  cv_pixelin[b]    <= buf_st1_rd[0][31-(b*8) -:8];
-								  cv_pixelin[b+4]  <= buf_st1_rd[0][31-(b*8) -:8];
-								  cv_pixelin[b+8]  <= buf_st1_rd[0][31-(b*8) -:8];
-								  cv_pixelin[b+12] <= buf_st1_rd[0][31-(b*8) -:8];
-								  
-								  cv_pixelin[b+16] <= buf_st1_rd[1][31-(b*8) -:8];
-								  cv_pixelin[b+20] <= buf_st1_rd[1][31-(b*8) -:8];
-								  cv_pixelin[b+24] <= buf_st1_rd[1][31-(b*8) -:8];
-								  cv_pixelin[b+28] <= buf_st1_rd[1][31-(b*8) -:8];
-							 end
+							if (pixelcount == 32'd0 && layercount != 14) begin
+								for (b=0; b<32; b=b+1) cv_pixelin[b] <= 32'd0;
+							end else begin
+								for (b=0; b<4; b=b+1) begin
+									cv_pixelin[b]    <= buf_st1_rd[0][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st1_rd[0][31-(b*8) -:8];
+									cv_pixelin[b+8]  <= buf_st1_rd[0][31-(b*8) -:8];
+									cv_pixelin[b+12] <= buf_st1_rd[0][31-(b*8) -:8];
+									  
+									cv_pixelin[b+16] <= buf_st1_rd[1][31-(b*8) -:8];
+									cv_pixelin[b+20] <= buf_st1_rd[1][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[1][31-(b*8) -:8];
+									cv_pixelin[b+28] <= buf_st1_rd[1][31-(b*8) -:8];
+								end
+							end
 
-						 end else if (pixelcount < 32'd8192) begin
+						end else if (pixelcount < 32'd8192) begin
 							for (i=0; i<8; i=i+1) begin
 								if (i==2) begin
 									buf_st1_raddr[i] <= pixelcount-32'd4096;
@@ -2678,19 +2682,19 @@ module unet_fsm_3_1(
 									buf_st1_raddr[i] <= 32'b0;
 								end
 							end
-							
-							 for (b=0; b<4; b=b+1) begin
-								  cv_pixelin[b]    <= buf_st1_rd[2][31-(b*8) -:8];
-								  cv_pixelin[b+4]  <= buf_st1_rd[2][31-(b*8) -:8];
-								  cv_pixelin[b+8]  <= buf_st1_rd[2][31-(b*8) -:8];
-								  cv_pixelin[b+12] <= buf_st1_rd[2][31-(b*8) -:8];
+						
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= buf_st1_rd[2][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= buf_st1_rd[2][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= buf_st1_rd[2][31-(b*8) -:8];
+								cv_pixelin[b+12] <= buf_st1_rd[2][31-(b*8) -:8];
 								  
-								  cv_pixelin[b+16] <= buf_st1_rd[3][31-(b*8) -:8];
-								  cv_pixelin[b+20] <= buf_st1_rd[3][31-(b*8) -:8];
-								  cv_pixelin[b+24] <= buf_st1_rd[3][31-(b*8) -:8];
-								  cv_pixelin[b+28] <= buf_st1_rd[3][31-(b*8) -:8];
-							 end
-							 
+								cv_pixelin[b+16] <= buf_st1_rd[3][31-(b*8) -:8];
+								cv_pixelin[b+20] <= buf_st1_rd[3][31-(b*8) -:8];
+								cv_pixelin[b+24] <= buf_st1_rd[3][31-(b*8) -:8];
+								cv_pixelin[b+28] <= buf_st1_rd[3][31-(b*8) -:8];
+							end
+						 
 						end else if (pixelcount < 32'd12288) begin
 							for (i=0; i<8; i=i+1) begin
 								if (i==4) begin
@@ -2702,17 +2706,17 @@ module unet_fsm_3_1(
 								end
 							end
 							
-							 for (b=0; b<4; b=b+1) begin
-								  cv_pixelin[b]    <= buf_st1_rd[4][31-(b*8) -:8];
-								  cv_pixelin[b+4]  <= buf_st1_rd[4][31-(b*8) -:8];
-								  cv_pixelin[b+8]  <= buf_st1_rd[4][31-(b*8) -:8];
-								  cv_pixelin[b+12] <= buf_st1_rd[4][31-(b*8) -:8];
-								  
-								  cv_pixelin[b+16] <= buf_st1_rd[5][31-(b*8) -:8];
-								  cv_pixelin[b+20] <= buf_st1_rd[5][31-(b*8) -:8];
-								  cv_pixelin[b+24] <= buf_st1_rd[5][31-(b*8) -:8];
-								  cv_pixelin[b+28] <= buf_st1_rd[5][31-(b*8) -:8];
-							 end
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= buf_st1_rd[4][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= buf_st1_rd[4][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= buf_st1_rd[4][31-(b*8) -:8];
+								cv_pixelin[b+12] <= buf_st1_rd[4][31-(b*8) -:8];
+								
+								cv_pixelin[b+16] <= buf_st1_rd[5][31-(b*8) -:8];
+								cv_pixelin[b+20] <= buf_st1_rd[5][31-(b*8) -:8];
+								cv_pixelin[b+24] <= buf_st1_rd[5][31-(b*8) -:8];
+								cv_pixelin[b+28] <= buf_st1_rd[5][31-(b*8) -:8];
+							end
 							 
 						end else if (pixelcount < 32'd16384) begin
 							for (i=0; i<8; i=i+1) begin
@@ -2725,26 +2729,26 @@ module unet_fsm_3_1(
 								end
 							end
 							
-							 for (b=0; b<4; b=b+1) begin
-								  cv_pixelin[b]    <= buf_st1_rd[6][31-(b*8) -:8];
-								  cv_pixelin[b+4]  <= buf_st1_rd[6][31-(b*8) -:8];
-								  cv_pixelin[b+8]  <= buf_st1_rd[6][31-(b*8) -:8];
-								  cv_pixelin[b+12] <= buf_st1_rd[6][31-(b*8) -:8];
+							for (b=0; b<4; b=b+1) begin
+								cv_pixelin[b]    <= buf_st1_rd[6][31-(b*8) -:8];
+								cv_pixelin[b+4]  <= buf_st1_rd[6][31-(b*8) -:8];
+								cv_pixelin[b+8]  <= buf_st1_rd[6][31-(b*8) -:8];
+								cv_pixelin[b+12] <= buf_st1_rd[6][31-(b*8) -:8];
 								  
-								  cv_pixelin[b+16] <= buf_st1_rd[7][31-(b*8) -:8];
-								  cv_pixelin[b+20] <= buf_st1_rd[7][31-(b*8) -:8];
-								  cv_pixelin[b+24] <= buf_st1_rd[7][31-(b*8) -:8];
-								  cv_pixelin[b+28] <= buf_st1_rd[7][31-(b*8) -:8];
-							 end
+								cv_pixelin[b+16] <= buf_st1_rd[7][31-(b*8) -:8];
+								cv_pixelin[b+20] <= buf_st1_rd[7][31-(b*8) -:8];
+								cv_pixelin[b+24] <= buf_st1_rd[7][31-(b*8) -:8];
+								cv_pixelin[b+28] <= buf_st1_rd[7][31-(b*8) -:8];
+							end
 							 
 						end else begin
 							for (i=0; i<8; i=i+1) begin
 								buf_st1_raddr[i] <= 32'd0;
 							end
 							
-							 for (b=0; b<32; b=b+1) begin
-								  cv_pixelin[b] <= 8'sd0;
-							 end
+							for (b=0; b<32; b=b+1) begin
+								cv_pixelin[b] <= 8'sd0;
+							end
 						end
 					
 					
@@ -2752,7 +2756,7 @@ module unet_fsm_3_1(
 						// Calculating
 						// -----------------------------------------
 						
-						if (pixelcount >= 32'd16514) begin  // (height*width + (width) for padding + 2)
+						if (pixelcount >= 32'd16515) begin  // (height*width + (width) for padding + 3)
 							
 							for (l=0; l<32; l=l+1) cv_rst[l] <= 1'b1;
 							state <= SEND;
@@ -2772,7 +2776,7 @@ module unet_fsm_3_1(
 						end else begin
 							if (pixelcount >= 32'd129) begin  // ( width+2 for the padding )
 								
-								if (pixelcount == 32'd16513) begin
+								if (pixelcount == 32'd16514) begin
 									pixelcount <= pixelcount + 32'd1;
 									for (l=0; l<32; l=l+1) cv_rst[l] <= 1'b0; // Reset
 								end else if (layercount == 32'd14) begin
@@ -2784,14 +2788,14 @@ module unet_fsm_3_1(
 								
 									
 								case (layercount)
-									32'd0:  begin `load_weight(8) end
-									32'd2:  begin `load_weight(9) end
-									32'd4:  begin `load_weight(10) end
-									32'd6:  begin `load_weight(11) end
-									32'd8:  begin `load_weight(12) end
-									32'd10: begin `load_weight(13) end
-									32'd12: begin `load_weight(14) end
-									32'd14: begin `load_weight(15) end
+									32'd14: begin `load_weight(8) end
+									32'd0:  begin `load_weight(9) end
+									32'd2:  begin `load_weight(10) end
+									32'd4:  begin `load_weight(11) end
+									32'd6:  begin `load_weight(12) end
+									32'd8:  begin `load_weight(13) end
+									32'd10: begin `load_weight(14) end
+									32'd12: begin `load_weight(15) end
 									
 									default:
 										begin
@@ -2877,11 +2881,11 @@ module unet_fsm_3_1(
 									
 									32'd4:  
 										begin
-											if (pixelcount < 32'd4225) begin
+											if (pixelcount < 32'd4226) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==0) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd129;
+														buf_st1_waddr[i] <= pixelcount-32'd130;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -2894,11 +2898,11 @@ module unet_fsm_3_1(
 													buf_st2_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd8321) begin
+											end else if (pixelcount < 32'd8322) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==0) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd4225;
+														buf_st2_waddr[i] <= pixelcount-32'd4226;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -2911,11 +2915,11 @@ module unet_fsm_3_1(
 													buf_st1_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd12417) begin
+											end else if (pixelcount < 32'd12418) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==4) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd8321;
+														buf_st1_waddr[i] <= pixelcount-32'd8322;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -2932,7 +2936,7 @@ module unet_fsm_3_1(
 												for (i=0; i<8; i=i+1) begin
 													if (i==4) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd12417;
+														buf_st2_waddr[i] <= pixelcount-32'd12418;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -2965,11 +2969,11 @@ module unet_fsm_3_1(
 									
 									32'd8: 
 										begin
-											if (pixelcount < 32'd4225) begin
+											if (pixelcount < 32'd4226) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==1) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd129;
+														buf_st1_waddr[i] <= pixelcount-32'd130;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -2982,11 +2986,11 @@ module unet_fsm_3_1(
 													buf_st2_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd8321) begin
+											end else if (pixelcount < 32'd8322) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==1) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd4225;
+														buf_st2_waddr[i] <= pixelcount-32'd4226;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -2999,11 +3003,11 @@ module unet_fsm_3_1(
 													buf_st1_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd12417) begin
+											end else if (pixelcount < 32'd12418) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==5) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd8321;
+														buf_st1_waddr[i] <= pixelcount-32'd8322;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -3020,7 +3024,7 @@ module unet_fsm_3_1(
 												for (i=0; i<8; i=i+1) begin
 													if (i==5) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd12417;
+														buf_st2_waddr[i] <= pixelcount-32'd12418;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -3053,11 +3057,11 @@ module unet_fsm_3_1(
 									
 									32'd12: 
 										begin
-											if (pixelcount < 32'd4225) begin
+											if (pixelcount < 32'd4226) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==2) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd129;
+														buf_st1_waddr[i] <= pixelcount-32'd130;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -3070,11 +3074,11 @@ module unet_fsm_3_1(
 													buf_st2_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd8321) begin
+											end else if (pixelcount < 32'd8322) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==2) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd4225;
+														buf_st2_waddr[i] <= pixelcount-32'd4226;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -3087,11 +3091,11 @@ module unet_fsm_3_1(
 													buf_st1_wd[i]    <= 32'd0;
 												end
 												
-											end else if (pixelcount < 32'd12417) begin
+											end else if (pixelcount < 32'd12418) begin
 												for (i=0; i<8; i=i+1) begin
 													if (i==6) begin
 														buf_st1_we[i]    <= 1'b1;
-														buf_st1_waddr[i] <= pixelcount-32'd8321;
+														buf_st1_waddr[i] <= pixelcount-32'd8322;
 														buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st1_we[i]    <= 1'b0;
@@ -3108,7 +3112,7 @@ module unet_fsm_3_1(
 												for (i=0; i<8; i=i+1) begin
 													if (i==6) begin
 														buf_st2_we[i]    <= 1'b1;
-														buf_st2_waddr[i] <= pixelcount-32'd12417;
+														buf_st2_waddr[i] <= pixelcount-32'd12418;
 														buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 													end else begin 
 														buf_st2_we[i]    <= 1'b0;
@@ -3141,12 +3145,12 @@ module unet_fsm_3_1(
 									
 									32'd0:  
 										begin
-											if (pixelcount > 32'd129) begin
-												if (pixelcount < 32'd4226) begin
+											if (pixelcount > 32'd130) begin
+												if (pixelcount < 32'd4227) begin
 													for (i=0; i<8; i=i+1) begin
 														if (i==3) begin
 															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd130;
+															buf_st1_waddr[i] <= pixelcount-32'd131;
 															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
@@ -3159,11 +3163,11 @@ module unet_fsm_3_1(
 														buf_st2_wd[i]    <= 32'd0;
 													end
 													
-												end else if (pixelcount < 32'd8322) begin
+												end else if (pixelcount < 32'd8323) begin
 													for (i=0; i<8; i=i+1) begin
 														if (i==3) begin
 															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd4226;
+															buf_st2_waddr[i] <= pixelcount-32'd4227;
 															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
@@ -3176,11 +3180,11 @@ module unet_fsm_3_1(
 														buf_st1_wd[i]    <= 32'd0;
 													end
 													
-												end else if (pixelcount < 32'd12418) begin
+												end else if (pixelcount < 32'd12419) begin
 													for (i=0; i<8; i=i+1) begin
 														if (i==7) begin
 															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd8322;
+															buf_st1_waddr[i] <= pixelcount-32'd8323;
 															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
@@ -3197,7 +3201,7 @@ module unet_fsm_3_1(
 													for (i=0; i<8; i=i+1) begin
 														if (i==7) begin
 															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd12418;
+															buf_st2_waddr[i] <= pixelcount-32'd12419;
 															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
@@ -3223,9 +3227,25 @@ module unet_fsm_3_1(
 												end
 											end
 										end
+									default:
+										begin
+											for (i=0; i<8; i=i+1) begin
+												buf_st1_we[i]    <= 1'b0;
+												buf_st1_waddr[i] <= 32'd0;
+												buf_st1_wd[i]    <= 32'd0;
+												
+												buf_st2_we[i]    <= 1'b0;
+												buf_st2_waddr[i] <= 32'd0;
+												buf_st2_wd[i]    <= 32'd0;
+											end
+										end
 								endcase	
 							end else begin
-								pixelcount <= pixelcount + 32'd1;
+								if (layercount == 32'd14) begin
+									pixelcount <= pixelcount + 32'd1;
+									layercount <= 32'd0;
+								end else begin
+									layercount <= layercount + 32'd0;
 								
 								for (i=0; i<8; i=i+1) begin
 									buf_st1_we[i]    <= 1'b0;
@@ -3571,6 +3591,8 @@ module unet_fsm_3_1(
 					relu <= 1'b0;
 					cv_paddingL <= 1'b0;
 					cv_paddingR <= 1'b0; 
+					
+					cv_clk <= 1'b0;
 				end
 				
 			STAGE9_CONV:
@@ -3605,8 +3627,20 @@ module unet_fsm_3_1(
 					relu <= 1'b0;
 					
 					// Setting padding
-					cv_paddingL <= (pixelcount % 32'd128 == 32'd0) ? 1'b1 : 1'b0;
-					cv_paddingR <= (pixelcount % 32'd128 == 32'd1) ? 1'b1 : 1'b0; 
+					cv_paddingL <= (pixelcount % 32'd128 == 32'd1) ? 1'b1 : 1'b0;
+					cv_paddingR <= (pixelcount % 32'd128 == 32'd2) ? 1'b1 : 1'b0;
+				
+					case (layercount)
+						32'd0:  cv_clk <= 1'b1;
+						32'd2:  cv_clk <= 1'b1;
+						32'd4:  cv_clk <= 1'b1;
+						32'd6:  cv_clk <= 1'b1;
+						32'd8:  cv_clk <= 1'b0;
+						32'd10: cv_clk <= 1'b0;
+						32'd12: cv_clk <= 1'b0;
+						32'd14: cv_clk <= 1'b0;
+						default: cv_clk <= 1'b0;
+					endcase						
 				end
 				
 			SEND:
@@ -3619,6 +3653,8 @@ module unet_fsm_3_1(
 					relu <= 1'b0;
 					cv_paddingL <= 1'b0;
 					cv_paddingR <= 1'b0;
+					
+					cv_clk <= 1'b0;
 				end
 				
 			default:
@@ -3631,6 +3667,8 @@ module unet_fsm_3_1(
 					relu <= 1'b0;
 					cv_paddingL <= 1'b0;
 					cv_paddingR <= 1'b0;
+					
+					cv_clk <= 1'b0;
 				end
 		endcase
 	end
