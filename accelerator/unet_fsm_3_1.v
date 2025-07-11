@@ -3246,6 +3246,7 @@ module unet_fsm_3_1(
 									layercount <= 32'd0;
 								end else begin
 									layercount <= layercount + 32'd0;
+								end
 								
 								for (i=0; i<8; i=i+1) begin
 									buf_st1_we[i]    <= 1'b0;
@@ -3538,14 +3539,14 @@ module unet_fsm_3_1(
 						for (a=0; a<32; a=a+1) cv_pixelin[a] <= 8'sd0;
 						
 						for (i=0; i<8; i=i+1) begin
-								buf_st1_we[i]    <= 1'b0;
-								buf_st1_waddr[i] <= 32'd0;
-								buf_st1_wd[i]    <= 32'd0;
-								
-								buf_st2_we[i]    <= 1'b0;
-								buf_st2_waddr[i] <= 32'd0;
-								buf_st2_wd[i]    <= 32'd0;
-							end
+							buf_st1_we[i]    <= 1'b0;
+							buf_st1_waddr[i] <= 32'd0;
+							buf_st1_wd[i]    <= 32'd0;
+							
+							buf_st2_we[i]    <= 1'b0;
+							buf_st2_waddr[i] <= 32'd0;
+							buf_st2_wd[i]    <= 32'd0;
+						end
 					end
 				
 				default: 
