@@ -7,7 +7,6 @@ module convolutor3x3 #(
 		input signed [31:0] bias,
 		input [7:0]  width,
 		input clk, rst_n, paddingl, paddingr, relu,
-		input [1:0]  operation,
 		
 		output reg signed [31:0] pixel_out
 	);
@@ -33,29 +32,18 @@ module convolutor3x3 #(
 	reg signed [31:0] result;
 	
 	always@(*) begin
-		case (operation)
-			conv3x3:
-				begin
-					result <= ((paddingl) ? 32'sd0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr) ? 32'sd0 : (convout7 * w7)) +
-					          ((paddingl) ? 32'sd0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr) ? 32'sd0 : (convout4 * w4)) +
-					          ((paddingl) ? 32'sd0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr) ? 32'sd0 : (convout1 * w1)) +
-					          bias;
-								 
-					if (relu) begin
-						if (result < 32'sd0)
-							pixel_out <= 32'sd0;
-						else
-							pixel_out <= result;
-					end else begin
-						pixel_out <= result;
-					end
-				end
-				
-			default:
-				begin
-				    result <= 32'sd0;
-					pixel_out <= 32'sd0;
-				end
-		endcase
+		result <= ((paddingl) ? 32'sd0 : (convout9 * w9)) + (convout8 * w8) + ((paddingr) ? 32'sd0 : (convout7 * w7)) +
+					 ((paddingl) ? 32'sd0 : (convout6 * w6)) + (convout5 * w5) + ((paddingr) ? 32'sd0 : (convout4 * w4)) +
+					 ((paddingl) ? 32'sd0 : (convout3 * w3)) + (convout2 * w2) + ((paddingr) ? 32'sd0 : (convout1 * w1)) +
+					 bias;
+					 
+		if (relu) begin
+			if (result < 32'sd0)
+				pixel_out <= 32'sd0;
+			else
+				pixel_out <= result;
+		end else begin
+			pixel_out <= result;
+		end
 	end
 endmodule
