@@ -108,7 +108,7 @@ module tb_unet_fsm_3_1;
 						
 						if (statusflag == SAY_SEND_WEIGHTS) begin
 							counter <= counter + 32'd1;
-							if (counter == 32'd1679) begin
+							if (counter == 32'd939) begin
 								state <= WAIT_TO_SEND_DATA;
 								counter <= 32'd0;
 							end

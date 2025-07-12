@@ -15,6 +15,8 @@ module unet_fsm_3_1(
 	
 	parameter IDLE              = 5'd0,
 	          LOAD_WEIGHTS      = 5'd1,
+				 LOAD_BIASES	    = 5'd1,
+				 LOAD_QT				 = 5'd1,
 	          STAGE9_TRANSCONV  = 5'd17,
 	          STAGE9_CONV       = 5'd18,
 	          STAGE10_CONV      = 5'd19,
@@ -1082,111 +1084,87 @@ module unet_fsm_3_1(
 	 * Weight buffers
 	 */
 	 
-	reg [31:0] cv00_wb_0_buf   [0:15];   //  1: {cv0_w4, cv0_w3, cv0_w2, cv0_w1} -----
-	reg [31:0] cv00_wb_1_buf   [0:15];   //  2: {cv0_w8, cv0_w7, cv0_w6, cv0_w5}
-	reg [31:0] cv0001_wb_2_buf [0:15];   //  3: {cv1_w3, cv1_w2, cv1_w1, cv0_w9}
-	reg [31:0] cv01_wb_0_buf   [0:15];   //  4: {cv1_w7, cv1_w6, cv1_w5, cv1_w4}
-	reg [31:0] cv0102_wb_1_buf [0:15];   //  5: {cv2_w2, cv2_w1, cv1_w9, cv1_w8}
-	reg [31:0] cv02_wb_0_buf   [0:15];   //  6: {cv2_w6, cv2_w5, cv2_w4, cv2_w3}
-	reg [31:0] cv0203_wb_0_buf [0:15];   //  7: {cv3_w1, cv2_w9, cv2_w8, cv2_w7}
-	reg [31:0] cv03_wb_0_buf   [0:15];   //  8: {cv3_w5, cv3_w4, cv3_w3, cv3_w2}
-	reg [31:0] cv03_wb_1_buf   [0:15];   //  9: {cv3_w9, cv3_w8, cv3_w7, cv3_w6}
-	reg [31:0] cv04_wb_0_buf   [0:15];   // 10: {cv4_w4, cv4_w3, cv4_w2, cv4_w1} -----
-	reg [31:0] cv04_wb_1_buf   [0:15];   // 11: {cv4_w8, cv4_w7, cv4_w6, cv4_w5}
-	reg [31:0] cv0405_wb_2_buf [0:15];   // 12: {cv5_w3, cv5_w2, cv5_w1, cv4_w9}
-	reg [31:0] cv05_wb_0_buf   [0:15];   // 13: {cv5_w7, cv5_w6, cv5_w5, cv5_w4}
-	reg [31:0] cv0506_wb_1_buf [0:15];   // 14: {cv6_w2, cv6_w1, cv5_w9, cv5_w8}
-	reg [31:0] cv06_wb_0_buf   [0:15];   // 15: {cv6_w6, cv6_w5, cv6_w4, cv6_w3}
-	reg [31:0] cv0607_wb_0_buf [0:15];   // 16: {cv7_w1, cv6_w9, cv6_w8, cv6_w7}
-	reg [31:0] cv07_wb_0_buf   [0:15];   // 17: {cv7_w5, cv7_w4, cv7_w3, cv7_w2}
-	reg [31:0] cv07_wb_1_buf   [0:15];   // 18: {cv7_w9, cv7_w8, cv7_w7, cv7_w6}
-	reg [31:0] cv08_wb_0_buf   [0:15];   // 19: {cv8_w4, cv8_w3, cv8_w2, cv8_w1} -----
-	reg [31:0] cv08_wb_1_buf   [0:15];   // 20: {cv8_w8, cv8_w7, cv8_w6, cv8_w5}
-	reg [31:0] cv0809_wb_2_buf [0:15];   // 21: {cv1_w3, cv1_w2, cv1_w1, cv8_w9}
-	reg [31:0] cv09_wb_0_buf   [0:15];   // 22: {cv9_w7, cv9_w6, cv9_w5, cv9_w4}
-	reg [31:0] cv0910_wb_1_buf [0:15];   // 23: {cv10_w2, cv10_w1, cv9_w9, cv9_w8}
-	reg [31:0] cv10_wb_0_buf   [0:15];   // 24: {cv10_w6, cv10_w5, cv10_w4, cv10_w3}
-	reg [31:0] cv1011_wb_0_buf [0:15];   // 25: {cv11_w1, cv10_w9, cv10_w8, cv10_w7}
-	reg [31:0] cv11_wb_0_buf   [0:15];   // 26: {cv11_w5, cv11_w4, cv11_w3, cv11_w2}
-	reg [31:0] cv11_wb_1_buf   [0:15];   // 27: {cv11_w9, cv11_w8, cv11_w7, cv11_w6}
-	reg [31:0] cv12_wb_0_buf   [0:15];   // 28: {cv12_w4, cv12_w3, cv12_w2, cv12_w1} -----
-	reg [31:0] cv12_wb_1_buf   [0:15];   // 29: {cv12_w8, cv12_w7, cv12_w6, cv12_w5}
-	reg [31:0] cv1213_wb_2_buf [0:15];   // 30: {cv13_w3, cv13_w2, cv13_w1, cv12_w9}
-	reg [31:0] cv13_wb_0_buf   [0:15];   // 31: {cv13_w7, cv13_w6, cv13_w5, cv13_w4}
-	reg [31:0] cv1314_wb_1_buf [0:15];   // 32: {cv14_w2, cv14_w1, cv13_w9, cv13_w8}
-	reg [31:0] cv14_wb_0_buf   [0:15];   // 33: {cv14_w6, cv14_w5, cv14_w4, cv14_w3}
-	reg [31:0] cv1415_wb_0_buf [0:15];   // 34: {cv15_w1, cv14_w9, cv14_w8, cv14_w7}
-	reg [31:0] cv15_wb_0_buf   [0:15];   // 35: {cv15_w5, cv15_w4, cv15_w3, cv15_w2}
-	reg [31:0] cv15_wb_1_buf   [0:15];   // 36: {cv15_w9, cv15_w8, cv15_w7, cv15_w6}
-	reg [31:0] cv16_wb_0_buf   [0:15];   // 37: {cv16_w4, cv16_w3, cv16_w2, cv16_w1} -----
-	reg [31:0] cv16_wb_1_buf   [0:15];   // 38: {cv16_w8, cv16_w7, cv16_w6, cv16_w5}
-	reg [31:0] cv1617_wb_2_buf [0:15];   // 39: {cv17_w3, cv17_w2, cv17_w1, cv16_w9}
-	reg [31:0] cv17_wb_0_buf   [0:15];   // 40: {cv17_w7, cv17_w6, cv17_w5, cv17_w4}
-	reg [31:0] cv1718_wb_1_buf [0:15];   // 41: {cv18_w2, cv18_w1, cv17_w9, cv17_w8}
-	reg [31:0] cv18_wb_0_buf   [0:15];   // 42: {cv18_w6, cv18_w5, cv18_w4, cv18_w3}
-	reg [31:0] cv1819_wb_0_buf [0:15];   // 43: {cv19_w1, cv18_w9, cv18_w8, cv18_w7}
-	reg [31:0] cv19_wb_0_buf   [0:15];   // 44: {cv19_w5, cv19_w4, cv19_w3, cv19_w2}
-	reg [31:0] cv19_wb_1_buf   [0:15];   // 45: {cv19_w9, cv19_w8, cv19_w7, cv19_w6}
-	reg [31:0] cv20_wb_0_buf   [0:15];   // 46: {cv20_w4, cv20_w3, cv20_w2, cv20_w1} -----
-	reg [31:0] cv20_wb_1_buf   [0:15];   // 47: {cv20_w8, cv20_w7, cv20_w6, cv20_w5}
-	reg [31:0] cv2021_wb_2_buf [0:15];   // 48: {cv21_w3, cv21_w2, cv21_w1, cv20_w9}
-	reg [31:0] cv21_wb_0_buf   [0:15];   // 49: {cv21_w7, cv21_w6, cv21_w5, cv21_w4}
-	reg [31:0] cv2122_wb_1_buf [0:15];   // 50: {cv22_w2, cv22_w1, cv21_w9, cv21_w8}
-	reg [31:0] cv22_wb_0_buf   [0:15];   // 51: {cv22_w6, cv22_w5, cv22_w4, cv22_w3}
-	reg [31:0] cv2223_wb_0_buf [0:15];   // 52: {cv23_w1, cv22_w9, cv22_w8, cv22_w7}
-	reg [31:0] cv23_wb_0_buf   [0:15];   // 53: {cv23_w5, cv23_w4, cv23_w3, cv23_w2}
-	reg [31:0] cv23_wb_1_buf   [0:15];   // 54: {cv23_w9, cv23_w8, cv23_w7, cv23_w6}
-	reg [31:0] cv24_wb_0_buf   [0:15];   // 55: {cv24_w4, cv24_w3, cv24_w2, cv24_w1} -----
-	reg [31:0] cv24_wb_1_buf   [0:15];   // 56: {cv24_w8, cv24_w7, cv24_w6, cv24_w5}
-	reg [31:0] cv2425_wb_2_buf [0:15];   // 57: {cv25_w3, cv25_w2, cv25_w1, cv24_w9}
-	reg [31:0] cv25_wb_0_buf   [0:15];   // 58: {cv25_w7, cv25_w6, cv25_w5, cv25_w4}
-	reg [31:0] cv2526_wb_1_buf [0:15];   // 59: {cv26_w2, cv26_w1, cv25_w9, cv25_w8}
-	reg [31:0] cv26_wb_0_buf   [0:15];   // 60: {cv26_w6, cv26_w5, cv26_w4, cv26_w3}
-	reg [31:0] cv2627_wb_0_buf [0:15];   // 61: {cv27_w1, cv26_w9, cv26_w8, cv26_w7}
-	reg [31:0] cv27_wb_0_buf   [0:15];   // 62: {cv27_w5, cv27_w4, cv27_w3, cv27_w2}
-	reg [31:0] cv27_wb_1_buf   [0:15];   // 63: {cv27_w9, cv27_w8, cv27_w7, cv27_w6}
-	reg [31:0] cv28_wb_0_buf   [0:15];   // 64: {cv28_w4, cv28_w3, cv28_w2, cv28_w1} -----
-	reg [31:0] cv28_wb_1_buf   [0:15];   // 65: {cv28_w8, cv28_w7, cv28_w6, cv28_w5}
-	reg [31:0] cv2829_wb_2_buf [0:15];   // 66: {cv29_w3, cv29_w2, cv29_w1, cv28_w9}
-	reg [31:0] cv29_wb_0_buf   [0:15];   // 67: {cv29_w7, cv29_w6, cv29_w5, cv29_w4}
-	reg [31:0] cv2930_wb_1_buf [0:15];   // 68: {cv30_w2, cv30_w1, cv29_w9, cv29_w8}
-	reg [31:0] cv30_wb_0_buf   [0:15];   // 69: {cv30_w6, cv30_w5, cv30_w4, cv30_w3}
-	reg [31:0] cv3031_wb_0_buf [0:15];   // 70: {cv31_w1, cv30_w9, cv30_w8, cv30_w7}
-	reg [31:0] cv31_wb_0_buf   [0:15];   // 71: {cv31_w5, cv31_w4, cv31_w3, cv31_w2}
-	reg [31:0] cv31_wb_1_buf   [0:15];   // 72: {cv31_w9, cv31_w8, cv31_w7, cv31_w6}
+	reg [31:0] cv00_wb_0_buf   [0:11];   //  1: {cv0_w4, cv0_w3, cv0_w2, cv0_w1} -----
+	reg [31:0] cv00_wb_1_buf   [0:11];   //  2: {cv0_w8, cv0_w7, cv0_w6, cv0_w5}
+	reg [31:0] cv0001_wb_2_buf [0:11];   //  3: {cv1_w3, cv1_w2, cv1_w1, cv0_w9}
+	reg [31:0] cv01_wb_0_buf   [0:11];   //  4: {cv1_w7, cv1_w6, cv1_w5, cv1_w4}
+	reg [31:0] cv0102_wb_1_buf [0:11];   //  5: {cv2_w2, cv2_w1, cv1_w9, cv1_w8}
+	reg [31:0] cv02_wb_0_buf   [0:11];   //  6: {cv2_w6, cv2_w5, cv2_w4, cv2_w3}
+	reg [31:0] cv0203_wb_0_buf [0:11];   //  7: {cv3_w1, cv2_w9, cv2_w8, cv2_w7}
+	reg [31:0] cv03_wb_0_buf   [0:11];   //  8: {cv3_w5, cv3_w4, cv3_w3, cv3_w2}
+	reg [31:0] cv03_wb_1_buf   [0:11];   //  9: {cv3_w9, cv3_w8, cv3_w7, cv3_w6}
+	reg [31:0] cv04_wb_0_buf   [0:11];   // 10: {cv4_w4, cv4_w3, cv4_w2, cv4_w1} -----
+	reg [31:0] cv04_wb_1_buf   [0:11];   // 11: {cv4_w8, cv4_w7, cv4_w6, cv4_w5}
+	reg [31:0] cv0405_wb_2_buf [0:11];   // 12: {cv5_w3, cv5_w2, cv5_w1, cv4_w9}
+	reg [31:0] cv05_wb_0_buf   [0:11];   // 13: {cv5_w7, cv5_w6, cv5_w5, cv5_w4}
+	reg [31:0] cv0506_wb_1_buf [0:11];   // 14: {cv6_w2, cv6_w1, cv5_w9, cv5_w8}
+	reg [31:0] cv06_wb_0_buf   [0:11];   // 11: {cv6_w6, cv6_w5, cv6_w4, cv6_w3}
+	reg [31:0] cv0607_wb_0_buf [0:11];   // 16: {cv7_w1, cv6_w9, cv6_w8, cv6_w7}
+	reg [31:0] cv07_wb_0_buf   [0:11];   // 17: {cv7_w5, cv7_w4, cv7_w3, cv7_w2}
+	reg [31:0] cv07_wb_1_buf   [0:11];   // 18: {cv7_w9, cv7_w8, cv7_w7, cv7_w6}
+	reg [31:0] cv08_wb_0_buf   [0:11];   // 19: {cv8_w4, cv8_w3, cv8_w2, cv8_w1} -----
+	reg [31:0] cv08_wb_1_buf   [0:11];   // 20: {cv8_w8, cv8_w7, cv8_w6, cv8_w5}
+	reg [31:0] cv0809_wb_2_buf [0:11];   // 21: {cv1_w3, cv1_w2, cv1_w1, cv8_w9}
+	reg [31:0] cv09_wb_0_buf   [0:11];   // 22: {cv9_w7, cv9_w6, cv9_w5, cv9_w4}
+	reg [31:0] cv0910_wb_1_buf [0:11];   // 23: {cv10_w2, cv10_w1, cv9_w9, cv9_w8}
+	reg [31:0] cv10_wb_0_buf   [0:11];   // 24: {cv10_w6, cv10_w5, cv10_w4, cv10_w3}
+	reg [31:0] cv1011_wb_0_buf [0:11];   // 25: {cv11_w1, cv10_w9, cv10_w8, cv10_w7}
+	reg [31:0] cv11_wb_0_buf   [0:11];   // 26: {cv11_w5, cv11_w4, cv11_w3, cv11_w2}
+	reg [31:0] cv11_wb_1_buf   [0:11];   // 27: {cv11_w9, cv11_w8, cv11_w7, cv11_w6}
+	reg [31:0] cv12_wb_0_buf   [0:11];   // 28: {cv12_w4, cv12_w3, cv12_w2, cv12_w1} -----
+	reg [31:0] cv12_wb_1_buf   [0:11];   // 29: {cv12_w8, cv12_w7, cv12_w6, cv12_w5}
+	reg [31:0] cv1213_wb_2_buf [0:11];   // 30: {cv13_w3, cv13_w2, cv13_w1, cv12_w9}
+	reg [31:0] cv13_wb_0_buf   [0:11];   // 31: {cv13_w7, cv13_w6, cv13_w5, cv13_w4}
+	reg [31:0] cv1314_wb_1_buf [0:11];   // 32: {cv14_w2, cv14_w1, cv13_w9, cv13_w8}
+	reg [31:0] cv14_wb_0_buf   [0:11];   // 33: {cv14_w6, cv14_w5, cv14_w4, cv14_w3}
+	reg [31:0] cv1415_wb_0_buf [0:11];   // 34: {cv15_w1, cv14_w9, cv14_w8, cv14_w7}
+	reg [31:0] cv15_wb_0_buf   [0:11];   // 35: {cv15_w5, cv15_w4, cv15_w3, cv15_w2}
+	reg [31:0] cv15_wb_1_buf   [0:11];   // 36: {cv15_w9, cv15_w8, cv15_w7, cv15_w6}
+	reg [31:0] cv16_wb_0_buf   [0:11];   // 37: {cv16_w4, cv16_w3, cv16_w2, cv16_w1} -----
+	reg [31:0] cv16_wb_1_buf   [0:11];   // 38: {cv16_w8, cv16_w7, cv16_w6, cv16_w5}
+	reg [31:0] cv1617_wb_2_buf [0:11];   // 39: {cv17_w3, cv17_w2, cv17_w1, cv16_w9}
+	reg [31:0] cv17_wb_0_buf   [0:11];   // 40: {cv17_w7, cv17_w6, cv17_w5, cv17_w4}
+	reg [31:0] cv1718_wb_1_buf [0:11];   // 41: {cv18_w2, cv18_w1, cv17_w9, cv17_w8}
+	reg [31:0] cv18_wb_0_buf   [0:11];   // 42: {cv18_w6, cv18_w5, cv18_w4, cv18_w3}
+	reg [31:0] cv1819_wb_0_buf [0:11];   // 43: {cv19_w1, cv18_w9, cv18_w8, cv18_w7}
+	reg [31:0] cv19_wb_0_buf   [0:11];   // 44: {cv19_w5, cv19_w4, cv19_w3, cv19_w2}
+	reg [31:0] cv19_wb_1_buf   [0:11];   // 45: {cv19_w9, cv19_w8, cv19_w7, cv19_w6}
+	reg [31:0] cv20_wb_0_buf   [0:11];   // 46: {cv20_w4, cv20_w3, cv20_w2, cv20_w1} -----
+	reg [31:0] cv20_wb_1_buf   [0:11];   // 47: {cv20_w8, cv20_w7, cv20_w6, cv20_w5}
+	reg [31:0] cv2021_wb_2_buf [0:11];   // 48: {cv21_w3, cv21_w2, cv21_w1, cv20_w9}
+	reg [31:0] cv21_wb_0_buf   [0:11];   // 49: {cv21_w7, cv21_w6, cv21_w5, cv21_w4}
+	reg [31:0] cv2122_wb_1_buf [0:11];   // 50: {cv22_w2, cv22_w1, cv21_w9, cv21_w8}
+	reg [31:0] cv22_wb_0_buf   [0:11];   // 51: {cv22_w6, cv22_w5, cv22_w4, cv22_w3}
+	reg [31:0] cv2223_wb_0_buf [0:11];   // 52: {cv23_w1, cv22_w9, cv22_w8, cv22_w7}
+	reg [31:0] cv23_wb_0_buf   [0:11];   // 53: {cv23_w5, cv23_w4, cv23_w3, cv23_w2}
+	reg [31:0] cv23_wb_1_buf   [0:11];   // 54: {cv23_w9, cv23_w8, cv23_w7, cv23_w6}
+	reg [31:0] cv24_wb_0_buf   [0:11];   // 55: {cv24_w4, cv24_w3, cv24_w2, cv24_w1} -----
+	reg [31:0] cv24_wb_1_buf   [0:11];   // 56: {cv24_w8, cv24_w7, cv24_w6, cv24_w5}
+	reg [31:0] cv2425_wb_2_buf [0:11];   // 57: {cv25_w3, cv25_w2, cv25_w1, cv24_w9}
+	reg [31:0] cv25_wb_0_buf   [0:11];   // 58: {cv25_w7, cv25_w6, cv25_w5, cv25_w4}
+	reg [31:0] cv2526_wb_1_buf [0:11];   // 59: {cv26_w2, cv26_w1, cv25_w9, cv25_w8}
+	reg [31:0] cv26_wb_0_buf   [0:11];   // 60: {cv26_w6, cv26_w5, cv26_w4, cv26_w3}
+	reg [31:0] cv2627_wb_0_buf [0:11];   // 61: {cv27_w1, cv26_w9, cv26_w8, cv26_w7}
+	reg [31:0] cv27_wb_0_buf   [0:11];   // 62: {cv27_w5, cv27_w4, cv27_w3, cv27_w2}
+	reg [31:0] cv27_wb_1_buf   [0:11];   // 63: {cv27_w9, cv27_w8, cv27_w7, cv27_w6}
+	reg [31:0] cv28_wb_0_buf   [0:11];   // 64: {cv28_w4, cv28_w3, cv28_w2, cv28_w1} -----
+	reg [31:0] cv28_wb_1_buf   [0:11];   // 65: {cv28_w8, cv28_w7, cv28_w6, cv28_w5}
+	reg [31:0] cv2829_wb_2_buf [0:11];   // 66: {cv29_w3, cv29_w2, cv29_w1, cv28_w9}
+	reg [31:0] cv29_wb_0_buf   [0:11];   // 67: {cv29_w7, cv29_w6, cv29_w5, cv29_w4}
+	reg [31:0] cv2930_wb_1_buf [0:11];   // 68: {cv30_w2, cv30_w1, cv29_w9, cv29_w8}
+	reg [31:0] cv30_wb_0_buf   [0:11];   // 69: {cv30_w6, cv30_w5, cv30_w4, cv30_w3}
+	reg [31:0] cv3031_wb_0_buf [0:11];   // 70: {cv31_w1, cv30_w9, cv30_w8, cv30_w7}
+	reg [31:0] cv31_wb_0_buf   [0:11];   // 71: {cv31_w5, cv31_w4, cv31_w3, cv31_w2}
+	reg [31:0] cv31_wb_1_buf   [0:11];   // 72: {cv31_w9, cv31_w8, cv31_w7, cv31_w6}
 	
-	reg [31:0] cv0_bias_buf [0:15];	
-	reg [31:0] cv1_bias_buf [0:15];	
-	reg [31:0] cv2_bias_buf [0:15];	
-	reg [31:0] cv3_bias_buf [0:15];	
-	reg [31:0] cv4_bias_buf [0:15];	
-	reg [31:0] cv5_bias_buf [0:15];	
-	reg [31:0] cv6_bias_buf [0:15];	
-	reg [31:0] cv7_bias_buf [0:15];	
-	reg [31:0] cv8_bias_buf [0:15];	
-	reg [31:0] cv9_bias_buf [0:15];
-	reg [31:0] cv10_bias_buf [0:15];	
-	reg [31:0] cv11_bias_buf [0:15];	
-	reg [31:0] cv12_bias_buf [0:15];	
-	reg [31:0] cv13_bias_buf [0:15];	
-	reg [31:0] cv14_bias_buf [0:15];	
-	reg [31:0] cv15_bias_buf [0:15];	
-	reg [31:0] cv16_bias_buf [0:15];	
-	reg [31:0] cv17_bias_buf [0:15];	
-	reg [31:0] cv18_bias_buf [0:15];	
-	reg [31:0] cv19_bias_buf [0:15];
-	reg [31:0] cv20_bias_buf [0:15];	
-	reg [31:0] cv21_bias_buf [0:15];	
-	reg [31:0] cv22_bias_buf [0:15];	
-	reg [31:0] cv23_bias_buf [0:15];	
-	reg [31:0] cv24_bias_buf [0:15];	
-	reg [31:0] cv25_bias_buf [0:15];	
-	reg [31:0] cv26_bias_buf [0:15];	
-	reg [31:0] cv27_bias_buf [0:15];	
-	reg [31:0] cv28_bias_buf [0:15];	
-	reg [31:0] cv29_bias_buf [0:15];
-	reg [31:0] cv30_bias_buf [0:15];	
-	reg [31:0] cv31_bias_buf [0:15];	
+	reg [31:0] cv0_bias_buf [0:8];	
+	reg [31:0] cv1_bias_buf [0:8];	
+	reg [31:0] cv2_bias_buf [0:8];	
+	reg [31:0] cv3_bias_buf [0:8];	
+	reg [31:0] cv4_bias_buf [0:8];	
+	reg [31:0] cv5_bias_buf [0:8];	
+	reg [31:0] cv6_bias_buf [0:8];	
+	reg [31:0] cv7_bias_buf [0:8];
 	
 	reg [31:0] qt_buf [0:2];
 	
@@ -1195,42 +1173,20 @@ module unet_fsm_3_1(
 	 * Macros for loading weights
 	 */				
 	
+	
+	reg [31:0] biaswire [0:7];
+	
 	`define load_bias(src)                  \
-		cv_tr_bias[0]  <= cv0_bias_buf[src];   \
-		cv_tr_bias[1]  <= cv1_bias_buf[src];   \
-		cv_tr_bias[2]  <= cv2_bias_buf[src];   \
-		cv_tr_bias[3]  <= cv3_bias_buf[src];   \
-		cv_tr_bias[4]  <= cv4_bias_buf[src];   \
-		cv_tr_bias[5]  <= cv5_bias_buf[src];   \
-		cv_tr_bias[6]  <= cv6_bias_buf[src];   \
-		cv_tr_bias[7]  <= cv7_bias_buf[src];   \
-		cv_tr_bias[8]  <= cv8_bias_buf[src];   \
-		cv_tr_bias[9]  <= cv9_bias_buf[src];   \
-		cv_tr_bias[10] <= cv10_bias_buf[src];  \
-		cv_tr_bias[11] <= cv11_bias_buf[src];  \
-		cv_tr_bias[12] <= cv12_bias_buf[src];  \
-		cv_tr_bias[13] <= cv13_bias_buf[src];  \
-		cv_tr_bias[14] <= cv14_bias_buf[src];  \
-		cv_tr_bias[15] <= cv15_bias_buf[src];  \
-		cv_tr_bias[16] <= cv16_bias_buf[src];  \
-		cv_tr_bias[17] <= cv17_bias_buf[src];  \
-		cv_tr_bias[18] <= cv18_bias_buf[src];  \
-		cv_tr_bias[19] <= cv19_bias_buf[src];  \
-		cv_tr_bias[20] <= cv20_bias_buf[src];  \
-		cv_tr_bias[21] <= cv21_bias_buf[src];  \
-		cv_tr_bias[22] <= cv22_bias_buf[src];  \
-		cv_tr_bias[23] <= cv23_bias_buf[src];  \
-		cv_tr_bias[24] <= cv24_bias_buf[src];  \
-		cv_tr_bias[25] <= cv25_bias_buf[src];  \
-		cv_tr_bias[26] <= cv26_bias_buf[src];  \
-		cv_tr_bias[27] <= cv27_bias_buf[src];  \
-		cv_tr_bias[28] <= cv28_bias_buf[src];  \
-		cv_tr_bias[29] <= cv29_bias_buf[src];  \
-		cv_tr_bias[30] <= cv30_bias_buf[src];  \
-		cv_tr_bias[31] <= cv31_bias_buf[src];
+		biaswire[0]  <= cv0_bias_buf[src];   \
+		biaswire[1]  <= cv1_bias_buf[src];   \
+		biaswire[2]  <= cv2_bias_buf[src];   \
+		biaswire[3]  <= cv3_bias_buf[src];   \
+		biaswire[4]  <= cv4_bias_buf[src];   \
+		biaswire[5]  <= cv5_bias_buf[src];   \
+		biaswire[6]  <= cv6_bias_buf[src];   \
+		biaswire[7]  <= cv7_bias_buf[src];
 	
 	`define load_weight(src)                         \
-		`load_bias(src)                              \
 		cv_tr_w[0][1] <= cv00_wb_0_buf[src][7:0];       \
 		cv_tr_w[0][2] <= cv00_wb_0_buf[src][15:8];      \
 		cv_tr_w[0][3] <= cv00_wb_0_buf[src][23:16];     \
@@ -1550,7 +1506,6 @@ module unet_fsm_3_1(
 	
 	reg firsttime;
 	
-	
 	integer i, j, k, l, w, a, b, c;	
 	
 	
@@ -1639,24 +1594,23 @@ module unet_fsm_3_1(
 				LOAD_WEIGHTS:
 					begin
 						if (~unet_enpulse) begin
-							if (inlayercount == 32'd104) begin
-								if (pixelcount == 32'd2) begin
-									inlayercount <= -32'd4;
+							if (pixelcount == 32'd11) begin
+								if (inlayercount == 32'd71) begin
+									inlayercount <= 32'd0;
 									pixelcount <= 32'd0;
-									state <= IDLE;
+									state <= LOAD_BIASES;
 									firsttime <= 1'b0;
 								end else begin
-									pixelcount <= pixelcount + 32'd1;
+									inlayercount <= inlayercount + 32'd1;
 								end
 							end else begin
-								if (pixelcount == 32'd15) begin
-									inlayercount <= inlayercount + 32'd1;
-									pixelcount <= 32'd0;
-								end else begin
+								if (inlayercount == 32'd71) begin
+									inlayercount <= 32'd0;
 									pixelcount <= pixelcount + 32'd1;
+								end else begin
+									inlayercount <= inlayercount + 32'd1;
 								end
-							end	
-								
+							end
 							
 							case (inlayercount)
 								32'd0   : cv00_wb_0_buf[pixelcount]   <= data_in;	  //  1: {cv0_w4, cv0_w3, cv0_w2, cv0_w1} -----
@@ -1666,7 +1620,7 @@ module unet_fsm_3_1(
 								32'd4   : cv0102_wb_1_buf[pixelcount] <= data_in;   //  5: {cv2_w2, cv2_w1, cv1_w9, cv1_w8}
 								32'd5   : cv02_wb_0_buf[pixelcount]   <= data_in;   //  6: {cv2_w6, cv2_w5, cv2_w4, cv2_w3}
 								32'd6   : cv0203_wb_0_buf[pixelcount] <= data_in;   //  7: {cv3_w1, cv2_w9, cv2_w8, cv2_w7}
-								32'd7   : cv03_wb_0_buf[pixelcount]   <= data_in;	  //  8: {cv3_w5, cv3_w4, cv3_w3, cv3_w2}
+								32'd7   : cv03_wb_0_buf[pixelcount]   <= data_in;	  //  8: {cv3_w5, cv3_w4, cv3_w3, cv3_w2}b
 								32'd8   : cv03_wb_1_buf[pixelcount]   <= data_in;   //  9: {cv3_w9, cv3_w8, cv3_w7, cv3_w6}
 								32'd9   : cv04_wb_0_buf[pixelcount]   <= data_in;	  // 10: {cv4_w4, cv4_w3, cv4_w2, cv4_w1} -----
 								32'd10  : cv04_wb_1_buf[pixelcount]   <= data_in;   // 11: {cv4_w8, cv4_w7, cv4_w6, cv4_w5}
@@ -1731,41 +1685,6 @@ module unet_fsm_3_1(
 								32'd69  : cv3031_wb_0_buf[pixelcount] <= data_in;   // 70: {cv31_w1, cv30_w9, cv30_w8, cv30_w7}
 								32'd70  : cv31_wb_0_buf[pixelcount]   <= data_in;	  // 71: {cv31_w5, cv31_w4, cv31_w3, cv31_w2}
 								32'd71  : cv31_wb_1_buf[pixelcount]   <= data_in;   // 72: {cv31_w9, cv31_w8, cv31_w7, cv31_w6}
-								
-								32'd72  : cv0_bias_buf[pixelcount] <= data_in;
-								32'd73  : cv1_bias_buf[pixelcount] <= data_in;
-								32'd74  : cv2_bias_buf[pixelcount] <= data_in;
-								32'd75  : cv3_bias_buf[pixelcount] <= data_in;
-								32'd76  : cv4_bias_buf[pixelcount] <= data_in;
-								32'd77  : cv5_bias_buf[pixelcount] <= data_in;
-								32'd78  : cv6_bias_buf[pixelcount] <= data_in;
-								32'd79  : cv7_bias_buf[pixelcount] <= data_in;
-								32'd80  : cv8_bias_buf[pixelcount] <= data_in;
-								32'd81  : cv9_bias_buf[pixelcount] <= data_in;
-								32'd82  : cv10_bias_buf[pixelcount] <= data_in;
-								32'd83  : cv11_bias_buf[pixelcount] <= data_in;
-								32'd84  : cv12_bias_buf[pixelcount] <= data_in;
-								32'd85  : cv13_bias_buf[pixelcount] <= data_in;
-								32'd86  : cv14_bias_buf[pixelcount] <= data_in;
-								32'd87  : cv15_bias_buf[pixelcount] <= data_in;
-								32'd88  : cv16_bias_buf[pixelcount] <= data_in;
-								32'd89  : cv17_bias_buf[pixelcount] <= data_in;
-								32'd90  : cv18_bias_buf[pixelcount] <= data_in;
-								32'd91  : cv19_bias_buf[pixelcount] <= data_in;
-								32'd92  : cv20_bias_buf[pixelcount] <= data_in;
-								32'd93  : cv21_bias_buf[pixelcount] <= data_in;
-								32'd94  : cv22_bias_buf[pixelcount] <= data_in;
-								32'd95  : cv23_bias_buf[pixelcount] <= data_in;
-								32'd96  : cv24_bias_buf[pixelcount] <= data_in;
-								32'd97  : cv25_bias_buf[pixelcount] <= data_in;
-								32'd98  : cv26_bias_buf[pixelcount] <= data_in;
-								32'd99  : cv27_bias_buf[pixelcount] <= data_in;
-								32'd100 : cv28_bias_buf[pixelcount] <= data_in;
-								32'd101 : cv29_bias_buf[pixelcount] <= data_in;
-								32'd102 : cv30_bias_buf[pixelcount] <= data_in;
-								32'd103 : cv31_bias_buf[pixelcount] <= data_in;
-								
-								32'd104 : qt_buf[pixelcount] <= data_in;
 							endcase
 						end
 						
@@ -1784,6 +1703,87 @@ module unet_fsm_3_1(
 							buf_st2_wd[i] <= 32'b0;
 						end
 					end
+					
+				LOAD_BIASES:
+					begin
+						if (~unet_enpulse) begin
+							if (pixelcount == 32'd7) begin
+								if (inlayercount == 32'd7) begin
+									inlayercount <= 32'd0;
+									pixelcount <= 32'd0;
+									state <= LOAD_QT;
+									firsttime <= 1'b0;
+								end else begin
+									inlayercount <= inlayercount + 32'd1;
+								end
+							end else begin
+								if (inlayercount == 32'd7) begin
+									inlayercount <= 32'd0;
+									pixelcount <= pixelcount + 32'd1;
+								end else begin
+									inlayercount <= inlayercount + 32'd1;
+								end
+							end
+							
+							case (inlayercount)
+								32'd0  : cv0_bias_buf[pixelcount] <= data_in;
+								32'd1  : cv1_bias_buf[pixelcount] <= data_in;
+								32'd2  : cv2_bias_buf[pixelcount] <= data_in;
+								32'd3  : cv3_bias_buf[pixelcount] <= data_in;
+								32'd4  : cv4_bias_buf[pixelcount] <= data_in;
+								32'd5  : cv5_bias_buf[pixelcount] <= data_in;
+								32'd6  : cv6_bias_buf[pixelcount] <= data_in;
+								32'd7  : cv7_bias_buf[pixelcount] <= data_in;
+							endcase
+						end
+						
+						data_out <= 32'd0;
+						for (a=0; a<32; a=a+1) cv_pixelin[a] <= 8'sd0;
+						
+						for (i=0; i<8; i=i+1) begin
+							buf_st1_we[i] <= 1'b0;
+							buf_st1_raddr[i] <= 32'b0;
+							buf_st1_waddr[i] <= 32'b0;
+							buf_st1_wd[i] <= 32'b0;
+							
+							buf_st2_we[i] <= 1'b0;
+							buf_st2_raddr[i] <= 32'b0;
+							buf_st2_waddr[i] <= 32'b0;
+							buf_st2_wd[i] <= 32'b0;
+						end
+					end
+					
+				LOAD_QT:
+					begin
+						if (~unet_enpulse) begin
+							if (pixelcount == 32'd2) begin
+								inlayercount <= -32'd4;
+								pixelcount <= 32'd0;
+								state <= IDLE;
+								firsttime <= 1'b0;
+							end else begin
+								pixelcount <= pixelcount + 32'd1;
+							end
+							
+							qt_buf[pixelcount] <= data_in;
+						end
+						
+						data_out <= 32'd0;
+						for (a=0; a<32; a=a+1) cv_pixelin[a] <= 8'sd0;
+						
+						for (i=0; i<8; i=i+1) begin
+							buf_st1_we[i] <= 1'b0;
+							buf_st1_raddr[i] <= 32'b0;
+							buf_st1_waddr[i] <= 32'b0;
+							buf_st1_wd[i] <= 32'b0;
+							
+							buf_st2_we[i] <= 1'b0;
+							buf_st2_raddr[i] <= 32'b0;
+							buf_st2_waddr[i] <= 32'b0;
+							buf_st2_wd[i] <= 32'b0;
+						end
+					end
+				
 					
 				STAGE9_TRANSCONV:
 					// 16 (64x64) Layers ---> 8 (128x128) Layers
@@ -1866,6 +1866,8 @@ module unet_fsm_3_1(
 								endcase
 								
 								`load_qt(0)
+								`load_bias(0)
+								
 								
 								for (i=0; i<8; i=i+1) begin
 									buf_st1_we[i]    <= 1'b0;
@@ -1908,14 +1910,14 @@ module unet_fsm_3_1(
 								end
 								
 								
-								qt0_in <= tr_out[0] + tr_out[1] + tr_out[2] + tr_out[3];
-								qt1_in <= tr_out[4] + tr_out[5] + tr_out[6] + tr_out[7];
-								qt2_in <= tr_out[8] + tr_out[9] + tr_out[10] + tr_out[11];
-								qt3_in <= tr_out[12] + tr_out[13] + tr_out[14] + tr_out[15];
-								qt4_in <= tr_out[16] + tr_out[17] + tr_out[18] + tr_out[19];
-								qt5_in <= tr_out[20] + tr_out[21] + tr_out[22] + tr_out[23];
-								qt6_in <= tr_out[24] + tr_out[25] + tr_out[26] + tr_out[27];
-								qt7_in <= tr_out[28] + tr_out[29] + tr_out[30] + tr_out[31]; 
+								qt0_in <= tr_out[0] + tr_out[1] + tr_out[2] + tr_out[3] + biaswire[0];
+								qt1_in <= tr_out[4] + tr_out[5] + tr_out[6] + tr_out[7] + biaswire[1];
+								qt2_in <= tr_out[8] + tr_out[9] + tr_out[10] + tr_out[11] + biaswire[2];
+								qt3_in <= tr_out[12] + tr_out[13] + tr_out[14] + tr_out[15] + biaswire[3];
+								qt4_in <= tr_out[16] + tr_out[17] + tr_out[18] + tr_out[19] + biaswire[4];
+								qt5_in <= tr_out[20] + tr_out[21] + tr_out[22] + tr_out[23] + biaswire[5];
+								qt6_in <= tr_out[24] + tr_out[25] + tr_out[26] + tr_out[27] + biaswire[6];
+								qt7_in <= tr_out[28] + tr_out[29] + tr_out[30] + tr_out[31] + biaswire[7]; 
 								
 								
 								// --------------------------------
@@ -1923,31 +1925,31 @@ module unet_fsm_3_1(
 								// --------------------------------
                                 
 								// Storage at st2
-								//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+								//            0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 								// ------------------------------------------------------------------------------- Q1 [4095:0]
-								//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
-								//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+								//  buf0         L1-P1          L2-P1          L3-P1         L4-P1
+								//  buf1         L5-P1          L6-P1          L7-P1         L8-P1
 								// ------------------------------------------------------------------------------- Q2 [8191:4096]
-								//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
-								//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+								//   buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+								//   buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
 								// ------------------------------------------------------------------------------- Q3 [12287:8192]
-								//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
-								//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+								//   buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+								//   buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
 								// ------------------------------------------------------------------------------- Q4 [16383:12288]
-								//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
-								//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+								//   buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+								//   buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
 								
 								
 								// Storage at st1
-								//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+								//             0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 								// ------------------------------------------------------------------------------- Q1 [4095:0]
-								//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
+								//   buf0         L1-P1          L2-P1          L3-P1         L4-P1
 								// ------------------------------------------------------------------------------- Q2 [8191:4096]
-								//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
-								// ------------------------------------------------------------------------------- Q3 [12287:8192]
-								//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+								//   buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+								// ------------------------------------------------------------------------------ Q3 [12287:8192]
+								//   buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
 								// ------------------------------------------------------------------------------- Q4 [16383:12288]
-								//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+								//   buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
 								
 								if (writepixel < 32'd16385 && writepixel > 0 && oldwritepixel != writepixel) begin
 									if (writepixel < 32'd4097) begin									
@@ -2106,6 +2108,8 @@ module unet_fsm_3_1(
 					end
 					
 					
+					
+					
 				STAGE9_CONV:
 					// 8 (128x128) + 4 (128x128) + 4 (Datain) STAGE1_CONV Layers ---> 8 (128x128) Layers
 					//
@@ -2129,36 +2133,33 @@ module unet_fsm_3_1(
 					// pixel2...
 					//
 					// Storage at st2
-					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					//            0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [4095:0]
-					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
-					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   buf0         L1-P1          L2-P1          L3-P1         L4-P1
+					//   buf1         L5-P1          L6-P1          L7-P1         L8-P1
 					// ------------------------------------------------------------------------------- Q2 [8191:4096]
-					//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
-					//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
+					//   buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+					//   buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
 					// ------------------------------------------------------------------------------- Q3 [12287:8192]
-					//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
-					//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+					//   buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
+					//   buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
 					// ------------------------------------------------------------------------------- Q4 [16383:12288]
-					//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
-					//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
-					//
+					//   buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+					//   buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
+					
+					
 					// Storage at st1
-					//                       0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
+					//             0-word[31:24]  0-word[23:16]  0-word[15:8]  0-word[7:0]
 					// ------------------------------------------------------------------------------- Q1 [4095:0]
-					//   layerint_buf0         L1-P1          L2-P1          L3-P1         L4-P1
-					//   layerint_buf1         L5-P1          L6-P1          L7-P1         L8-P1
+					//   buf0         L1-P1          L2-P1          L3-P1         L4-P1
 					// ------------------------------------------------------------------------------- Q2 [8191:4096]
-					//   layerint_buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
-					//   layerint_buf3         L5-P4224       L6-P4224       L7-P4224      L8-P4224
-					// ------------------------------------------------------------------------------- Q3 [12287:8192]
-					//   layerint_buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
-					//   layerint_buf5         L5-P8449       L6-P8449       L7-P8449      L8-P8449
+					//   buf2         L1-P4224       L2-P4224       L3-P4224      L4-P4224
+					// ------------------------------------------------------------------------------ Q3 [12287:8192]
+					//   buf4         L1-P8449       L2-P8449       L3-P8449      L4-P8449
 					// ------------------------------------------------------------------------------- Q4 [16383:12288]
-					//   layerint_buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
-					//   layerint_buf7         L5-P12674      L6-P12674      L7-P12674     L8-P12674
-					//
-				
+					//   buf6         L1-P12674      L2-P12674      L3-P12674     L4-P12674
+					
+								
 					begin	
 						if (~unet_enpulse) begin
 							if (pixelcount < 32'd4096) begin
@@ -2167,7 +2168,7 @@ module unet_fsm_3_1(
 										buf_st2_raddr[i] <= pixelcount;
 										buf_st1_raddr[i] <= pixelcount;
 									end else if (i==1) begin
-										buf_st1_raddr[i] <= pixelcount;
+										buf_st2_raddr[i] <= pixelcount;
 									end else begin
 										buf_st1_raddr[i] <= 32'b0;
 										buf_st2_raddr[i] <= 32'b0;
@@ -2180,15 +2181,14 @@ module unet_fsm_3_1(
 									end
 								end else begin
 									for (b=0; b<4; b=b+1) begin
-										cv_pixelin[b]    <= buf_st1_rd[0][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= buf_st1_rd[0][31-(b*8) -:8];
-										cv_pixelin[b+8]  <= buf_st2_rd[0][31-(b*8) -:8];
-										cv_pixelin[b+12] <= buf_st2_rd[0][31-(b*8) -:8];
+										cv_pixelin[b]    <= buf_st2_rd[0][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= buf_st2_rd[1][31-(b*8) -:8];
+										cv_pixelin[b+8]  <= buf_st1_rd[0][31-(b*8) -:8];
+										cv_pixelin[b+12] <= data_in[31-(b*8) -:8];
 										  
-										cv_pixelin[b+16] <= buf_st1_rd[1][31-(b*8) -:8];
-										cv_pixelin[b+20] <= buf_st1_rd[1][31-(b*8) -:8];
-										  
-										cv_pixelin[b+24] <= data_in[31-(b*8) -:8];
+										cv_pixelin[b+16] <= buf_st2_rd[0][31-(b*8) -:8];
+										cv_pixelin[b+20] <= buf_st2_rd[1][31-(b*8) -:8];
+										cv_pixelin[b+24] <= buf_st1_rd[0][31-(b*8) -:8];
 										cv_pixelin[b+28] <= data_in[31-(b*8) -:8];
 									end
 								end
@@ -2198,7 +2198,7 @@ module unet_fsm_3_1(
 										buf_st2_raddr[i] <= pixelcount-32'd4096;
 										buf_st1_raddr[i] <= pixelcount-32'd4096;
 									end else if (i==3) begin
-										buf_st1_raddr[i] <= pixelcount-32'd4096;
+										buf_st2_raddr[i] <= pixelcount-32'd4096;
 									end else begin
 										buf_st1_raddr[i] <= 32'b0;
 										buf_st2_raddr[i] <= 32'b0;
@@ -2206,15 +2206,14 @@ module unet_fsm_3_1(
 								end
 								
 								for (b=0; b<4; b=b+1) begin
-									cv_pixelin[b]    <= buf_st1_rd[2][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[2][31-(b*8) -:8];
-									cv_pixelin[b+8]  <= buf_st2_rd[2][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st2_rd[2][31-(b*8) -:8];
+									cv_pixelin[b]    <= buf_st2_rd[2][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st2_rd[3][31-(b*8) -:8];
+									cv_pixelin[b+8]  <= buf_st1_rd[2][31-(b*8) -:8];
+									cv_pixelin[b+12] <= data_in[31-(b*8) -:8];
 									
-									cv_pixelin[b+16] <= buf_st1_rd[3][31-(b*8) -:8];
-									cv_pixelin[b+20] <= buf_st1_rd[3][31-(b*8) -:8];
-									
-									cv_pixelin[b+24] <= data_in[31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st2_rd[2][31-(b*8) -:8];
+									cv_pixelin[b+20] <= buf_st2_rd[3][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[2][31-(b*8) -:8];
 									cv_pixelin[b+28] <= data_in[31-(b*8) -:8];
 								end
 								 
@@ -2224,7 +2223,7 @@ module unet_fsm_3_1(
 										buf_st2_raddr[i] <= pixelcount-32'd8192;
 										buf_st1_raddr[i] <= pixelcount-32'd8192;
 									end else if (i==5) begin
-										buf_st1_raddr[i] <= pixelcount-32'd8192;
+										buf_st2_raddr[i] <= pixelcount-32'd8192;
 									end else begin
 										buf_st1_raddr[i] <= 32'b0;
 										buf_st2_raddr[i] <= 32'b0;
@@ -2232,15 +2231,14 @@ module unet_fsm_3_1(
 								end
 								
 								for (b=0; b<4; b=b+1) begin
-									cv_pixelin[b]    <= buf_st1_rd[4][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[4][31-(b*8) -:8];
-									cv_pixelin[b+8]  <= buf_st2_rd[4][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st2_rd[4][31-(b*8) -:8];
+									cv_pixelin[b]    <= buf_st2_rd[4][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st2_rd[5][31-(b*8) -:8];
+									cv_pixelin[b+8]  <= buf_st1_rd[4][31-(b*8) -:8];
+									cv_pixelin[b+12] <= data_in[31-(b*8) -:8];
 									
-									cv_pixelin[b+16] <= buf_st1_rd[5][31-(b*8) -:8];
-									cv_pixelin[b+20] <= buf_st1_rd[5][31-(b*8) -:8];
-									
-									cv_pixelin[b+24] <= data_in[31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st2_rd[4][31-(b*8) -:8];
+									cv_pixelin[b+20] <= buf_st2_rd[5][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[4][31-(b*8) -:8];
 									cv_pixelin[b+28] <= data_in[31-(b*8) -:8];
 								end
 								
@@ -2250,7 +2248,7 @@ module unet_fsm_3_1(
 										buf_st2_raddr[i] <= pixelcount-32'd12288;
 										buf_st1_raddr[i] <= pixelcount-32'd12288;
 									end else if (i==7) begin
-										buf_st1_raddr[i] <= pixelcount-32'd12288;
+										buf_st2_raddr[i] <= pixelcount-32'd12288;
 									end else begin
 										buf_st1_raddr[i] <= 32'b0;
 										buf_st2_raddr[i] <= 32'b0;
@@ -2258,15 +2256,14 @@ module unet_fsm_3_1(
 								end
 								
 								for (b=0; b<4; b=b+1) begin
-									cv_pixelin[b]    <= buf_st1_rd[6][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[6][31-(b*8) -:8];
-									cv_pixelin[b+8]  <= buf_st2_rd[6][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st2_rd[6][31-(b*8) -:8];
+									cv_pixelin[b]    <= buf_st2_rd[6][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st2_rd[7][31-(b*8) -:8];
+									cv_pixelin[b+8]  <= buf_st1_rd[6][31-(b*8) -:8];
+									cv_pixelin[b+12] <= data_in[31-(b*8) -:8];
 									
-									cv_pixelin[b+16] <= buf_st1_rd[7][31-(b*8) -:8];
-									cv_pixelin[b+20] <= buf_st1_rd[7][31-(b*8) -:8];
-									
-									cv_pixelin[b+24] <= data_in[31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st2_rd[6][31-(b*8) -:8];
+									cv_pixelin[b+20] <= buf_st2_rd[7][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[6][31-(b*8) -:8];
 									cv_pixelin[b+28] <= data_in[31-(b*8) -:8];
 								end
 								
@@ -2318,10 +2315,10 @@ module unet_fsm_3_1(
 									
 									
 									case (layercount)
-										32'd6:  begin `load_weight(4) end
-										32'd0:  begin `load_weight(5) end
-										32'd2:  begin `load_weight(6) end
-										32'd4:  begin `load_weight(7) end
+										32'd6:  begin `load_weight(4) `load_bias(1) end
+										32'd0:  begin `load_weight(5) `load_bias(2) end
+										32'd2:  begin `load_weight(6) `load_bias(3) end
+										32'd4:  begin `load_weight(7) `load_bias(4) end
 											
 										default:
 											begin
@@ -2353,13 +2350,15 @@ module unet_fsm_3_1(
 									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
 													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
 													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+													+ biaswire[0];
 									
 									//qt1
 									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
 													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
 													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+													+ biaswire[1];
 									
 									// save to buffer
 									// save image to buffer, seperated to 4 pices
@@ -2619,10 +2618,9 @@ module unet_fsm_3_1(
 				STAGE10_CONV:
 					// 8 (128x128) ---> 16 (128x128) Layers
 					//
-					// pixel1 - calc outlayers 1,2
-					//          calc outlayers 3,4
+					// pixel1 - calc outlayers 1,2,3,4
 					//          ...
-					//          calc outlayers 14,15
+					//          calc outlayers 13,14,15,16
 					// pixel2...
 					//
 					
@@ -2666,13 +2664,13 @@ module unet_fsm_3_1(
 								end else begin
 									for (b=0; b<4; b=b+1) begin
 										cv_pixelin[b]    <= buf_st1_rd[0][31-(b*8) -:8];
-										cv_pixelin[b+4]  <= buf_st1_rd[0][31-(b*8) -:8];
+										cv_pixelin[b+4]  <= buf_st1_rd[1][31-(b*8) -:8];
 										cv_pixelin[b+8]  <= buf_st1_rd[0][31-(b*8) -:8];
-										cv_pixelin[b+12] <= buf_st1_rd[0][31-(b*8) -:8];
+										cv_pixelin[b+12] <= buf_st1_rd[1][31-(b*8) -:8];
 										  
-										cv_pixelin[b+16] <= buf_st1_rd[1][31-(b*8) -:8];
+										cv_pixelin[b+16] <= buf_st1_rd[0][31-(b*8) -:8];
 										cv_pixelin[b+20] <= buf_st1_rd[1][31-(b*8) -:8];
-										cv_pixelin[b+24] <= buf_st1_rd[1][31-(b*8) -:8];
+										cv_pixelin[b+24] <= buf_st1_rd[0][31-(b*8) -:8];
 										cv_pixelin[b+28] <= buf_st1_rd[1][31-(b*8) -:8];
 									end
 								end
@@ -2690,13 +2688,13 @@ module unet_fsm_3_1(
 							
 								for (b=0; b<4; b=b+1) begin
 									cv_pixelin[b]    <= buf_st1_rd[2][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[2][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st1_rd[3][31-(b*8) -:8];
 									cv_pixelin[b+8]  <= buf_st1_rd[2][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st1_rd[2][31-(b*8) -:8];
+									cv_pixelin[b+12] <= buf_st1_rd[3][31-(b*8) -:8];
 									  
-									cv_pixelin[b+16] <= buf_st1_rd[3][31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st1_rd[2][31-(b*8) -:8];
 									cv_pixelin[b+20] <= buf_st1_rd[3][31-(b*8) -:8];
-									cv_pixelin[b+24] <= buf_st1_rd[3][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[2][31-(b*8) -:8];
 									cv_pixelin[b+28] <= buf_st1_rd[3][31-(b*8) -:8];
 								end
 							 
@@ -2713,13 +2711,13 @@ module unet_fsm_3_1(
 								
 								for (b=0; b<4; b=b+1) begin
 									cv_pixelin[b]    <= buf_st1_rd[4][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[4][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st1_rd[5][31-(b*8) -:8];
 									cv_pixelin[b+8]  <= buf_st1_rd[4][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st1_rd[4][31-(b*8) -:8];
+									cv_pixelin[b+12] <= buf_st1_rd[5][31-(b*8) -:8];
 									
-									cv_pixelin[b+16] <= buf_st1_rd[5][31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st1_rd[4][31-(b*8) -:8];
 									cv_pixelin[b+20] <= buf_st1_rd[5][31-(b*8) -:8];
-									cv_pixelin[b+24] <= buf_st1_rd[5][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[4][31-(b*8) -:8];
 									cv_pixelin[b+28] <= buf_st1_rd[5][31-(b*8) -:8];
 								end
 								 
@@ -2736,13 +2734,13 @@ module unet_fsm_3_1(
 								
 								for (b=0; b<4; b=b+1) begin
 									cv_pixelin[b]    <= buf_st1_rd[6][31-(b*8) -:8];
-									cv_pixelin[b+4]  <= buf_st1_rd[6][31-(b*8) -:8];
+									cv_pixelin[b+4]  <= buf_st1_rd[7][31-(b*8) -:8];
 									cv_pixelin[b+8]  <= buf_st1_rd[6][31-(b*8) -:8];
-									cv_pixelin[b+12] <= buf_st1_rd[6][31-(b*8) -:8];
+									cv_pixelin[b+12] <= buf_st1_rd[7][31-(b*8) -:8];
 									  
-									cv_pixelin[b+16] <= buf_st1_rd[7][31-(b*8) -:8];
+									cv_pixelin[b+16] <= buf_st1_rd[6][31-(b*8) -:8];
 									cv_pixelin[b+20] <= buf_st1_rd[7][31-(b*8) -:8];
-									cv_pixelin[b+24] <= buf_st1_rd[7][31-(b*8) -:8];
+									cv_pixelin[b+24] <= buf_st1_rd[6][31-(b*8) -:8];
 									cv_pixelin[b+28] <= buf_st1_rd[7][31-(b*8) -:8];
 								end
 								 
@@ -2788,19 +2786,15 @@ module unet_fsm_3_1(
 										layercount <= 32'd0;
 										pixelcount <= pixelcount + 32'd1;
 									end else begin
-										layercount <= layercount + 32'd2;
+										layercount <= layercount + 32'd4;
 									end
 									
 										
 									case (layercount)
-										32'd14: begin `load_weight(8) end
-										32'd0:  begin `load_weight(9) end
-										32'd2:  begin `load_weight(10) end
-										32'd4:  begin `load_weight(11) end
-										32'd6:  begin `load_weight(12) end
-										32'd8:  begin `load_weight(13) end
-										32'd10: begin `load_weight(14) end
-										32'd12: begin `load_weight(15) end
+										32'd12: begin `load_weight(8) `load_bias(5) end
+										32'd0:  begin `load_weight(9) `load_bias(6)  end
+										32'd4:  begin `load_weight(10) `load_bias(7)  end
+										32'd8:  begin `load_weight(11) `load_bias(8)  end
 										
 										default:
 											begin
@@ -2830,14 +2824,20 @@ module unet_fsm_3_1(
 									//qt0
 									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
 													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15];
+													+ biaswire[0];
+									
+									qt1_in   <= intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+													+ biaswire[1];
 									
 									//qt1
-									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+									qt2_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
 													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31];
+													+ biaswire[2];
+									
+									qt3_in   <= intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+													+ biaswire[3];
 									
 									// save to buffer
 									// save image to buffer, seperated to 4 pices
@@ -2869,29 +2869,14 @@ module unet_fsm_3_1(
 									//   layerint_buf7         L13-P8192      L14-P8192      L15-P8192     L16-P8192
 									
 									case (layercount)
-										32'd2:  
-											begin
-												savebuffer[31:16] <= {qt0_res, qt1_res};
-												
-												for (i=0; i<8; i=i+1) begin												
-													buf_st1_we[i]    <= 1'b0;
-													buf_st1_waddr[i] <= 32'd0;
-													buf_st1_wd[i]    <= 32'd0;
-													
-													buf_st2_we[i]    <= 1'b0;
-													buf_st2_waddr[i] <= 32'd0;
-													buf_st2_wd[i]    <= 32'd0;
-												end
-											end
-										
-										32'd4:  
+										32'd12:  
 											begin
 												if (pixelcount < 32'd4226) begin
 													for (i=0; i<8; i=i+1) begin
 														if (i==0) begin
 															buf_st1_we[i]    <= 1'b1;
 															buf_st1_waddr[i] <= pixelcount-32'd130;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
 															buf_st1_waddr[i] <= 32'd0;
@@ -2908,7 +2893,7 @@ module unet_fsm_3_1(
 														if (i==0) begin
 															buf_st2_we[i]    <= 1'b1;
 															buf_st2_waddr[i] <= pixelcount-32'd4226;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
 															buf_st2_waddr[i] <= 32'd0;
@@ -2925,7 +2910,7 @@ module unet_fsm_3_1(
 														if (i==4) begin
 															buf_st1_we[i]    <= 1'b1;
 															buf_st1_waddr[i] <= pixelcount-32'd8322;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
 															buf_st1_waddr[i] <= 32'd0;
@@ -2942,7 +2927,7 @@ module unet_fsm_3_1(
 														if (i==4) begin
 															buf_st2_we[i]    <= 1'b1;
 															buf_st2_waddr[i] <= pixelcount-32'd12418;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
 															buf_st2_waddr[i] <= 32'd0;
@@ -2956,19 +2941,77 @@ module unet_fsm_3_1(
 													
 												end
 											end
-											
-										32'd6:  
+										
+										32'd4: 
 											begin
-												savebuffer[31:16] <= {qt0_res, qt1_res};
-												
-												for (i=0; i<8; i=i+1) begin
-													buf_st1_we[i]    <= 1'b0;
-													buf_st1_waddr[i] <= 32'd0;
-													buf_st1_wd[i]    <= 32'd0;
+												if (pixelcount < 32'd4226) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==1) begin
+															buf_st1_we[i]    <= 1'b1;
+															buf_st1_waddr[i] <= pixelcount-32'd130;
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st1_we[i]    <= 1'b0;
+															buf_st1_waddr[i] <= 32'd0;
+															buf_st1_wd[i]    <= 32'd0;
+														end
+														
+														buf_st2_we[i]    <= 1'b0;
+														buf_st2_waddr[i] <= 32'd0;
+														buf_st2_wd[i]    <= 32'd0;
+													end
 													
-													buf_st2_we[i]    <= 1'b0;
-													buf_st2_waddr[i] <= 32'd0;
-													buf_st2_wd[i]    <= 32'd0;
+												end else if (pixelcount < 32'd8322) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==1) begin
+															buf_st2_we[i]    <= 1'b1;
+															buf_st2_waddr[i] <= pixelcount-32'd4226;
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st2_we[i]    <= 1'b0;
+															buf_st2_waddr[i] <= 32'd0;
+															buf_st2_wd[i]    <= 32'd0;
+														end
+														
+														buf_st1_we[i]    <= 1'b0;
+														buf_st1_waddr[i] <= 32'd0;
+														buf_st1_wd[i]    <= 32'd0;
+													end
+													
+												end else if (pixelcount < 32'd12418) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==5) begin
+															buf_st1_we[i]    <= 1'b1;
+															buf_st1_waddr[i] <= pixelcount-32'd8322;
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st1_we[i]    <= 1'b0;
+															buf_st1_waddr[i] <= 32'd0;
+															buf_st1_wd[i]    <= 32'd0;
+														end
+														
+														buf_st2_we[i]    <= 1'b0;
+														buf_st2_waddr[i] <= 32'd0;
+														buf_st2_wd[i]    <= 32'd0;
+													end
+													
+												end else begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==5) begin
+															buf_st2_we[i]    <= 1'b1;
+															buf_st2_waddr[i] <= pixelcount-32'd12418;
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st2_we[i]    <= 1'b0;
+															buf_st2_waddr[i] <= 32'd0;
+															buf_st2_wd[i]    <= 32'd0;
+														end
+														
+														buf_st1_we[i]    <= 1'b0;
+														buf_st1_waddr[i] <= 32'd0;
+														buf_st1_wd[i]    <= 32'd0;
+													end
+													
 												end
 											end
 										
@@ -2976,98 +3019,10 @@ module unet_fsm_3_1(
 											begin
 												if (pixelcount < 32'd4226) begin
 													for (i=0; i<8; i=i+1) begin
-														if (i==1) begin
-															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd130;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
-														end else begin 
-															buf_st1_we[i]    <= 1'b0;
-															buf_st1_waddr[i] <= 32'd0;
-															buf_st1_wd[i]    <= 32'd0;
-														end
-														
-														buf_st2_we[i]    <= 1'b0;
-														buf_st2_waddr[i] <= 32'd0;
-														buf_st2_wd[i]    <= 32'd0;
-													end
-													
-												end else if (pixelcount < 32'd8322) begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==1) begin
-															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd4226;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
-														end else begin 
-															buf_st2_we[i]    <= 1'b0;
-															buf_st2_waddr[i] <= 32'd0;
-															buf_st2_wd[i]    <= 32'd0;
-														end
-														
-														buf_st1_we[i]    <= 1'b0;
-														buf_st1_waddr[i] <= 32'd0;
-														buf_st1_wd[i]    <= 32'd0;
-													end
-													
-												end else if (pixelcount < 32'd12418) begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==5) begin
-															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd8322;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
-														end else begin 
-															buf_st1_we[i]    <= 1'b0;
-															buf_st1_waddr[i] <= 32'd0;
-															buf_st1_wd[i]    <= 32'd0;
-														end
-														
-														buf_st2_we[i]    <= 1'b0;
-														buf_st2_waddr[i] <= 32'd0;
-														buf_st2_wd[i]    <= 32'd0;
-													end
-													
-												end else begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==5) begin
-															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd12418;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
-														end else begin 
-															buf_st2_we[i]    <= 1'b0;
-															buf_st2_waddr[i] <= 32'd0;
-															buf_st2_wd[i]    <= 32'd0;
-														end
-														
-														buf_st1_we[i]    <= 1'b0;
-														buf_st1_waddr[i] <= 32'd0;
-														buf_st1_wd[i]    <= 32'd0;
-													end
-													
-												end
-											end
-																					
-										32'd10: 
-											begin
-												savebuffer[31:16] <= {qt0_res, qt1_res};
-												
-												for (i=0; i<8; i=i+1) begin
-													buf_st1_we[i]    <= 1'b0;
-													buf_st1_waddr[i] <= 32'd0;
-													buf_st1_wd[i]    <= 32'd0;
-													
-													buf_st2_we[i]    <= 1'b0;
-													buf_st2_waddr[i] <= 32'd0;
-													buf_st2_wd[i]    <= 32'd0;
-												end
-											end
-										
-										32'd12: 
-											begin
-												if (pixelcount < 32'd4226) begin
-													for (i=0; i<8; i=i+1) begin
 														if (i==2) begin
 															buf_st1_we[i]    <= 1'b1;
 															buf_st1_waddr[i] <= pixelcount-32'd130;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
 															buf_st1_waddr[i] <= 32'd0;
@@ -3084,7 +3039,7 @@ module unet_fsm_3_1(
 														if (i==2) begin
 															buf_st2_we[i]    <= 1'b1;
 															buf_st2_waddr[i] <= pixelcount-32'd4226;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
 															buf_st2_waddr[i] <= 32'd0;
@@ -3101,7 +3056,7 @@ module unet_fsm_3_1(
 														if (i==6) begin
 															buf_st1_we[i]    <= 1'b1;
 															buf_st1_waddr[i] <= pixelcount-32'd8322;
-															buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st1_we[i]    <= 1'b0;
 															buf_st1_waddr[i] <= 32'd0;
@@ -3118,7 +3073,7 @@ module unet_fsm_3_1(
 														if (i==6) begin
 															buf_st2_we[i]    <= 1'b1;
 															buf_st2_waddr[i] <= pixelcount-32'd12418;
-															buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 														end else begin 
 															buf_st2_we[i]    <= 1'b0;
 															buf_st2_waddr[i] <= 32'd0;
@@ -3130,21 +3085,6 @@ module unet_fsm_3_1(
 														buf_st1_wd[i]    <= 32'd0;
 													end
 													
-												end
-											end
-											
-										32'd14: 
-											begin
-												savebuffer[31:16] <= {qt0_res, qt1_res};
-												
-												for (i=0; i<8; i=i+1) begin
-													buf_st1_we[i]    <= 1'b0;
-													buf_st1_waddr[i] <= 32'd0;
-													buf_st1_wd[i]    <= 32'd0;
-													
-													buf_st2_we[i]    <= 1'b0;
-													buf_st2_waddr[i] <= 32'd0;
-													buf_st2_wd[i]    <= 32'd0;
 												end
 											end
 										
@@ -3156,7 +3096,7 @@ module unet_fsm_3_1(
 															if (i==3) begin
 																buf_st1_we[i]    <= 1'b1;
 																buf_st1_waddr[i] <= pixelcount-32'd131;
-																buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+																buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 															end else begin 
 																buf_st1_we[i]    <= 1'b0;
 																buf_st1_waddr[i] <= 32'd0;
@@ -3173,7 +3113,7 @@ module unet_fsm_3_1(
 															if (i==3) begin
 																buf_st2_we[i]    <= 1'b1;
 																buf_st2_waddr[i] <= pixelcount-32'd4227;
-																buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+																buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 															end else begin 
 																buf_st2_we[i]    <= 1'b0;
 																buf_st2_waddr[i] <= 32'd0;
@@ -3190,7 +3130,7 @@ module unet_fsm_3_1(
 															if (i==7) begin
 																buf_st1_we[i]    <= 1'b1;
 																buf_st1_waddr[i] <= pixelcount-32'd8323;
-																buf_st1_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+																buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 															end else begin 
 																buf_st1_we[i]    <= 1'b0;
 																buf_st1_waddr[i] <= 32'd0;
@@ -3207,7 +3147,7 @@ module unet_fsm_3_1(
 															if (i==7) begin
 																buf_st2_we[i]    <= 1'b1;
 																buf_st2_waddr[i] <= pixelcount-32'd12419;
-																buf_st2_wd[i]    <= {savebuffer[31:16], qt0_res, qt1_res};
+																buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
 															end else begin 
 																buf_st2_we[i]    <= 1'b0;
 																buf_st2_waddr[i] <= 32'd0;
