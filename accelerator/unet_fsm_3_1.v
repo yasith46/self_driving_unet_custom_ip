@@ -1068,14 +1068,14 @@ module unet_fsm_3_1(
 	buffer4096 layerint_buf6_st1(.clk(clk), .we(buf_st1_we[6]), .wr_addr(buf_st1_waddr[6]), .rd_addr(buf_st1_raddr[6]), .wr_data(buf_st1_wd[6]), .rd_data(buf_st1_rd[6]));
 	buffer4096 layerint_buf7_st1(.clk(clk), .we(buf_st1_we[7]), .wr_addr(buf_st1_waddr[7]), .rd_addr(buf_st1_raddr[7]), .wr_data(buf_st1_wd[7]), .rd_data(buf_st1_rd[7]));
 	
-	buffer4096 layerint_buf0_st2(.clk(clk), .we(buf_st2_we[0]), .wr_addr(buf_st2_waddr[0]), .rd_addr(buf_st2_raddr[0]), .wr_data(buf_st2_wd[0]), .rd_data(buf_st1_rd[0]));
-	buffer4096 layerint_buf1_st2(.clk(clk), .we(buf_st2_we[1]), .wr_addr(buf_st2_waddr[1]), .rd_addr(buf_st2_raddr[1]), .wr_data(buf_st2_wd[1]), .rd_data(buf_st1_rd[1]));
-	buffer4096 layerint_buf2_st2(.clk(clk), .we(buf_st2_we[2]), .wr_addr(buf_st2_waddr[2]), .rd_addr(buf_st2_raddr[2]), .wr_data(buf_st2_wd[2]), .rd_data(buf_st1_rd[2]));
-	buffer4096 layerint_buf3_st2(.clk(clk), .we(buf_st2_we[3]), .wr_addr(buf_st2_waddr[3]), .rd_addr(buf_st2_raddr[3]), .wr_data(buf_st2_wd[3]), .rd_data(buf_st1_rd[3]));
-	buffer4096 layerint_buf4_st2(.clk(clk), .we(buf_st2_we[4]), .wr_addr(buf_st2_waddr[4]), .rd_addr(buf_st2_raddr[4]), .wr_data(buf_st2_wd[4]), .rd_data(buf_st1_rd[4]));
-	buffer4096 layerint_buf5_st2(.clk(clk), .we(buf_st2_we[5]), .wr_addr(buf_st2_waddr[5]), .rd_addr(buf_st2_raddr[5]), .wr_data(buf_st2_wd[5]), .rd_data(buf_st1_rd[5]));
-	buffer4096 layerint_buf6_st2(.clk(clk), .we(buf_st2_we[6]), .wr_addr(buf_st2_waddr[6]), .rd_addr(buf_st2_raddr[6]), .wr_data(buf_st2_wd[6]), .rd_data(buf_st1_rd[6]));
-	buffer4096 layerint_buf7_st2(.clk(clk), .we(buf_st2_we[7]), .wr_addr(buf_st2_waddr[7]), .rd_addr(buf_st2_raddr[7]), .wr_data(buf_st2_wd[7]), .rd_data(buf_st1_rd[7]));
+	buffer4096 layerint_buf0_st2(.clk(clk), .we(buf_st2_we[0]), .wr_addr(buf_st2_waddr[0]), .rd_addr(buf_st2_raddr[0]), .wr_data(buf_st2_wd[0]), .rd_data(buf_st2_rd[0]));
+	buffer4096 layerint_buf1_st2(.clk(clk), .we(buf_st2_we[1]), .wr_addr(buf_st2_waddr[1]), .rd_addr(buf_st2_raddr[1]), .wr_data(buf_st2_wd[1]), .rd_data(buf_st2_rd[1]));
+	buffer4096 layerint_buf2_st2(.clk(clk), .we(buf_st2_we[2]), .wr_addr(buf_st2_waddr[2]), .rd_addr(buf_st2_raddr[2]), .wr_data(buf_st2_wd[2]), .rd_data(buf_st2_rd[2]));
+	buffer4096 layerint_buf3_st2(.clk(clk), .we(buf_st2_we[3]), .wr_addr(buf_st2_waddr[3]), .rd_addr(buf_st2_raddr[3]), .wr_data(buf_st2_wd[3]), .rd_data(buf_st2_rd[3]));
+	buffer4096 layerint_buf4_st2(.clk(clk), .we(buf_st2_we[4]), .wr_addr(buf_st2_waddr[4]), .rd_addr(buf_st2_raddr[4]), .wr_data(buf_st2_wd[4]), .rd_data(buf_st2_rd[4]));
+	buffer4096 layerint_buf5_st2(.clk(clk), .we(buf_st2_we[5]), .wr_addr(buf_st2_waddr[5]), .rd_addr(buf_st2_raddr[5]), .wr_data(buf_st2_wd[5]), .rd_data(buf_st2_rd[5]));
+	buffer4096 layerint_buf6_st2(.clk(clk), .we(buf_st2_we[6]), .wr_addr(buf_st2_waddr[6]), .rd_addr(buf_st2_raddr[6]), .wr_data(buf_st2_wd[6]), .rd_data(buf_st2_rd[6]));
+	buffer4096 layerint_buf7_st2(.clk(clk), .we(buf_st2_we[7]), .wr_addr(buf_st2_waddr[7]), .rd_addr(buf_st2_raddr[7]), .wr_data(buf_st2_wd[7]), .rd_data(buf_st2_rd[7]));
 		
 	
 	/*********************************************************************************
@@ -1604,10 +1604,12 @@ module unet_fsm_3_1(
 							if (firsttime) begin
 								ctrl <= SEND_WEIGHTS;
 								state <= LOAD_WEIGHTS;
+								inlayercount <= 32'd0;
 							end else begin
 								ctrl <= SEND_DATA;
 								state <= STAGE9_TRANSCONV;
 								tr_rst <= 1'b1;
+								inlayercount <= -32'sd4;
 							end
 								
 							busy <= 1'b1;
@@ -1801,7 +1803,7 @@ module unet_fsm_3_1(
 					// pixel16384 - calc outlayers 1,2,3,4,5,6,7,8 (13,14,15,16)
 					
 					// --------------------------------
-					// Dispacthing pixels
+					// Dispatching pixels
 					// --------------------------------
 					
 					// Datain
@@ -2762,6 +2764,7 @@ module unet_fsm_3_1(
 							if (pixelcount >= 32'd16515) begin  // (height*width + (width) for padding + 3)
 								
 								state <= DATA_READY;
+								ctrl <= SAY_DATA_READY;
 								pixelcount <= 32'b0;
 								layercount <= 32'd0;
 								
@@ -3281,7 +3284,7 @@ module unet_fsm_3_1(
 				DATA_READY:
 					begin
 						ctrl <= SAY_DATA_READY;
-						if (unet_enpulse) ctrl <= SEND;
+						if (unet_enpulse) state <= SEND;
 						data_out <= 32'd0;
 						
 						for (i=0; i<8; i=i+1) begin
@@ -3304,7 +3307,7 @@ module unet_fsm_3_1(
 						// --------------------------------
 						
 						if (~unet_enpulse) begin
-							ctrl <= SENDING;
+							if (inlayercount != 32'd0 && pixelcount != 32'd0) ctrl <= SENDING;
 							
 							if (pixelcount < 32'd16384) begin
 								if (inlayercount == 32'd12) begin		
@@ -3586,15 +3589,15 @@ module unet_fsm_3_1(
 							ctrl <= SAY_DATA_READY;
 							
 							for (i=0; i<8; i=i+1) begin
-								buf_st1_we[i]    <= 1'b0;
-								buf_st1_waddr[i] <= 32'd0;
-								buf_st1_raddr[i] <= 32'd0;
-								buf_st1_wd[i]    <= 32'd0;
+								buf_st1_we[i]		<= 1'b0;
+								buf_st1_waddr[i]	<= 32'd0;
+								buf_st1_raddr[i]	<= 32'd0;
+								buf_st1_wd[i]		<= 32'd0;
 								
-								buf_st2_we[i]    <= 1'b0;
-								buf_st2_waddr[i] <= 32'd0;
-								buf_st2_raddr[i] <= 32'd0;
-								buf_st2_wd[i]    <= 32'd0;
+								buf_st2_we[i]		<= 1'b0;
+								buf_st2_waddr[i]	<= 32'd0;
+								buf_st2_raddr[i]	<= 32'd0;
+								buf_st2_wd[i]		<= 32'd0;
 							end
 						end
 					end
