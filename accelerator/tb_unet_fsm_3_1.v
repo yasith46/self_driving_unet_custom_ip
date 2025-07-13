@@ -57,10 +57,12 @@ module tb_unet_fsm_3_1;
 	
 	// Memories
 	
-	reg [31:0] weights_mem [0:1679];
-	reg [31:0] input_layers  [0:49217];
+	reg [31:0] weights_mem [0:938];
+	reg [31:0] input_layers  [0:98368];
 	reg [31:0] output_layers [0:65535];
 	reg [31:0] expected_output_layers [0:65535];
+	
+	reg [31:0] counter;
 	
 	initial begin
 		$readmemh("weightdata.mem", weights_mem);
@@ -80,8 +82,6 @@ module tb_unet_fsm_3_1;
 	
 	
 	// Program
-	reg [31:0] counter;
-	
 	always@(posedge clk or negedge rst_n) begin
 		if (~rst_n) begin
 			counter <= 32'd0;
@@ -95,20 +95,20 @@ module tb_unet_fsm_3_1;
 						if (statusflag == SAY_IDLE) begin
 							unet_enpulse <= 1'b1;
 							counter <= 32'd0;
-							state <= SEND_WEIGHTS;
+							if (unet_enpulse) state <= SEND_WEIGHTS;
 						end
 					end
 					
 				SEND_WEIGHTS:
 					begin
 						if (counter == 32'd0) begin
-							$display("! - Sending data");
+							$display("! - Sending weights");
 							unet_enpulse <= 1'b0;
 						end
 						
 						if (statusflag == SAY_SEND_WEIGHTS) begin
 							counter <= counter + 32'd1;
-							if (counter == 32'd939) begin
+							if (counter == 32'd938) begin
 								state <= WAIT_TO_SEND_DATA;
 								counter <= 32'd0;
 							end
@@ -121,7 +121,7 @@ module tb_unet_fsm_3_1;
 						if (statusflag == SAY_IDLE) begin
 							unet_enpulse <= 1'b1;
 							counter <= 32'd0;
-							state <= SEND_DATA;
+							if (unet_enpulse) state <= SEND_DATA;
 						end
 					end
 					
@@ -134,7 +134,7 @@ module tb_unet_fsm_3_1;
 						
 						if (statusflag == SAY_SEND_DATA) begin
 							counter <= counter + 32'd1;
-							if (counter == 32'd49217) begin		// 1 + (4xiw1xiw1) + (ow1xow1) + (ow1/2) + (iw2xiw2)
+							if (counter == 32'd98368) begin		// 1 + (4xiw1xiw1) + (ow1xow1) + (ow1/2) + (iw2xiw2x4)
 								state <= WAIT_TO_RECEIVE_DATA;
 								counter <= 32'd0;
 							end

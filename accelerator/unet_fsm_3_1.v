@@ -15,8 +15,8 @@ module unet_fsm_3_1(
 	
 	parameter IDLE              = 5'd0,
 	          LOAD_WEIGHTS      = 5'd1,
-				 LOAD_BIASES	    = 5'd1,
-				 LOAD_QT				 = 5'd1,
+				 LOAD_BIASES	    = 5'd2,
+				 LOAD_QT				 = 5'd3,
 	          STAGE9_TRANSCONV  = 5'd17,
 	          STAGE9_CONV       = 5'd18,
 	          STAGE10_CONV      = 5'd19,
@@ -53,7 +53,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[0]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[0]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -68,7 +68,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[1]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[1]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -83,7 +83,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[2]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[2]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -98,7 +98,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[3]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[3]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -113,7 +113,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[4]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[4]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -128,7 +128,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[5]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[5]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -144,7 +144,7 @@ module unet_fsm_3_1(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[6]),
-		.bias(cv_tr_bias[6]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.relu(cv_relu)
 	);
@@ -159,7 +159,7 @@ module unet_fsm_3_1(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[7]),
-		.bias(cv_tr_bias[7]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.relu(cv_relu)
 	);
@@ -174,7 +174,7 @@ module unet_fsm_3_1(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[8]),
-		.bias(cv_tr_bias[8]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.relu(cv_relu)
 	);
@@ -189,7 +189,7 @@ module unet_fsm_3_1(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[9]),
-		.bias(cv_tr_bias[9]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.relu(cv_relu)
 	);
@@ -204,7 +204,7 @@ module unet_fsm_3_1(
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
 		.pixel_out(cv_pixelout[10]),
-		.bias(cv_tr_bias[10]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.relu(cv_relu)
 	);
@@ -218,7 +218,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[11]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[11]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -233,7 +233,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[12]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[12]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -248,7 +248,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[13]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[13]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -263,7 +263,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[14]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[14]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -278,7 +278,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[15]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[15]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -293,7 +293,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[16]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[16]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -308,7 +308,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[17]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[17]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -323,7 +323,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[18]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[18]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -338,7 +338,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[19]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[19]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -353,7 +353,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[20]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[20]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -368,7 +368,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[21]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[21]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -383,7 +383,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[22]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[22]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -398,7 +398,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[23]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[23]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -413,7 +413,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[24]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[24]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -428,7 +428,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[25]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[25]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -443,7 +443,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[26]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[26]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -458,7 +458,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[27]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[27]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -473,7 +473,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[28]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[28]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -488,7 +488,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[29]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[29]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -503,7 +503,7 @@ module unet_fsm_3_1(
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
-		.bias(cv_tr_bias[30]),
+		.bias(32'b0),
 		.pixel_out(cv_pixelout[30]),
 		.width(cv_tr_width),
 		.relu(cv_relu)
@@ -515,7 +515,7 @@ module unet_fsm_3_1(
 		.w6(cv_tr_w[31][6]), .w5(cv_tr_w[31][5]), .w4(cv_tr_w[31][4]), 
 		.w3(cv_tr_w[31][3]), .w2(cv_tr_w[31][2]), .w1(cv_tr_w[31][1]),
 		.clk(cv_clk), 
-		.bias(cv_tr_bias[31]),
+		.bias(32'b0),
 		.rst_n(rst_n && cv_rst),
 		.paddingl(cv_paddingL),
 		.paddingr(cv_paddingR),
@@ -539,7 +539,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[0][9]), .w8(cv_tr_w[0][8]), .w7(cv_tr_w[0][7]), 
 		.w6(cv_tr_w[0][6]), .w5(cv_tr_w[0][5]), .w4(cv_tr_w[0][4]), 
 		.w3(cv_tr_w[0][3]), .w2(cv_tr_w[0][2]), .w1(cv_tr_w[0][1]),
-		.bias(cv_tr_bias[0][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -554,7 +554,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[1][9]), .w8(cv_tr_w[1][8]), .w7(cv_tr_w[1][7]), 
 		.w6(cv_tr_w[1][6]), .w5(cv_tr_w[1][5]), .w4(cv_tr_w[1][4]), 
 		.w3(cv_tr_w[1][3]), .w2(cv_tr_w[1][2]), .w1(cv_tr_w[1][1]),
-		.bias(cv_tr_bias[1][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -569,7 +569,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[2][9]), .w8(cv_tr_w[2][8]), .w7(cv_tr_w[2][7]), 
 		.w6(cv_tr_w[2][6]), .w5(cv_tr_w[2][5]), .w4(cv_tr_w[2][4]), 
 		.w3(cv_tr_w[2][3]), .w2(cv_tr_w[2][2]), .w1(cv_tr_w[2][1]),
-		.bias(cv_tr_bias[2][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -584,7 +584,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[3][9]), .w8(cv_tr_w[3][8]), .w7(cv_tr_w[3][7]), 
 		.w6(cv_tr_w[3][6]), .w5(cv_tr_w[3][5]), .w4(cv_tr_w[3][4]), 
 		.w3(cv_tr_w[3][3]), .w2(cv_tr_w[3][2]), .w1(cv_tr_w[3][1]),
-		.bias(cv_tr_bias[3][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -599,7 +599,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[4][9]), .w8(cv_tr_w[4][8]), .w7(cv_tr_w[4][7]), 
 		.w6(cv_tr_w[4][6]), .w5(cv_tr_w[4][5]), .w4(cv_tr_w[4][4]), 
 		.w3(cv_tr_w[4][3]), .w2(cv_tr_w[4][2]), .w1(cv_tr_w[4][1]),
-		.bias(cv_tr_bias[4][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -614,7 +614,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[5][9]), .w8(cv_tr_w[5][8]), .w7(cv_tr_w[5][7]), 
 		.w6(cv_tr_w[5][6]), .w5(cv_tr_w[5][5]), .w4(cv_tr_w[5][4]), 
 		.w3(cv_tr_w[5][3]), .w2(cv_tr_w[5][2]), .w1(cv_tr_w[5][1]),
-		.bias(cv_tr_bias[5][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -629,7 +629,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[6][9]), .w8(cv_tr_w[6][8]), .w7(cv_tr_w[6][7]), 
 		.w6(cv_tr_w[6][6]), .w5(cv_tr_w[6][5]), .w4(cv_tr_w[6][4]), 
 		.w3(cv_tr_w[6][3]), .w2(cv_tr_w[6][2]), .w1(cv_tr_w[6][1]),
-		.bias(cv_tr_bias[6][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -644,7 +644,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[7][9]), .w8(cv_tr_w[7][8]), .w7(cv_tr_w[7][7]), 
 		.w6(cv_tr_w[7][6]), .w5(cv_tr_w[7][5]), .w4(cv_tr_w[7][4]), 
 		.w3(cv_tr_w[7][3]), .w2(cv_tr_w[7][2]), .w1(cv_tr_w[7][1]),
-		.bias(cv_tr_bias[7][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -659,7 +659,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[8][9]), .w8(cv_tr_w[8][8]), .w7(cv_tr_w[8][7]), 
 		.w6(cv_tr_w[8][6]), .w5(cv_tr_w[8][5]), .w4(cv_tr_w[8][4]), 
 		.w3(cv_tr_w[8][3]), .w2(cv_tr_w[8][2]), .w1(cv_tr_w[8][1]),
-		.bias(cv_tr_bias[8][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -674,7 +674,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[9][9]), .w8(cv_tr_w[9][8]), .w7(cv_tr_w[9][7]), 
 		.w6(cv_tr_w[9][6]), .w5(cv_tr_w[9][5]), .w4(cv_tr_w[9][4]), 
 		.w3(cv_tr_w[9][3]), .w2(cv_tr_w[9][2]), .w1(cv_tr_w[9][1]),
-		.bias(cv_tr_bias[9][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -689,7 +689,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[10][9]), .w8(cv_tr_w[10][8]), .w7(cv_tr_w[10][7]), 
 		.w6(cv_tr_w[10][6]), .w5(cv_tr_w[10][5]), .w4(cv_tr_w[10][4]), 
 		.w3(cv_tr_w[10][3]), .w2(cv_tr_w[10][2]), .w1(cv_tr_w[10][1]),
-		.bias(cv_tr_bias[10][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -704,7 +704,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[11][9]), .w8(cv_tr_w[11][8]), .w7(cv_tr_w[11][7]), 
 		.w6(cv_tr_w[11][6]), .w5(cv_tr_w[11][5]), .w4(cv_tr_w[11][4]), 
 		.w3(cv_tr_w[11][3]), .w2(cv_tr_w[11][2]), .w1(cv_tr_w[11][1]),
-		.bias(cv_tr_bias[11][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -719,7 +719,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[12][9]), .w8(cv_tr_w[12][8]), .w7(cv_tr_w[12][7]), 
 		.w6(cv_tr_w[12][6]), .w5(cv_tr_w[12][5]), .w4(cv_tr_w[12][4]), 
 		.w3(cv_tr_w[12][3]), .w2(cv_tr_w[12][2]), .w1(cv_tr_w[12][1]),
-		.bias(cv_tr_bias[12][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -734,7 +734,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[13][9]), .w8(cv_tr_w[13][8]), .w7(cv_tr_w[13][7]), 
 		.w6(cv_tr_w[13][6]), .w5(cv_tr_w[13][5]), .w4(cv_tr_w[13][4]), 
 		.w3(cv_tr_w[13][3]), .w2(cv_tr_w[13][2]), .w1(cv_tr_w[13][1]),
-		.bias(cv_tr_bias[13][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -749,7 +749,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[14][9]), .w8(cv_tr_w[14][8]), .w7(cv_tr_w[14][7]), 
 		.w6(cv_tr_w[14][6]), .w5(cv_tr_w[14][5]), .w4(cv_tr_w[14][4]), 
 		.w3(cv_tr_w[14][3]), .w2(cv_tr_w[14][2]), .w1(cv_tr_w[14][1]),
-		.bias(cv_tr_bias[14][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -764,7 +764,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[15][9]), .w8(cv_tr_w[15][8]), .w7(cv_tr_w[15][7]), 
 		.w6(cv_tr_w[15][6]), .w5(cv_tr_w[15][5]), .w4(cv_tr_w[15][4]), 
 		.w3(cv_tr_w[15][3]), .w2(cv_tr_w[15][2]), .w1(cv_tr_w[15][1]),
-		.bias(cv_tr_bias[15][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -779,7 +779,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[16][9]), .w8(cv_tr_w[16][8]), .w7(cv_tr_w[16][7]), 
 		.w6(cv_tr_w[16][6]), .w5(cv_tr_w[16][5]), .w4(cv_tr_w[16][4]), 
 		.w3(cv_tr_w[16][3]), .w2(cv_tr_w[16][2]), .w1(cv_tr_w[16][1]),
-		.bias(cv_tr_bias[16][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -794,7 +794,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[17][9]), .w8(cv_tr_w[17][8]), .w7(cv_tr_w[17][7]), 
 		.w6(cv_tr_w[17][6]), .w5(cv_tr_w[17][5]), .w4(cv_tr_w[17][4]), 
 		.w3(cv_tr_w[17][3]), .w2(cv_tr_w[17][2]), .w1(cv_tr_w[17][1]),
-		.bias(cv_tr_bias[17][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -809,7 +809,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[18][9]), .w8(cv_tr_w[18][8]), .w7(cv_tr_w[18][7]), 
 		.w6(cv_tr_w[18][6]), .w5(cv_tr_w[18][5]), .w4(cv_tr_w[18][4]), 
 		.w3(cv_tr_w[18][3]), .w2(cv_tr_w[18][2]), .w1(cv_tr_w[18][1]),
-		.bias(cv_tr_bias[18][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -824,7 +824,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[19][9]), .w8(cv_tr_w[19][8]), .w7(cv_tr_w[19][7]), 
 		.w6(cv_tr_w[19][6]), .w5(cv_tr_w[19][5]), .w4(cv_tr_w[19][4]), 
 		.w3(cv_tr_w[19][3]), .w2(cv_tr_w[19][2]), .w1(cv_tr_w[19][1]),
-		.bias(cv_tr_bias[19][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -839,7 +839,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[20][9]), .w8(cv_tr_w[20][8]), .w7(cv_tr_w[20][7]), 
 		.w6(cv_tr_w[20][6]), .w5(cv_tr_w[20][5]), .w4(cv_tr_w[20][4]), 
 		.w3(cv_tr_w[20][3]), .w2(cv_tr_w[20][2]), .w1(cv_tr_w[20][1]),
-		.bias(cv_tr_bias[20][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -854,7 +854,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[21][9]), .w8(cv_tr_w[21][8]), .w7(cv_tr_w[21][7]), 
 		.w6(cv_tr_w[21][6]), .w5(cv_tr_w[21][5]), .w4(cv_tr_w[21][4]), 
 		.w3(cv_tr_w[21][3]), .w2(cv_tr_w[21][2]), .w1(cv_tr_w[21][1]),
-		.bias(cv_tr_bias[21][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -869,7 +869,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[22][9]), .w8(cv_tr_w[22][8]), .w7(cv_tr_w[22][7]), 
 		.w6(cv_tr_w[22][6]), .w5(cv_tr_w[22][5]), .w4(cv_tr_w[22][4]), 
 		.w3(cv_tr_w[22][3]), .w2(cv_tr_w[22][2]), .w1(cv_tr_w[22][1]),
-		.bias(cv_tr_bias[22][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -884,7 +884,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[23][9]), .w8(cv_tr_w[23][8]), .w7(cv_tr_w[23][7]), 
 		.w6(cv_tr_w[23][6]), .w5(cv_tr_w[23][5]), .w4(cv_tr_w[23][4]), 
 		.w3(cv_tr_w[23][3]), .w2(cv_tr_w[23][2]), .w1(cv_tr_w[23][1]),
-		.bias(cv_tr_bias[23][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -899,7 +899,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[24][9]), .w8(cv_tr_w[24][8]), .w7(cv_tr_w[24][7]), 
 		.w6(cv_tr_w[24][6]), .w5(cv_tr_w[24][5]), .w4(cv_tr_w[24][4]), 
 		.w3(cv_tr_w[24][3]), .w2(cv_tr_w[24][2]), .w1(cv_tr_w[24][1]),
-		.bias(cv_tr_bias[24][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -914,7 +914,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[25][9]), .w8(cv_tr_w[25][8]), .w7(cv_tr_w[25][7]), 
 		.w6(cv_tr_w[25][6]), .w5(cv_tr_w[25][5]), .w4(cv_tr_w[25][4]), 
 		.w3(cv_tr_w[25][3]), .w2(cv_tr_w[25][2]), .w1(cv_tr_w[25][1]),
-		.bias(cv_tr_bias[25][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -929,7 +929,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[26][9]), .w8(cv_tr_w[26][8]), .w7(cv_tr_w[26][7]), 
 		.w6(cv_tr_w[26][6]), .w5(cv_tr_w[26][5]), .w4(cv_tr_w[26][4]), 
 		.w3(cv_tr_w[26][3]), .w2(cv_tr_w[26][2]), .w1(cv_tr_w[26][1]),
-		.bias(cv_tr_bias[26][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -944,7 +944,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[27][9]), .w8(cv_tr_w[27][8]), .w7(cv_tr_w[27][7]), 
 		.w6(cv_tr_w[27][6]), .w5(cv_tr_w[27][5]), .w4(cv_tr_w[27][4]), 
 		.w3(cv_tr_w[27][3]), .w2(cv_tr_w[27][2]), .w1(cv_tr_w[27][1]),
-		.bias(cv_tr_bias[27][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -959,7 +959,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[28][9]), .w8(cv_tr_w[28][8]), .w7(cv_tr_w[28][7]), 
 		.w6(cv_tr_w[28][6]), .w5(cv_tr_w[28][5]), .w4(cv_tr_w[28][4]), 
 		.w3(cv_tr_w[28][3]), .w2(cv_tr_w[28][2]), .w1(cv_tr_w[28][1]),
-		.bias(cv_tr_bias[28][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -974,7 +974,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[29][9]), .w8(cv_tr_w[29][8]), .w7(cv_tr_w[29][7]), 
 		.w6(cv_tr_w[29][6]), .w5(cv_tr_w[29][5]), .w4(cv_tr_w[29][4]), 
 		.w3(cv_tr_w[29][3]), .w2(cv_tr_w[29][2]), .w1(cv_tr_w[29][1]),
-		.bias(cv_tr_bias[29][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -989,7 +989,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[30][9]), .w8(cv_tr_w[30][8]), .w7(cv_tr_w[30][7]), 
 		.w6(cv_tr_w[30][6]), .w5(cv_tr_w[30][5]), .w4(cv_tr_w[30][4]), 
 		.w3(cv_tr_w[30][3]), .w2(cv_tr_w[30][2]), .w1(cv_tr_w[30][1]),
-		.bias(cv_tr_bias[30][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -1004,7 +1004,7 @@ module unet_fsm_3_1(
 		.w9(cv_tr_w[31][9]), .w8(cv_tr_w[31][8]), .w7(cv_tr_w[31][7]), 
 		.w6(cv_tr_w[31][6]), .w5(cv_tr_w[31][5]), .w4(cv_tr_w[31][4]), 
 		.w3(cv_tr_w[31][3]), .w2(cv_tr_w[31][2]), .w1(cv_tr_w[31][1]),
-		.bias(cv_tr_bias[31][7:0]),
+		.bias(32'b0),
 		.width(cv_tr_width),
 		.flip(tr_flip),
 		.clk(clk),
@@ -1546,6 +1546,7 @@ module unet_fsm_3_1(
 				buf_st2_wd[i] <= 32'b0;
 			end
 			
+			for (i=0; i<32; i=i+1) cv_pixelin[i] <= 8'sd0;
 		end else begin
 			case (state)
 				IDLE:
@@ -1556,15 +1557,29 @@ module unet_fsm_3_1(
 						end
 						
 						if (unet_enpulse) begin
-							if (firsttime) begin
-								ctrl <= SEND_WEIGHTS;
-								state <= LOAD_WEIGHTS;
-								inlayercount <= 32'd0;
+							if (pixelcount == 32'd0) begin
+								pixelcount <= pixelcount + 32'd1;
+								cv_rst <= 1'b1;
+								tr_rst <= (firsttime) ? 1'b1 : 1'b0;
 							end else begin
-								ctrl <= SEND_DATA;
-								state <= STAGE9_TRANSCONV;
-								tr_rst <= 1'b1;
-								inlayercount <= -32'sd4;
+								pixelcount <= 32'd0;
+								
+								if (firsttime) begin
+									cv_rst <= 1'b0;
+									tr_rst <= 1'b0;
+									
+									ctrl <= SEND_WEIGHTS;
+									state <= LOAD_WEIGHTS;
+									inlayercount <= 32'd0;
+									
+								end else begin
+									tr_rst <= 1'b1;
+									cv_rst <= 1'b0;
+									
+									ctrl <= SEND_DATA;
+									state <= STAGE9_TRANSCONV;
+									inlayercount <= -32'sd4;
+								end
 							end
 								
 							busy <= 1'b1;
@@ -1707,7 +1722,7 @@ module unet_fsm_3_1(
 				LOAD_BIASES:
 					begin
 						if (~unet_enpulse) begin
-							if (pixelcount == 32'd7) begin
+							if (pixelcount == 32'd8) begin
 								if (inlayercount == 32'd7) begin
 									inlayercount <= 32'd0;
 									pixelcount <= 32'd0;
@@ -2659,7 +2674,7 @@ module unet_fsm_3_1(
 									end
 								end
 								
-								if (pixelcount == 32'd0 && layercount != 14) begin
+								if (pixelcount == 32'd0 && layercount != 12) begin
 									for (b=0; b<32; b=b+1) cv_pixelin[b] <= 32'd0;
 								end else begin
 									for (b=0; b<4; b=b+1) begin
@@ -2782,7 +2797,7 @@ module unet_fsm_3_1(
 									if (pixelcount == 32'd16514) begin
 										pixelcount <= pixelcount + 32'd1;
 										cv_rst <= 1'b0; // Reset
-									end else if (layercount == 32'd14) begin
+									end else if (layercount == 32'd12) begin
 										layercount <= 32'd0;
 										pixelcount <= pixelcount + 32'd1;
 									end else begin
@@ -2869,7 +2884,7 @@ module unet_fsm_3_1(
 									//   layerint_buf7         L13-P8192      L14-P8192      L15-P8192     L16-P8192
 									
 									case (layercount)
-										32'd12:  
+										32'd4:  
 											begin
 												if (pixelcount < 32'd4226) begin
 													for (i=0; i<8; i=i+1) begin
@@ -2925,79 +2940,6 @@ module unet_fsm_3_1(
 												end else begin
 													for (i=0; i<8; i=i+1) begin
 														if (i==4) begin
-															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd12418;
-															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
-														end else begin 
-															buf_st2_we[i]    <= 1'b0;
-															buf_st2_waddr[i] <= 32'd0;
-															buf_st2_wd[i]    <= 32'd0;
-														end
-														
-														buf_st1_we[i]    <= 1'b0;
-														buf_st1_waddr[i] <= 32'd0;
-														buf_st1_wd[i]    <= 32'd0;
-													end
-													
-												end
-											end
-										
-										32'd4: 
-											begin
-												if (pixelcount < 32'd4226) begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==1) begin
-															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd130;
-															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
-														end else begin 
-															buf_st1_we[i]    <= 1'b0;
-															buf_st1_waddr[i] <= 32'd0;
-															buf_st1_wd[i]    <= 32'd0;
-														end
-														
-														buf_st2_we[i]    <= 1'b0;
-														buf_st2_waddr[i] <= 32'd0;
-														buf_st2_wd[i]    <= 32'd0;
-													end
-													
-												end else if (pixelcount < 32'd8322) begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==1) begin
-															buf_st2_we[i]    <= 1'b1;
-															buf_st2_waddr[i] <= pixelcount-32'd4226;
-															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
-														end else begin 
-															buf_st2_we[i]    <= 1'b0;
-															buf_st2_waddr[i] <= 32'd0;
-															buf_st2_wd[i]    <= 32'd0;
-														end
-														
-														buf_st1_we[i]    <= 1'b0;
-														buf_st1_waddr[i] <= 32'd0;
-														buf_st1_wd[i]    <= 32'd0;
-													end
-													
-												end else if (pixelcount < 32'd12418) begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==5) begin
-															buf_st1_we[i]    <= 1'b1;
-															buf_st1_waddr[i] <= pixelcount-32'd8322;
-															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
-														end else begin 
-															buf_st1_we[i]    <= 1'b0;
-															buf_st1_waddr[i] <= 32'd0;
-															buf_st1_wd[i]    <= 32'd0;
-														end
-														
-														buf_st2_we[i]    <= 1'b0;
-														buf_st2_waddr[i] <= 32'd0;
-														buf_st2_wd[i]    <= 32'd0;
-													end
-													
-												end else begin
-													for (i=0; i<8; i=i+1) begin
-														if (i==5) begin
 															buf_st2_we[i]    <= 1'b1;
 															buf_st2_waddr[i] <= pixelcount-32'd12418;
 															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
@@ -3016,6 +2958,79 @@ module unet_fsm_3_1(
 											end
 										
 										32'd8: 
+											begin
+												if (pixelcount < 32'd4226) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==1) begin
+															buf_st1_we[i]    <= 1'b1;
+															buf_st1_waddr[i] <= pixelcount-32'd130;
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st1_we[i]    <= 1'b0;
+															buf_st1_waddr[i] <= 32'd0;
+															buf_st1_wd[i]    <= 32'd0;
+														end
+														
+														buf_st2_we[i]    <= 1'b0;
+														buf_st2_waddr[i] <= 32'd0;
+														buf_st2_wd[i]    <= 32'd0;
+													end
+													
+												end else if (pixelcount < 32'd8322) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==1) begin
+															buf_st2_we[i]    <= 1'b1;
+															buf_st2_waddr[i] <= pixelcount-32'd4226;
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st2_we[i]    <= 1'b0;
+															buf_st2_waddr[i] <= 32'd0;
+															buf_st2_wd[i]    <= 32'd0;
+														end
+														
+														buf_st1_we[i]    <= 1'b0;
+														buf_st1_waddr[i] <= 32'd0;
+														buf_st1_wd[i]    <= 32'd0;
+													end
+													
+												end else if (pixelcount < 32'd12418) begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==5) begin
+															buf_st1_we[i]    <= 1'b1;
+															buf_st1_waddr[i] <= pixelcount-32'd8322;
+															buf_st1_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st1_we[i]    <= 1'b0;
+															buf_st1_waddr[i] <= 32'd0;
+															buf_st1_wd[i]    <= 32'd0;
+														end
+														
+														buf_st2_we[i]    <= 1'b0;
+														buf_st2_waddr[i] <= 32'd0;
+														buf_st2_wd[i]    <= 32'd0;
+													end
+													
+												end else begin
+													for (i=0; i<8; i=i+1) begin
+														if (i==5) begin
+															buf_st2_we[i]    <= 1'b1;
+															buf_st2_waddr[i] <= pixelcount-32'd12418;
+															buf_st2_wd[i]    <= {qt0_res, qt1_res, qt2_res, qt3_res};
+														end else begin 
+															buf_st2_we[i]    <= 1'b0;
+															buf_st2_waddr[i] <= 32'd0;
+															buf_st2_wd[i]    <= 32'd0;
+														end
+														
+														buf_st1_we[i]    <= 1'b0;
+														buf_st1_waddr[i] <= 32'd0;
+														buf_st1_wd[i]    <= 32'd0;
+													end
+													
+												end
+											end
+										
+										32'd12: 
 											begin
 												if (pixelcount < 32'd4226) begin
 													for (i=0; i<8; i=i+1) begin
@@ -3186,11 +3201,11 @@ module unet_fsm_3_1(
 											end
 									endcase	
 								end else begin
-									if (layercount == 32'd14) begin
+									if (layercount == 32'd12) begin
 										pixelcount <= pixelcount + 32'd1;
 										layercount <= 32'd0;
 									end else begin
-										layercount <= layercount + 32'd0;
+										layercount <= layercount + 32'd4;
 									end
 									
 									for (i=0; i<8; i=i+1) begin
@@ -3614,13 +3629,9 @@ module unet_fsm_3_1(
 				
 					case (layercount)
 						32'd0:  cv_clk <= 1'b1;
-						32'd2:  cv_clk <= 1'b1;
 						32'd4:  cv_clk <= 1'b1;
-						32'd6:  cv_clk <= 1'b1;
 						32'd8:  cv_clk <= 1'b0;
-						32'd10: cv_clk <= 1'b0;
 						32'd12: cv_clk <= 1'b0;
-						32'd14: cv_clk <= 1'b0;
 						default: cv_clk <= 1'b0;
 					endcase						
 				end
