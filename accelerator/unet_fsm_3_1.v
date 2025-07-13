@@ -1924,17 +1924,6 @@ module unet_fsm_3_1(
 									end
 								end
 								
-								
-								qt0_in <= tr_out[0] + tr_out[1] + tr_out[2] + tr_out[3] + biaswire[0];
-								qt1_in <= tr_out[4] + tr_out[5] + tr_out[6] + tr_out[7] + biaswire[1];
-								qt2_in <= tr_out[8] + tr_out[9] + tr_out[10] + tr_out[11] + biaswire[2];
-								qt3_in <= tr_out[12] + tr_out[13] + tr_out[14] + tr_out[15] + biaswire[3];
-								qt4_in <= tr_out[16] + tr_out[17] + tr_out[18] + tr_out[19] + biaswire[4];
-								qt5_in <= tr_out[20] + tr_out[21] + tr_out[22] + tr_out[23] + biaswire[5];
-								qt6_in <= tr_out[24] + tr_out[25] + tr_out[26] + tr_out[27] + biaswire[6];
-								qt7_in <= tr_out[28] + tr_out[29] + tr_out[30] + tr_out[31] + biaswire[7]; 
-								
-								
 								// --------------------------------
 								// Saving
 								// --------------------------------
@@ -1980,10 +1969,15 @@ module unet_fsm_3_1(
 												buf_st1_waddr[i] <= writepixel-1;
 												buf_st1_wd[i]    <= data_in;
 											end else if (i==1) begin
-												buf_st1_we[i]    <= 1'b1;
+												buf_st2_we[i]    <= 1'b1;
+												buf_st2_raddr[i] <= 32'b0;
+												buf_st2_waddr[i] <= writepixel-1;
+												buf_st2_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												
+												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
-												buf_st1_waddr[i] <= writepixel-1;
-												buf_st1_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												buf_st1_waddr[i] <= 32'b0;
+												buf_st1_wd[i] <= 32'b0;
 											end else begin
 												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
@@ -2010,10 +2004,16 @@ module unet_fsm_3_1(
 												buf_st1_waddr[i] <= writepixel-32'd4097;
 												buf_st1_wd[i]    <= data_in;
 											end else if (i==3) begin
-												buf_st1_we[i]    <= 1'b1;
+												buf_st2_we[i]    <= 1'b1;
+												buf_st2_raddr[i] <= 32'b0;
+												buf_st2_waddr[i] <= writepixel-32'd4097;
+												buf_st2_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												
+												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
-												buf_st1_waddr[i] <= writepixel-32'd4097;
-												buf_st1_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												buf_st1_waddr[i] <= 32'b0;
+												buf_st1_wd[i] <= 32'b0;
+
 											end else begin
 												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
@@ -2040,10 +2040,15 @@ module unet_fsm_3_1(
 												buf_st1_waddr[i] <= writepixel-32'd8193;
 												buf_st1_wd[i]    <= data_in;
 											end else if (i==5) begin
-												buf_st1_we[i]    <= 1'b1;
+												buf_st2_we[i]    <= 1'b1;
+												buf_st2_raddr[i] <= 32'b0;
+												buf_st2_waddr[i] <= writepixel-32'd8193;
+												buf_st2_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												
+												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
-												buf_st1_waddr[i] <= writepixel-32'd8193;
-												buf_st1_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												buf_st1_waddr[i] <= 32'b0;
+												buf_st1_wd[i] <= 32'b0;
 											end else begin
 												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
@@ -2070,10 +2075,15 @@ module unet_fsm_3_1(
 												buf_st1_waddr[i] <= writepixel-32'd12289;
 												buf_st1_wd[i]    <= data_in;
 											end else if (i==7) begin
-												buf_st1_we[i]    <= 1'b1;
+												buf_st2_we[i]    <= 1'b1;
+												buf_st2_raddr[i] <= 32'b0;
+												buf_st2_waddr[i] <= writepixel-32'd12289;
+												buf_st2_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												
+												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
-												buf_st1_waddr[i] <= writepixel-32'd12289;
-												buf_st1_wd[i]    <= {qt4_res, qt5_res, qt6_res, qt7_res};
+												buf_st1_waddr[i] <= 32'b0;
+												buf_st1_wd[i] <= 32'b0;
 											end else begin
 												buf_st1_we[i] <= 1'b0;
 												buf_st1_raddr[i] <= 32'b0;
@@ -2359,21 +2369,6 @@ module unet_fsm_3_1(
 									// -----------------------------------------
 									// Saving
 									// -----------------------------------------
-											  
-									// add bias and quantization
-									//qt0
-									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-													+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-													+ biaswire[0];
-									
-									//qt1
-									qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-													+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
-													+ biaswire[1];
 									
 									// save to buffer
 									// save image to buffer, seperated to 4 pices
@@ -2835,24 +2830,6 @@ module unet_fsm_3_1(
 									// Saving
 									// -----------------------------------------
 									
-									// add bias and quantization
-									//qt0
-									qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
-													+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
-													+ biaswire[0];
-									
-									qt1_in   <= intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
-													+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
-													+ biaswire[1];
-									
-									//qt1
-									qt2_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
-													+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
-													+ biaswire[2];
-									
-									qt3_in   <= intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
-													+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
-													+ biaswire[3];
 									
 									// save to buffer
 									// save image to buffer, seperated to 4 pices
@@ -3262,7 +3239,7 @@ module unet_fsm_3_1(
 						// --------------------------------
 						
 						if (~unet_enpulse) begin
-							if (inlayercount != 32'd0 && pixelcount != 32'd0) ctrl <= SENDING;
+							if (inlayercount == 32'd0) ctrl <= SENDING;
 							
 							if (pixelcount < 32'd16384) begin
 								if (inlayercount == 32'd12) begin		
@@ -3598,6 +3575,15 @@ module unet_fsm_3_1(
 					cv_paddingR <= 1'b0; 
 					
 					cv_clk <= 1'b0;
+					
+					qt0_in <= tr_out[0] + tr_out[1] + tr_out[2] + tr_out[3] + biaswire[0];
+					qt1_in <= tr_out[4] + tr_out[5] + tr_out[6] + tr_out[7] + biaswire[1];
+					qt2_in <= tr_out[8] + tr_out[9] + tr_out[10] + tr_out[11] + biaswire[2];
+					qt3_in <= tr_out[12] + tr_out[13] + tr_out[14] + tr_out[15] + biaswire[3];
+					qt4_in <= tr_out[16] + tr_out[17] + tr_out[18] + tr_out[19] + biaswire[4];
+					qt5_in <= tr_out[20] + tr_out[21] + tr_out[22] + tr_out[23] + biaswire[5];
+					qt6_in <= tr_out[24] + tr_out[25] + tr_out[26] + tr_out[27] + biaswire[6];
+					qt7_in <= tr_out[28] + tr_out[29] + tr_out[30] + tr_out[31] + biaswire[7];	
 				end
 				
 			STAGE9_CONV:
@@ -3616,6 +3602,28 @@ module unet_fsm_3_1(
 						32'd6: cv_clk <= 1'b0;
 						default: cv_clk <= 1'b0;
 					endcase
+					
+					// add bias and quantization
+					//qt0
+					qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+									+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+									+ intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+									+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+									+ biaswire[0];
+					
+					//qt1
+					qt1_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+									+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+									+ intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+									+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+									+ biaswire[1];
+									
+					qt2_in <= 32'd0;
+					qt3_in <= 32'd0;
+					qt4_in <= 32'd0;
+					qt5_in <= 32'd0;
+					qt6_in <= 32'd0;
+					qt7_in <= 32'd0;
 				end
 				
 			STAGE10_CONV:
@@ -3634,6 +3642,30 @@ module unet_fsm_3_1(
 						32'd12: cv_clk <= 1'b0;
 						default: cv_clk <= 1'b0;
 					endcase						
+					
+					// add bias and quantization
+					//qt0
+					qt0_in   <= intermediate[0] + intermediate[1] + intermediate[2] + intermediate[3]
+									+ intermediate[4] + intermediate[5] + intermediate[6] + intermediate[7]
+									+ biaswire[0];
+					
+					qt1_in   <= intermediate[8] + intermediate[9] + intermediate[10] + intermediate[11]
+									+ intermediate[12] + intermediate[13] + intermediate[14] + intermediate[15]
+									+ biaswire[1];
+					
+					//qt1
+					qt2_in   <= intermediate[16] + intermediate[17] + intermediate[18] + intermediate[19]
+									+ intermediate[20] + intermediate[21] + intermediate[22] + intermediate[23]
+									+ biaswire[2];
+					
+					qt3_in   <= intermediate[24] + intermediate[25] + intermediate[26] + intermediate[27]
+									+ intermediate[28] + intermediate[29] + intermediate[30] + intermediate[31]
+									+ biaswire[3];
+									
+					qt4_in <= 32'd0;
+					qt5_in <= 32'd0;
+					qt6_in <= 32'd0;
+					qt7_in <= 32'd0;
 				end
 				
 			SEND:
@@ -3644,6 +3676,15 @@ module unet_fsm_3_1(
 					cv_paddingR <= 1'b0;
 					
 					cv_clk <= 1'b0;
+					
+					qt0_in <= 32'd0;
+					qt1_in <= 32'd0;
+					qt2_in <= 32'd0;
+					qt3_in <= 32'd0;
+					qt4_in <= 32'd0;
+					qt5_in <= 32'd0;
+					qt6_in <= 32'd0;
+					qt7_in <= 32'd0;
 				end
 				
 			default:
@@ -3654,6 +3695,15 @@ module unet_fsm_3_1(
 					cv_paddingR <= 1'b0;
 					
 					cv_clk <= 1'b0;
+					
+					qt0_in <= 32'd0;
+					qt1_in <= 32'd0;
+					qt2_in <= 32'd0;
+					qt3_in <= 32'd0;
+					qt4_in <= 32'd0;
+					qt5_in <= 32'd0;
+					qt6_in <= 32'd0;
+					qt7_in <= 32'd0;
 				end
 		endcase
 	end
