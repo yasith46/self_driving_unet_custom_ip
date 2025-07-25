@@ -367,6 +367,7 @@ stage10_conv_biases = [ 3664, -1108, 2405, -2825, -990, 299, -696, -1140, -2920,
 
 
 def pack(hex1, hex2, hex3, hex4):
+    print("pack", hex1, " ", hex2, " ", hex3, " ", hex4)
     return (hex1 & 0xFF) << 24 | (hex2 & 0xFF) << 16 | (hex3 & 0xFF) << 8 | (hex4 & 0xFF)
 
 weightslist = []
@@ -398,7 +399,9 @@ for o in range(0,8):
 for o in range(0,16):
     for i in range (0,8,4):
         for pattern in pack_patterns:
-            weightslist.append(pack(*[stage10_conv_weights[o][0][0][i+offset] if x==1 or y==1 else 0 for (y,x,offset) in pattern]))
+            a = pack(*[stage10_conv_weights[o][0][0][i+offset] if x==1 and y==1 else 0 for (y,x,offset) in pattern])
+            weightslist.append(a)
+            print(f"{a:08x}\n")
 
 for bias in stage9_transconv_biases:
     weightslist.append(bias & 0xFF)
@@ -432,10 +435,16 @@ stage9_conv_zp = 128
 stage10_conv_scale = 0.07842429727315903  
 stage10_conv_zp = -5
 
-weightslist.append((int(round(stage9_transconv_scale*(1<<16))) & 0xFFFF) << 16 | (stage9_transconv_zp & 0xFF))
-weightslist.append((int(round(stage9_conv_scale*(1<<16))) & 0xFFFF) << 16 | (stage9_conv_zp & 0xFF))
-weightslist.append((int(round(stage10_conv_scale*(1<<16))) & 0xFFFF) << 16 | (stage10_conv_zp & 0xFF))
+a = (int(round(stage9_transconv_scale*(1<<16))) & 0xFFFF) << 16 | (stage9_transconv_zp & 0xFF)
+b = (int(round(stage9_conv_scale*(1<<16))) & 0xFFFF) << 16 | (stage9_conv_zp & 0xFF)
+c = (int(round(stage10_conv_scale*(1<<16))) & 0xFFFF) << 16 | (stage10_conv_zp & 0xFF)
+
+weightslist.append(a)
+weightslist.append(b)
+weightslist.append(c)
 
 with open("weightdata.mem", "w") as f:
     for w in weightslist:
         f.write(f"{w:08x}\n")
+
+print(f"{a} {b} {c}")

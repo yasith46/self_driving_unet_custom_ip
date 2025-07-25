@@ -1,4 +1,4 @@
-module unet_fsm_3_1(
+module unet_top(
 		input rst_n, clk, unet_enpulse, 
 		input [31:0] data_in,
 		output reg [2:0] ctrl,
